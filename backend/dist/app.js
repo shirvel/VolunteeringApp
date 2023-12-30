@@ -6,11 +6,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
+const user_route_1 = __importDefault(require("./routes/user_route"));
 const app = (0, express_1.default)();
+app.use(user_route_1.default);
 const port = process.env.PORT;
-app.get('/', (req, res) => {
-    res.send("First api");
-});
+// app.get('/', (req, res) => {
+//   res.send("First api");
+// });
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
 });
