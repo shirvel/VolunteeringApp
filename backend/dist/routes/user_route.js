@@ -8,6 +8,9 @@ const router = express_1.default.Router();
 router.get("/user", (req, res) => {
     res.send("get user");
 });
+router.get("/user/:id", (req, res) => {
+    res.send("get user by id: " + req.params.id);
+});
 router.post("/user", (req, res) => {
     res.send("post user");
 });
