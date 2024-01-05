@@ -2,25 +2,14 @@ import express from "express";
 const router = express.Router();
 import User from '../controllers/user_controller';
 
-router.get("/user", (req, res) => {
-    res.send("get user");
-});
+router.get("/user", User.getAllUsers);
 
-router.get("/user/:id", (req, res) => {
-    res.send("get user by id: " + req.params.id);
-});
+router.get("/user/:id", User.getUserById);
 
-router.post("/user", (req, res) => {
-    console.log(req.body);
-    res.send("new user" + req.body.name);
-});
+router.post("/user", User.postUser);
 
-router.put("/user/:id", (req, res) => {
-    res.send("put user by id: " + req.params.id);
-});
+router.put("/user/:id", User.putUserById);
 
-router.delete("/user/:id", (req, res) => {
-    res.send("delete user by id: " + req.params.id);
-});
+router.delete("/user/:id", User.deleteUserById);
 
 export default router;

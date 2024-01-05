@@ -14,9 +14,11 @@ db.once('open', () => console.log('Connected to mongo!'));
 
 const app = express();
 
-app.use(userRoute);
-app.use(bodyParser.json());
+
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+app.use(userRoute);
 
 
 const port = process.env.PORT
