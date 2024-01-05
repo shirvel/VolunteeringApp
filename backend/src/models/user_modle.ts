@@ -6,8 +6,8 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     _id: {
-        type: String
-    }
-})
+        type: String,
+    },
+});
 
 export default mongoose.model('Users', userSchema);

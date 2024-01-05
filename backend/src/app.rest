@@ -8,13 +8,24 @@ GET http://localhost:3000/user
 
 ###
 
-POST http://localhost:3000/user
-Content-Type: application/json
-{
-    "name": "ortal",
-    "id": "1233456"
-}
+GET http://localhost:3000/user?name=Ortal%20Golzar
+
+###
+
+GET http://localhost:3000/user?_id=6597e7cacefcbcebf5ffc50b
 
 ###
 
 GET http://localhost:3000/user/206777900
+
+
+###
+
+POST http://localhost:3000/user
+Content-Type: application/json
+
+{
+    "name": "ortal gol",
+    "_id": "1233456"
+    
+}
