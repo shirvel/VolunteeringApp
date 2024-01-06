@@ -1,4 +1,7 @@
 import User from '../models/user_model';
+import { Request, Response } from 'express';
+
+// TODO: why Property 'query' does not exist on type 'Request' ?
 
 const getAllUsers = async (req, res) => {
     console.log("getAllUsers");
@@ -31,7 +34,7 @@ const getUserById = async (req, res) => {
 };
 
 const postUser = async (req, res) => {
-    console.log("postUser: " + req.body);
+    console.log("postUser");
     const user = new User(req.body);
     try {
         await user.save();

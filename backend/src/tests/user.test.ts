@@ -2,6 +2,7 @@ import request from "supertest";
 import initApp from "../app";
 import mongoose from "mongoose";
 import { Express } from "express";
+import User from '../models/user_model';
 
 // TODO: check the covarage by writing '--coverage' on package.json
 // Add more tests
@@ -21,6 +22,7 @@ export type User = {
 beforeAll(async () => {
   app = await initApp();
   console.log("beforeAll");
+  await User.deleteMany();
 });
 
 afterAll(async () => {
