@@ -8,7 +8,7 @@ env.config();
 import userRoute from "./routes/user_route";
 import commentRoutes from "./routes/comment_routes";
 
-
+//TODO: Presentation 3 page 29: "Make the app.ts into promise"...
 const initApp = async() => {
   await mongoose.connect(process.env.DATABASE_URL);
   const db = mongoose.connection;
