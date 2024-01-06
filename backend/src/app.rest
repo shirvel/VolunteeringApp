@@ -34,7 +34,7 @@ Content-Type: application/json
 
 {
     "post_id": "123",
-    "user_id": "1233456",
+    "user_name": "1233456",
     "content": "hello"
     
 }
@@ -43,3 +43,45 @@ Content-Type: application/json
 ###
 GET http://localhost:3000/comments
 ###
+
+###
+
+GET http://localhost:3000/user?_id=1233456
+
+###
+
+DELETE http://localhost:3000/user/12334561
+
+###
+
+GET http://localhost:3000/user/206777900
+
+###
+
+GET http://localhost:3000/user/1233456
+
+
+###
+
+PUT http://localhost:3000/user/1233456
+Content-Type: application/json
+
+{
+    "name": "nameeee",
+    "_id": "1233456"
+    
+}
+###
+DELETE http://localhost:3000/comments/65995d035a4519ecacf6bc78
+###
+
+// Auth
+
+###
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+    "email": "myemail@gmail.com",
+    "password": "1233456"
+}

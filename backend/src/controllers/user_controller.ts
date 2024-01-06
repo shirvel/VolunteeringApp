@@ -1,4 +1,7 @@
 import User from '../models/user_model';
+import { Request, Response } from 'express';
+
+// TODO: why Property 'query' does not exist on type 'Request' ?
 
 const getAllUsers = async (req, res) => {
     console.log("getAllUsers");
@@ -20,12 +23,18 @@ const getAllUsers = async (req, res) => {
   
 };
 
-const getUserById = (req, res) => {
-    res.send("get user by id: " + req.params.id);
+const getUserById = async (req, res) => {
+    console.log("getUserById");
+    try {
+        const users = await User.findById(req.params.id);
+        res.send(users);
+    } catch (err) {
+        res.status(500).json( {message: err.message} );
+    }
 };
 
 const postUser = async (req, res) => {
-    console.log("postUser: " + req.body);
+    console.log("postUser");
     const user = new User(req.body);
     try {
         await user.save();
@@ -36,12 +45,28 @@ const postUser = async (req, res) => {
     }
 };
 
-const putUserById = (req, res) => {
-    res.send("put user by id: " + req.params.id);
-};
+const putUserById = async (req, res) => {
+       res.send("put user by id: " + req.params.id);
+   
+    //    console.log("putUserById");
+    //    try {
+    //        const users = await User.findByIdAndUpdate(req.params.id, {
+    //            name: req.params.name
+    //        });
+    //        res.send(users);
+    //    } catch (err) {
+    //        res.status(500).json( {message: err.message} );
+    //    }
+   };
 
-const deleteUserById = (req, res) => {
-    res.send("delete user by id: " + req.params.id);
+   const deleteUserById = async (req, res) => {
+    console.log("deleteUserById");
+    try {
+        const users = await User.findByIdAndDelete(req.params.id);
+        res.send(users);
+    } catch (err) {
+        res.status(500).json( {message: err.message} );
+    }
 };
 
 export default { getAllUsers, getUserById, postUser, putUserById, deleteUserById };
