@@ -6,6 +6,7 @@ import bodyParser from 'body-parser';
 env.config();
 
 import userRoute from "./routes/user_route";
+import commentRoutes from "./routes/comment_routes";
 
 mongoose.connect(process.env.DATABASE_URL);
 const db = mongoose.connection;
@@ -19,13 +20,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use(userRoute);
+app.use("/comments", commentRoutes)
 
 
 const port = process.env.PORT
 
-app.get('/', (req, res) => {
-  res.send("First api");
-});
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);

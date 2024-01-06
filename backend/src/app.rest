@@ -1,7 +1,5 @@
 ###
-
 GET http://localhost:3000/
-
 ###
 
 GET http://localhost:3000/user
@@ -29,3 +27,19 @@ Content-Type: application/json
     "_id": "1233456"
     
 }
+
+###
+POST http://localhost:3000/comments
+Content-Type: application/json
+
+{
+    "post_id": "123",
+    "user_id": "1233456",
+    "content": "hello"
+    
+}
+###
+
+###
+GET http://localhost:3000/comments
+###

@@ -1,4 +1,4 @@
-import User from '../models/user_modle';
+import User from '../models/user_model';
 
 const getAllUsers = async (req, res) => {
     console.log("getAllUsers");
@@ -34,7 +34,6 @@ const postUser = async (req, res) => {
         console.log(err);
         res.send("fail: " + err.message);
     }
-    res.send("post user");
 };
 
 const putUserById = (req, res) => {
