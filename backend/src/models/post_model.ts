@@ -17,8 +17,8 @@ const postSchema = new mongoose.Schema({
         required: true
     },
     image:{
-        data: Buffer, 
-        contentType: String 
+        type: String, 
+        required: true 
     },
     category: {
         type: String,
@@ -34,4 +34,4 @@ const postSchema = new mongoose.Schema({
     }
 });
 
-export default mongoose.model('post', postSchema);
+export default mongoose.model('Post', postSchema);
