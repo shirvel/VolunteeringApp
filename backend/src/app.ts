@@ -6,6 +6,7 @@ import bodyParser from 'body-parser';
 env.config();
 
 import userRoute from "./routes/user_route";
+import postRoutes from "./routes/post_route";
 import commentRoutes from "./routes/comment_routes";
 
 
