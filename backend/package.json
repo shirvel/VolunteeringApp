@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "tsc && jest --detectOpenHandles --forceExit",
-    "testComment": "tsc && jest --detectOpenHandles --forceExit ./src/tests/comment.test.ts",
+    "testComment": "tsc && jest --detectOpenHandles --forceExit --coverage ./src/tests/comment.test.ts",
     "start": "tsc && node ./dist/src/server.js",
     "dev": "nodemon ./src/server.ts"
   },

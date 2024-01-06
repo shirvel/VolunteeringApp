@@ -34,7 +34,7 @@ Content-Type: application/json
 
 {
     "post_id": "123",
-    "user_id": "1233456",
+    "user_name": "1233456",
     "content": "hello"
     
 }
@@ -42,4 +42,7 @@ Content-Type: application/json
 
 ###
 GET http://localhost:3000/comments
+###
+###
+DELETE http://localhost:3000/comments/65995d035a4519ecacf6bc78
 ###
