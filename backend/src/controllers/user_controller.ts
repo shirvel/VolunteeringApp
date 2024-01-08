@@ -2,20 +2,21 @@ import User from '../models/user_model';
 import { Request, Response } from 'express';
 
 // TODO: why Property 'query' does not exist on type 'Request' ?
+// TODO: Maybe delete this file?
 
 const getAllUsers = async (req, res) => {
     console.log("getAllUsers");
     try {
         let users;
-        if (req.query.name) {
-            users = await User.find( { name: req.query.name } );
-        }
-        else if (req.query.id) {
-            users = await User.find( { _id: req.query._id } );
-        }
-        else {
+        // if (req.query.name) {
+        //     users = await User.find( { name: req.query.name } );
+        // }
+        // else if (req.query.id) {
+        //     users = await User.find( { _id: req.query._id } );
+        // }
+        // else {
             users = await User.find();
-        }
+       // }
         res.send(users);
     } catch (err) {
         res.status(500).json( {message: err.message} );

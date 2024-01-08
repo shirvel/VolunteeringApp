@@ -64,8 +64,8 @@ GET http://localhost:3000/user/1233456
 ###
 
 PUT http://localhost:3000/user/1233456
-Content-Type: application/json
 
+Content-Type: application/json
 {
     "name": "nameeee",
     "_id": "1233456"
@@ -73,15 +73,13 @@ Content-Type: application/json
 }
 ###
 DELETE http://localhost:3000/comments/65995d035a4519ecacf6bc78
-###
-
-// Auth
 
 ###
+
 POST http://localhost:3000/auth/register
 Content-Type: application/json
 
 {
-    "email": "myemail@gmail.com",
+    "email": "ortal@gmail.com",
     "password": "1233456"
 }

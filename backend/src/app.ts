@@ -20,7 +20,7 @@ const initApp = (): Promise<Express> => {
       const app = express();
       app.use(bodyParser.urlencoded({ extended: true }));
       app.use(bodyParser.json());
-      app.use(userRoute);
+     // app.use(userRoute);
       app.use("/comments", commentRoutes)
       app.use("/auth", authRoute)
       resolve(app);
