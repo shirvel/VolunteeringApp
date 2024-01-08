@@ -8,10 +8,6 @@ const postSchema = new mongoose.Schema({
         type: String,
         required: true        
     },
-    link:{
-        type: String,
-        required: true 
-    },
     phoneNumber:{
         type: String,
         required: true
@@ -21,8 +17,8 @@ const postSchema = new mongoose.Schema({
         required: true 
     },
     category: {
-        type: String,
-        required: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category'
     }, 
     likes: {
         type: Number,

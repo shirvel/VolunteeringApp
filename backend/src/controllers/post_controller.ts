@@ -39,6 +39,39 @@ const getPostByID = async (req, res) => {
   }
 };
 
+const addLike = async (req, res) => {
+  const post = await Post.findByIdAndUpdate(
+    req.params.id,
+    { $inc: { likes: 1 } },
+    { new: true }
+  );
+  try {
+    if (!post) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+    res.status(200).json(post);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to add like' });
+  }
+};
+
+// Add dislike to a post by its ID
+const addDislike = async (req, res) => {
+    const post = await Post.findByIdAndUpdate(
+      req.params.id,
+      { $inc: { dislikes: 1 } },
+      { new: true }
+    );
+  try {
+    if (!post) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+    res.status(200).json(post);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to add dislike' });
+  }
+};
+
 const updatePostByID = async (req, res) => {
     const post = await Post.findByIdAndUpdate(req.params.postId, req.body, { new: true });
     try{
@@ -69,4 +102,4 @@ const deletePostById = async (req, res) => {
     }
   };
 
-  export default {createPost, getAllPosts, getPostByID, updatePostByID, deletePostById}
+  export default {createPost, getAllPosts, getPostByID, updatePostByID, deletePostById, addLike, addDiskLike}
