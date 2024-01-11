@@ -34,7 +34,7 @@ Content-Type: application/json
 
 {
     "post_id": "123",
-    "user_name": "1233456",
+    "user_name": "ortal gol",
     "content": "hello"
     
 }
