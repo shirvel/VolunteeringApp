@@ -1,13 +1,7 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
+import { GroupChat } from './chat/Chat';
 
-export const  BasicButtons = ()=>{
+export const App = () => {
   return (
-    <div >
-      <div className="bg-gray-200">sfdg</div>
-      <Button variant="text">Text</Button>
-      <Button variant="contained">Contained</Button>
-      <Button variant="outlined">Outlined</Button>
-    </div>
+      <GroupChat/>
   );
 }
