@@ -1,4 +1,4 @@
-import { GroupChat } from './chat/Chat';
+import { GroupChat } from './chat/GroupChat';
 
 export const App = () => {
   return (
