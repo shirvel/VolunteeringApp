@@ -36,8 +36,8 @@ Content-Type: application/json
 Authorization: JWT c55ec6032cf6be3235534ece630f2e0b856be45923fabe613979b186f359a8448306cda3d01c14710a91ac3ee7e15126cc061be82c74cf935645fe91a9c63d47
 
 {
-    "post_id": "11223",
-    "user_name": "1233456",
+    "post_id": "123",
+    "user_name": "ortal gol",
     "content": "hello"
     
 }
