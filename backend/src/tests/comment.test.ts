@@ -4,9 +4,10 @@ import mongoose from "mongoose";
 import Comment from "../models/comment_model";
 import { Express } from "express";
 import { IComment } from "../controllers/comment_controller";
-
+import User, { IUser } from '../models/user_model';
 
 let app: Express;
+let accessToken: string;
 
 const test_comment: IComment = {
   user_name: "comment_test",
@@ -14,17 +15,19 @@ const test_comment: IComment = {
   content: "hello"
 };
 
-const test_user = {
-  name: "comment_test",
-  id: "123"
+const test_user: IUser = {
+  email: "testUserEmail@gmail.com",
+  password: "a123456!G"
 }
 
 beforeAll(async () => {
   app = await initApp();
   await Comment.deleteMany({});
+  await User.deleteMany({ email: test_user.email});
   // Create the user to add comment
-  await request(app).post("/user")
-      .send(test_user);
+  await request(app).post("/auth/register").send(test_user);
+  const response = await request(app).post("/auth/login").send(test_user);
+  accessToken = response.body.accessToken;
 });
 
 afterAll(async () => {
@@ -33,21 +36,21 @@ afterAll(async () => {
 
 describe("Comment tests", () => {
   const addComment = async (comment: IComment) => {
-    const response = await request(app).post("/comments")
+    const response = await request(app).post("/comments").set("Authorization", "JWT " + accessToken)
       .send(comment);
     expect(response.statusCode).toBe(201);
     return response.body._id;
   };
 
   test("Test Get All Comments - empty response", async () => {
-    const response = await request(app).get("/comments");
+    const response = await request(app).get("/comments").set("Authorization", "JWT " + accessToken);
     expect(response.statusCode).toBe(200);
     expect(response.body).toStrictEqual([]);
   });
 
   test("Test Get All Comments", async () => {
     test_comment._id = await addComment(test_comment);
-    const response = await request(app).get("/comments");
+    const response = await request(app).get("/comments").set("Authorization", "JWT " + accessToken);
     expect(response.statusCode).toBe(200);
     expect(response.body.length).toBe(1);
     const comment = response.body[0];
@@ -55,9 +58,9 @@ describe("Comment tests", () => {
   });
 
   test("Test edit comment", async () => {
-    const response = await request(app).patch(`/comments/${test_comment._id}`).send({content: "hello2"});
+    const response = await request(app).patch(`/comments/${test_comment._id}`).set("Authorization", "JWT " + accessToken).send({content: "hello2"});
     expect(response.statusCode).toBe(204);
-    const getResponse = await request(app).get("/comments");
+    const getResponse = await request(app).get("/comments").set("Authorization", "JWT " + accessToken);
     expect(getResponse.body.length).toBe(1);
     const comment = getResponse.body[0];
     expect(comment.content).toBe("hello2");
@@ -65,9 +68,9 @@ describe("Comment tests", () => {
 
   test("Delete the command", async() => {
     console.log(test_comment._id);
-    const delResponse = await request(app).delete(`/comments/${test_comment._id}`);
+    const delResponse = await request(app).delete(`/comments/${test_comment._id}`).set("Authorization", "JWT " + accessToken);
     expect(delResponse.statusCode).toBe(204);
-    const getResponse = await request(app).get("/comments");
+    const getResponse = await request(app).get("/comments").set("Authorization", "JWT " + accessToken);
     expect(getResponse.statusCode).toBe(200);
     expect(getResponse.body.length).toBe(0);
 
