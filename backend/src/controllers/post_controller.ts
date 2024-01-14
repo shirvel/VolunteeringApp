@@ -3,6 +3,17 @@ import User from '../models/user_model';
 import Post from '../models/post_model';
 import { Request, Response } from 'express';
 
+export interface IPost {
+  title: string;
+  content: string;
+  phoneNumber: string;
+  image: string;
+  category: string;
+  likes: number;
+  dislikes: number;
+  _id?: string;
+};
+
 const createPost = async (req, res) => {
     const post = new Post(req.body);
     try {
@@ -25,23 +36,23 @@ const getAllPosts = async (req, res) => {
       }
 
 };
-const getPostByID = async (req, res) => {
-    const post = await Post.findById(req.params.postId, req.body, { new: true })
-    try {
-        if(!post){
-        console.log(`Post with ID ${req.params.postId} not found`);
-        res.status(404).json({ error: 'Post not found.' });
-    } else {
-        res.status(200).json(post); // The post was found 
-    } 
-    }catch (err) {
-        res.status(500).json({ error: 'An error occurred while searching the post.' });
-  }
-};
+//const getPostByID = async (req, res) => {
+//    const post = await Post.findById(req.params.postId, req.body, { new: true })
+//    try {
+//        if(!post){
+//        console.log(`Post with ID ${req.params.postId} not found`);
+//        res.status(404).json({ error: 'Post not found.' });
+//    } else {
+//        res.status(200).json(post); // The post was found 
+//    } 
+//    }catch (err) {
+//        res.status(500).json({ error: 'An error occurred while searching the post.' });
+//  }
+//};
 
 const addLike = async (req, res) => {
-  const post = await Post.findByIdAndUpdate(
-    req.params.id,
+  const post = await Post.findOneAndUpdate(
+    { _id: req.params.postId },
     { $inc: { likes: 1 } },
     { new: true }
   );
@@ -57,8 +68,8 @@ const addLike = async (req, res) => {
 
 // Add dislike to a post by its ID
 const addDislike = async (req, res) => {
-    const post = await Post.findByIdAndUpdate(
-      req.params.id,
+    const post = await Post.findOneAndUpdate(
+      { _id: req.params.postId },
       { $inc: { dislikes: 1 } },
       { new: true }
     );
@@ -73,7 +84,7 @@ const addDislike = async (req, res) => {
 };
 
 const updatePostByID = async (req, res) => {
-    const post = await Post.findByIdAndUpdate(req.params.postId, req.body, { new: true });
+    const post = await Post.findOneAndUpdate({_id: req.params.id}, {"content" :req.body.content});
     try{
         if (!post) {
             console.log(`Post with ID ${req.params.postId} not found for updating`);
@@ -89,7 +100,7 @@ const updatePostByID = async (req, res) => {
 
 const deletePostById = async (req, res) => {
     try {
-      const post = await Post.findByIdAndRemove(req.params.postId);
+      const post = await Post.findOneAndDelete({_id: req.params.id});
       if (!post) {
         console.log(`Post with ID ${req.params.postId} wasn't found for deletion`);
         res.status(404).json({ error: 'Post wasnt found' });
@@ -102,4 +113,17 @@ const deletePostById = async (req, res) => {
     }
   };
 
-  export default {createPost, getAllPosts, getPostByID, updatePostByID, deletePostById, addLike, addDiskLike}
+  const findPostsByCategory = async (req: Request, res: Response) => {
+    const category = req.params.category; 
+    const posts = await Post.find({ category: category }).exec();
+    try {
+      if (!posts || posts.length === 0) {
+        return res.status(404).json({ message: 'No posts found in the specified category' });
+      }
+  
+      res.status(200).json(posts);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  };
+  export default {createPost, getAllPosts,  updatePostByID, deletePostById, addLike, addDislike, findPostsByCategory}

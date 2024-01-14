@@ -6,7 +6,7 @@ import bodyParser from 'body-parser';
 env.config();
 
 import userRoute from "./routes/user_route";
-import postRoutes from "./routes/post_route";
+import postRoute from "./routes/post_routes";
 import commentRoutes from "./routes/comment_routes";
 import authRoute from "./routes/auth_route";
 
@@ -21,6 +21,7 @@ const initApp = (): Promise<Express> => {
       app.use(bodyParser.urlencoded({ extended: true }));
       app.use(bodyParser.json());
       app.use(userRoute);
+      app.use("/posts", postRoute)
       app.use("/comments", commentRoutes)
       app.use("/auth", authRoute)
       resolve(app);
