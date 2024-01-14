@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/controllers/comment_controller.ts</title>
+    <title>Code coverage report for src/controllers/auth_controller.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/controllers</a> comment_controller.ts</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/controllers</a> auth_controller.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">86.48% </span>
+                <span class="strong">74.07% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>32/37</span>
-            </div>
-        
-            
-            <div class='fl pad1y space-right2'>
-                <span class="strong">66.66% </span>
-                <span class="quiet">Branches</span>
-                <span class='fraction'>2/3</span>
+                <span class='fraction'>20/27</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
-                <span class="quiet">Functions</span>
-                <span class='fraction'>10/10</span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">86.66% </span>
+                <span class="strong">33.33% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>2/6</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">79.16% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>26/30</span>
+                <span class='fraction'>19/24</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -109,141 +109,99 @@
 <a name='L44'></a><a href='#L44'>44</a>
 <a name='L45'></a><a href='#L45'>45</a>
 <a name='L46'></a><a href='#L46'>46</a>
-<a name='L47'></a><a href='#L47'>47</a>
-<a name='L48'></a><a href='#L48'>48</a>
-<a name='L49'></a><a href='#L49'>49</a>
-<a name='L50'></a><a href='#L50'>50</a>
-<a name='L51'></a><a href='#L51'>51</a>
-<a name='L52'></a><a href='#L52'>52</a>
-<a name='L53'></a><a href='#L53'>53</a>
-<a name='L54'></a><a href='#L54'>54</a>
-<a name='L55'></a><a href='#L55'>55</a>
-<a name='L56'></a><a href='#L56'>56</a>
-<a name='L57'></a><a href='#L57'>57</a>
-<a name='L58'></a><a href='#L58'>58</a>
-<a name='L59'></a><a href='#L59'>59</a>
-<a name='L60'></a><a href='#L60'>60</a>
-<a name='L61'></a><a href='#L61'>61</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L47'></a><a href='#L47'>47</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span></td><td class="text"><pre class="prettyprint lang-js">import Comment from '../models/comment_model';
-import User from '../models/user_model';
-import { Request, Response } from 'express';
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span></td><td class="text"><pre class="prettyprint lang-js">import User from '../models/user_model';
+import bcrypt from 'bcrypt';
 &nbsp;
-export interface IComment {
-    user_name: string;
-    post_id: string;
-    content: string;
-    _id?: string;
-};
+const register = async (req, res) =&gt; {
+    console.log("Register");
+    // Check if the user is valid
+    const email = req.body.email;
+    const password = req.body.password;
 &nbsp;
-const validateComment = async(comment: IComment, res: Response) =&gt; {
-    let isValid = true;
-    // TODO: check the post id.
-    // Check if the user exists
-    const user = await User.findOne( { name:  comment.user_name} );
-    if (!user)  isValid = false;
-    return isValid;
-};
-&nbsp;
-const addComment = async (req: Request, res: Response) =&gt; {
-    try {
-        <span class="missing-if-branch" title="if path not taken" >I</span>if (!validateComment(req.body as IComment, res)) <span class="cstat-no" title="statement not covered" >return res.status(400).json({message: "The comment is not valid"});</span>
-        const comment = new Comment(req.body);
-        await comment.save();
-        res.status(201).json(comment);
-    } catch (err) {
-<span class="cstat-no" title="statement not covered" >        res.status(500).json({"message": + err.message});</span>
+    if (email == null || password == null) {
+        return res.status(400).send("missing email or password!!!");
     }
-};
 &nbsp;
-const getAllComments = async (req: Request, res: Response) =&gt; {
-    try {
-        res.status(200).json(await Comment.find());
-    } catch (err) {
-<span class="cstat-no" title="statement not covered" >        res.status(500).json({message: err.message});</span>
-    }
-  
-};
+   // Check if it not already registred
 &nbsp;
-const deleteComment = async(req: Request, res: Response) =&gt; {
-    try {
-        await Comment.findOneAndDelete({_id: req.params.id});
-        res.status(204).json({"message": "success"});
-    } catch (err) {
-<span class="cstat-no" title="statement not covered" >        res.status(500).json( {message: err.message} );</span>
-    }
-};
+   try {
+       const user = await User.findOne( {'email': email} );
+       if (user != null) {
+        return res.status(406).send("Email already exists");
+       }
+       const salt = await bcrypt.genSalt(10);
+        const encryptedPassword = await bcrypt.hash(password, salt);
+        const newUser = await User.create({ 'email': email, 'password': encryptedPassword });
+        return res.status(201).send(newUser);
 &nbsp;
-const editComment = async(req: Request, res: Response) =&gt; {
-    try {
-        // We only allow content change
-        if (req.body.content)
-            await Comment.findOneAndUpdate({_id: req.params.id}, {"content" :req.body.content});
-        res.status(204).json({"message": "success"});
-    } catch (err) {
-<span class="cstat-no" title="statement not covered" >        res.status(500).json( {message: err.message} );</span>
-    }
-};
+   } catch(err) {
+<span class="cstat-no" title="statement not covered" >    return res.status(400).send("Error missing email or password");</span>
+   }
+}
 &nbsp;
-export default {addComment, getAllComments, deleteComment, editComment}</pre></td></tr></table></pre>
+const login = <span class="fstat-no" title="function not covered" >async (r</span>eq, res, next) =&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > {</span></span>
+<span class="cstat-no" title="statement not covered" >    console.log("Login");</span>
+<span class="cstat-no" title="statement not covered" >    res.status(400).send({</span>
+        'status': 'fail',
+        'message': 'Not implemented'
+    })
+}
+&nbsp;
+const logout = <span class="fstat-no" title="function not covered" >async (r</span>eq, res, next) =&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > {</span></span>
+<span class="cstat-no" title="statement not covered" >    console.log("Logout");</span>
+<span class="cstat-no" title="statement not covered" >    res.status(400).send({</span>
+        'status': 'fail',
+        'message': 'Not implemented'
+    })
+}
+&nbsp;
+export default { register, login, logout};</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->

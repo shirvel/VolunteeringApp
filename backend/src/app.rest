@@ -6,7 +6,7 @@ GET http://localhost:3000/user
 
 ###
 
-GET http://localhost:3000/user?name=Ortal%20Golzar
+//GET http://localhost:3000/auth/user?name=Ortal%20Golzar
 
 ###
 
@@ -19,22 +19,25 @@ GET http://localhost:3000/user/206777900
 
 ###
 
-POST http://localhost:3000/user
-Content-Type: application/json
+//POST http://localhost:3000/auth/user
+//Content-Type: application/json
 
-{
-    "name": "ortal gol",
-    "_id": "1233456"
+//{
+    //"email": "lala@gmail.com",
+   // "password": "123456"
+   // "name": "ortal gol",
+   // "_id": "1233456"
     
-}
+//}
 
 ###
 POST http://localhost:3000/comments
 Content-Type: application/json
+Authorization: JWT c55ec6032cf6be3235534ece630f2e0b856be45923fabe613979b186f359a8448306cda3d01c14710a91ac3ee7e15126cc061be82c74cf935645fe91a9c63d47
 
 {
     "post_id": "123",
-    "user_name": "1233456",
+    "user_name": "ortal gol",
     "content": "hello"
     
 }
@@ -42,6 +45,7 @@ Content-Type: application/json
 
 ###
 GET http://localhost:3000/comments
+Authorization: JWT c55ec6032cf6be3235534ece630f2e0b856be45923fabe613979b186f359a8448306cda3d01c14710a91ac3ee7e15126cc061be82c74cf935645fe91a9c63d47
 ###
 
 ###
@@ -80,6 +84,16 @@ POST http://localhost:3000/auth/register
 Content-Type: application/json
 
 {
-    "email": "ortal@gmail.com",
+    "email": "ortal1@gmail.com",
+    "password": "1233456"
+}
+
+###
+
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "email": "ortal1@gmail.com",
     "password": "1233456"
 }

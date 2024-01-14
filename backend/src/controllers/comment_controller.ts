@@ -13,7 +13,7 @@ const validateComment = async(comment: IComment, res: Response) => {
     let isValid = true;
     // TODO: check the post id.
     // Check if the user exists
-    const user = await User.findOne( { _id:  comment.user_name} );
+    const user = await User.findOne( { name:  comment.user_name} );
     if (!user)  isValid = false;
     return isValid;
 };
