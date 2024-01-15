@@ -3,7 +3,6 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 const register = async (req, res) => {
-    console.log("Register");
 
     // Check if the user is valid
     const email = req.body.email;
