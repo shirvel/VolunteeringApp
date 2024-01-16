@@ -101,7 +101,7 @@ const refresh = async (req: Request, res: Response) => {
     });
 }
 
-const logout = async (req, res) => {
+const logout = async (req: Request, res: Response) => {
     const authHeader = req.headers['authorization'];
     const refreshToken = authHeader && authHeader.split(' ')[1]; // Bearer <token>
     if (refreshToken == null) return res.sendStatus(401);
