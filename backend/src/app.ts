@@ -2,6 +2,7 @@ import express, { Express } from "express";
 import mongoose from 'mongoose';
 import env from "dotenv";
 import bodyParser from 'body-parser';
+import * as socketio from "socket.io";
 
 env.config();
 
@@ -11,8 +12,9 @@ import authRoute from "./routes/auth_route";
 import googleAuthRoute from './routes/oauth_route';
 import requestRoute from './routes/request_route';
 // TODO: Need to add the html?
+import cors from "cors";
 
-const initApp = (): Promise<Express> => {
+export const initApp = (): Promise<Express> => {
   const promise = new Promise<Express>((resolve) => {
     const db = mongoose.connection;
     db.on('error', error => {console.error(error)});
@@ -20,6 +22,7 @@ const initApp = (): Promise<Express> => {
     const url = process.env.DATABASE_URL;
     mongoose.connect(url!).then(() => {
       const app = express();
+      app.use(cors());
       app.use(bodyParser.urlencoded({ extended: true }));
       app.use(bodyParser.json());
       app.use(userRoute);
@@ -35,4 +38,4 @@ const initApp = (): Promise<Express> => {
   return promise;
 };
 
-export default initApp;
+
