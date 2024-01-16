@@ -7,7 +7,7 @@ export type Message = {
 
 export const ChatMessage = ({message} : {message: Message}) => {
     return (
-        <div className="right-0">
-            <Chip avatar={<Avatar>{message.userName[0]}</Avatar>} label="Avatar" />
+        <div className="">
+            <Chip avatar={<Avatar>{message.userName[0]}</Avatar>} label={message.content}/>
         </div>);
 };

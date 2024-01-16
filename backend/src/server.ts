@@ -1,7 +1,5 @@
-import { Express } from "express";
 import { initApp } from "./app";
-import http from 'http';
-import cors from "cors";
+
 
 
 initApp().then((app) => {
@@ -13,13 +11,14 @@ initApp().then((app) => {
       });
     io.on("connection", (socket) => {
         console.log("a user connected");
-        // console.log(socket);
         socket.on("message", (message) => {
             console.log("a user send message");
-            socket.broadcast.emit("new_message", message);
-            socket.emit("new_message", message);
+            io.emit("new_message", message);
             console.log(message);
-        })
+        });
+        socket.on('disconnect', () => {
+            console.log('🔥: A user disconnected');
+          });
     })
     const port = process.env.PORT
     http.listen(port, () => {

@@ -7,12 +7,18 @@ import { Grid, TextField } from "@mui/material";
 
 const socket = io("http://localhost:3000");
 export const GroupChat = () => {
-    useEffect(() => {
-        socket.on("new_message", (message) => {console.log(message);});
-      }, [socket]);
-      
     const [messages, setMessages] = useState<Message[]>([{content: "text", userName: "name"}]);
     const [messageToSend, setMessageToSend] = useState<string>("");
+    
+    useEffect(() => {
+        socket.on("new_message", (message: Message) => {setMessages(messages => [...messages, message]);});
+        
+        return () => {
+            socket.off("new_message");
+          };
+      }, []);
+      
+    
     return (
     <div> 
     <Grid container>
@@ -23,7 +29,7 @@ export const GroupChat = () => {
         onChange={(event) => setMessageToSend(event.target.value)}/>
         </Grid>
       <Grid item xs={2}><Button className="p-4 h-full" onClick={() => {
-            socket.emit("message", messageToSend);
+            socket.emit("message", {content: messageToSend, userName: "shir"});
             setMessageToSend("");
             }}><SendIcon/></Button></Grid>
         
