@@ -8,6 +8,7 @@ env.config();
 import userRoute from "./routes/user_route";
 import postRoute from "./routes/post_routes";
 import commentRoutes from "./routes/comment_routes";
+import categoryRoutes from "./routes/category_routes";
 import authRoute from "./routes/auth_route";
 
 const initApp = (): Promise<Express> => {
@@ -22,6 +23,7 @@ const initApp = (): Promise<Express> => {
       app.use(bodyParser.json());
       app.use(userRoute);
       app.use("/posts", postRoute)
+      app.use("/categories", categoryRoutes)
       app.use("/comments", commentRoutes)
       app.use("/auth", authRoute)
       resolve(app);
