@@ -31,6 +31,8 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
+  await Comment.deleteMany({});
+  await User.deleteMany({ email: test_user.email});
   await mongoose.connection.close();
 });
 
