@@ -1,6 +1,7 @@
 import Comment from '../models/comment_model';
 import User from '../models/user_model';
 import Post from '../models/post_model';
+import mongoose from "mongoose";
 import { Request, Response } from 'express';
 
 export interface IPost {
@@ -22,7 +23,7 @@ const createPost = async (req, res) => {
         res.status(201).json(post);
     } catch (err) {
         console.error(err);
-        res.send.status(500).json("fail: " + err.message);
+        res.status(500).json("fail: " + err.message);
     }
 };
 
@@ -50,17 +51,47 @@ const getAllPosts = async (req, res) => {
 //  }
 //};
 
+//const addLike = async (req, res) => {
+//  const post = await Post.findOneAndUpdate(
+//    { _id: req.params.postId },
+//    { $inc: { likes: 1 } },
+//    { new: true }
+//  );
+//  try {
+//    const userId = req.user._id;
+//    if (!post) {
+//      return res.status(404).json({ error: 'Post not found' });
+//    }
+//    res.status(200).json(post);
+//  } catch (error) {
+//    res.status(500).json({ error: 'Failed to add like' });
+//  }
+//};
+
 const addLike = async (req, res) => {
-  const post = await Post.findOneAndUpdate(
-    { _id: req.params.postId },
-    { $inc: { likes: 1 } },
-    { new: true }
-  );
   try {
-    if (!post) {
+    const userId = req.user._id;
+    const postId = req.params.postId;
+
+    // Check if the user has already liked the post
+    const post = await Post.findOne({ _id: postId, likes: { $in: [userId] } });
+
+    if (post) {
+      return res.status(400).json({ error: 'User has already liked this post' });
+    }
+
+    // If the user hasn't liked the post, add the like
+    const updatedPost = await Post.findOneAndUpdate(
+      { _id: postId },
+      { $inc: { likes: 1 }, $push: { likedBy: userId } },
+      { new: true }
+    );
+
+    if (!updatedPost) {
       return res.status(404).json({ error: 'Post not found' });
     }
-    res.status(200).json(post);
+
+    res.status(200).json(updatedPost);
   } catch (error) {
     res.status(500).json({ error: 'Failed to add like' });
   }
@@ -68,20 +99,45 @@ const addLike = async (req, res) => {
 
 // Add dislike to a post by its ID
 const addDislike = async (req, res) => {
-    const post = await Post.findOneAndUpdate(
-      { _id: req.params.postId },
-      { $inc: { dislikes: 1 } },
+  try {
+    const userId = req.user._id;
+    const postId = req.params.postId;
+
+    // Check if the user has already disliked the post
+    const post = await Post.findOne({ _id: postId, dislikes: { $in: [userId] } });
+
+    if (post) {
+      return res.status(400).json({ error: 'User has already disliked this post' });
+    }
+
+    // Check if the user has liked the post previously
+    const likedPost = await Post.findOne({ _id: postId, likedBy: { $in: [userId] } });
+
+    if (likedPost) {
+      // Remove the user's like before adding a dislike
+      await Post.findOneAndUpdate(
+        { _id: postId },
+        { $inc: { likes: -1 }, $pull: { likedBy: userId } }
+      );
+    }
+
+    // If the user hasn't disliked the post, add the dislike
+    const updatedPost = await Post.findOneAndUpdate(
+      { _id: postId },
+      { $inc: { dislikes: 1 }, $push: { dislikedBy: userId } },
       { new: true }
     );
-  try {
-    if (!post) {
+
+    if (!updatedPost) {
       return res.status(404).json({ error: 'Post not found' });
     }
-    res.status(200).json(post);
+
+    res.status(200).json(updatedPost);
   } catch (error) {
     res.status(500).json({ error: 'Failed to add dislike' });
   }
 };
+
 
 const updatePostByID = async (req, res) => {
     const post = await Post.findOneAndUpdate({_id: req.params.id}, {"content" :req.body.content});
