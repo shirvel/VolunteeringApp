@@ -8,6 +8,9 @@ env.config();
 import userRoute from "./routes/user_route";
 import commentRoutes from "./routes/comment_routes";
 import authRoute from "./routes/auth_route";
+import googleAuthRoute from './routes/oauth_route';
+import requestRoute from './routes/request_route';
+// TODO: Need to add the html?
 
 const initApp = (): Promise<Express> => {
   const promise = new Promise<Express>((resolve) => {
@@ -22,6 +25,10 @@ const initApp = (): Promise<Express> => {
       app.use(userRoute);
       app.use("/comments", commentRoutes)
       app.use("/auth", authRoute)
+
+      app.use("/oauth", googleAuthRoute);
+      app.use("/request", requestRoute);
+
       resolve(app);
     })
   })
