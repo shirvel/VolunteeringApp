@@ -1,5 +1,5 @@
 import User, { IUser } from '../models/user_model';
-//import { Request, Response } from 'express';
+import { Request, Response } from 'express';
 
 // TODO: why Property 'query' does not exist on type 'Request' ?
 

@@ -1,6 +1,7 @@
 import User from '../models/user_model';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { Request, Response } from 'express';
 
 const register = async (req, res) => {
 
@@ -69,7 +70,7 @@ const login = async (req, res) => {
     }
 }
 
-const refresh = async (req, res) => {
+const refresh = async (req: Request, res: Response) => {
     const authHeader = req.headers['authorization'];
     const refreshToken = authHeader && authHeader.split(' ')[1]; // Bearer <token>
     if (refreshToken == null) return res.sendStatus(401);

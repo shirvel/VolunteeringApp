@@ -97,50 +97,52 @@ afterAll(async () => {
         expect(response.statusCode).toEqual(401);
     });
 
-   
-    jest.setTimeout(12000);
-    test("Test access after timeout of token", async () => {
-        await new Promise(resolve => setTimeout(() => resolve("done"), 5000));
-    
-        const response = await request(app)
-          .get("/comments")
-          .set("Authorization", "JWT " + accessToken);
-        expect(response.statusCode).not.toBe(200);
-      });
+    describe("Auth: refresh token + logout Tests", ()=> {
+  
+      jest.setTimeout(10000);
+      test("Test access after timeout of token", async () => {
+          await new Promise(resolve => setTimeout(() => resolve("done"), 5000));
+          const response = await request(app)
+            .get("/comments")
+            .set("Authorization", "JWT " + accessToken).send();;
+          expect(response.statusCode).not.toBe(200);
+        });
 
-      test("Test refresh token", async () => {
-        const response = await request(app)
-          .get("/auth/refreshToken")
-          .set("Authorization", "JWT " + refreshToken);
-       //   .send();
-       console.log("****************************");
-       console.log(refreshToken);
-       console.log("****************************");
-        expect(response.statusCode).toBe(200);
-        expect(response.body.accessToken).toBeDefined();
-        expect(response.body.refreshToken).toBeDefined();
-    
-        const newAccessToken = response.body.accessToken;
-        newRefreshToken = response.body.refreshToken;
-    
-        const response2 = await request(app)
-          .get("/comments")
-          .set("Authorization", "JWT " + newAccessToken);
-        expect(response2.statusCode).toBe(200);
-      });
+        test("Test Refresh token", async () => {
+          const response = await request(app).get("/auth/refresh").set("Authorization", "JWT " + refreshToken).send();
+          expect(response.statusCode).toBe(200);
+          expect(response.body.accessToken).toBeDefined();
+          expect(response.body.refreshToken).toBeDefined();
+      
+          const newAccessToken = response.body.accessToken;
+          newRefreshToken = response.body.refreshToken;
+      
+          const response2 = await request(app)
+            .get("/comments")
+            .set("Authorization", "JWT " + newAccessToken);
+          expect(response2.statusCode).toBe(200);
+        });
 
-      test("Test double use of refresh token", async () => {
-        const response = await request(app)
-          .get("/auth/refreshToken")
-          .set("Authorization", "JWT " + refreshToken)
-          .send();
-        expect(response.statusCode).not.toBe(200);
-    
-        // Verify that the new token is not valid as well
-        const response1 = await request(app)
-          .get("/auth/refreshToken")
-          .set("Authorization", "JWT " + newRefreshToken)
-          .send();
-        expect(response1.statusCode).not.toBe(200);
-      });
-});
+        test("Test double use of refresh token", async () => {
+          const response = await request(app)
+            .get('/auth/refresh')
+            .set("Authorization", "JWT " + refreshToken)
+            .send();
+          expect(response.statusCode).not.toBe(200);
+      
+          // Verify that the new token is not valid as well
+          const response1 = await request(app)
+            .get("/auth/refresh")
+            .set("Authorization", "JWT " + newRefreshToken)
+            .send();
+          expect(response1.statusCode).not.toBe(200);
+        });
+
+        // TODO: How to check the logout?!!!!!!
+        test.skip("Test logout", async () => {
+          const response = await request(app).post('/auth/logout').send(user);
+          const response2 = await request(app).get('/user').set("Authorization", "JWT " + accessToken);
+          expect(response2.statusCode).toEqual(200);
+        });
+     }
+)});

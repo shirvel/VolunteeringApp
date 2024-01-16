@@ -5,6 +5,6 @@ import Auth from '../controllers/auth_controller';
 router.post("/register", Auth.register);
 router.post("/login", Auth.login);
 router.post("/logout", Auth.logout);
-router.post("/refreshToken", Auth.refresh)
+router.get("/refresh", Auth.refresh)
 
 export default router;
