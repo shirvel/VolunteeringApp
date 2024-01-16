@@ -18,13 +18,19 @@ const postSchema = new mongoose.Schema({
         required: true 
     },
     category: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Category'
+        type: String,
+        required: true
     }, 
     likes: {
         type: Number,
         default: 0
     },
+    likedBy: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'User',
+        },
+      ],
     dislikes: {
         type: Number,
         default: 0

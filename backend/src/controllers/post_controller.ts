@@ -11,6 +11,7 @@ export interface IPost {
   image: string;
   category: string;
   likes: number;
+  likedBy: string[];
   dislikes: number;
   _id?: string;
 };
@@ -71,10 +72,10 @@ const getAllPosts = async (req, res) => {
 const addLike = async (req, res) => {
   try {
     const userId = req.user._id;
-    const postId = req.params.postId;
+    const postId = req.params.id;
 
     // Check if the user has already liked the post
-    const post = await Post.findOne({ _id: postId, likes: { $in: [userId] } });
+    const post = await Post.findOne({ _id: req.params.id, likedBy: { $in: [userId] } });
 
     if (post) {
       return res.status(400).json({ error: 'User has already liked this post' });
@@ -82,7 +83,7 @@ const addLike = async (req, res) => {
 
     // If the user hasn't liked the post, add the like
     const updatedPost = await Post.findOneAndUpdate(
-      { _id: postId },
+      { _id: req.params.id },
       { $inc: { likes: 1 }, $push: { likedBy: userId } },
       { new: true }
     );
@@ -96,7 +97,7 @@ const addLike = async (req, res) => {
     res.status(500).json({ error: 'Failed to add like' });
   }
 };
-
+/*
 // Add dislike to a post by its ID
 const addDislike = async (req, res) => {
   try {
@@ -137,20 +138,16 @@ const addDislike = async (req, res) => {
     res.status(500).json({ error: 'Failed to add dislike' });
   }
 };
-
+*/
 
 const updatePostByID = async (req, res) => {
-    const post = await Post.findOneAndUpdate({_id: req.params.id}, {"content" :req.body.content});
-    try{
-        if (!post) {
-            console.log(`Post with ID ${req.params.postId} not found for updating`);
-            res.status(404).json({ error: 'Post not found' });
-          } else {
-            res.status(200).json(post);
-          }
-        } catch (err) {
-          res.status(500).json({ error: 'An error occurred while updating the post' });
-        }
+  try {
+    if (req.body.content)
+        await Post.findOneAndUpdate({_id: req.params.id}, {"content" :req.body.content});
+    res.status(204).json({"message": "success"});
+} catch (err) {
+    res.status(500).json( {message: err.message} );
+}
 };
         
 
@@ -182,4 +179,4 @@ const deletePostById = async (req, res) => {
       res.status(500).json({ message: err.message });
     }
   };
-  export default {createPost, getAllPosts,  updatePostByID, deletePostById, addLike, addDislike, findPostsByCategory}
+  export default {createPost, getAllPosts,  updatePostByID, deletePostById, addLike, findPostsByCategory}
