@@ -18,6 +18,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const body_parser_1 = __importDefault(require("body-parser"));
 dotenv_1.default.config();
 const user_route_1 = __importDefault(require("./routes/user_route"));
+const post_route_1 = __importDefault(require("./routes/post_route"));
 const comment_routes_1 = __importDefault(require("./routes/comment_routes"));
 const initApp = () => __awaiter(void 0, void 0, void 0, function* () {
     yield mongoose_1.default.connect(process.env.DATABASE_URL);
