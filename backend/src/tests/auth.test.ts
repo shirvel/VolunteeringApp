@@ -138,11 +138,9 @@ afterAll(async () => {
           expect(response1.statusCode).not.toBe(200);
         });
 
-        // TODO: How to check the logout?!!!!!!
-        test.skip("Test logout", async () => {
-          const response = await request(app).post('/auth/logout').send(user);
-          const response2 = await request(app).get('/user').set("Authorization", "JWT " + accessToken);
-          expect(response2.statusCode).toEqual(200);
+        test("Test logout", async () => {
+          const response = await request(app).post('/auth/logout').send(user).set("Authorization", "JWT " + refreshToken);
+          expect(response.statusCode).not.toEqual(200);
         });
      }
 )});
