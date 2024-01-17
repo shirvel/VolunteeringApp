@@ -140,12 +140,13 @@ afterAll(async () => {
 
         // TODO: How to check the logout?!!!!!!
         test("Test logout", async () => {
-          const response = await request(app).post('/auth/logout').send(user);
+          //TODO: need to replace the refreshToken with a new one...
+          const response = await request(app).post('/auth/logout').send(user).set("Authorization", "JWT " + refreshToken);
           expect(response.statusCode).toEqual(200);
           const response2 = await request(app).get('/user').set("Authorization", "JWT " + accessToken);
           expect(response2.statusCode).not.toEqual(200);
           const response3 = await request(app).get('/comments').set("Authorization", "JWT " + accessToken);
-          expect(response2.statusCode).not.toEqual(200);
+          expect(response3.statusCode).not.toEqual(200);
         });
      }
 )});

@@ -1,6 +1,7 @@
+import { Request, Response } from 'express';
 import Comment from '../models/comment_model';
 import User from '../models/user_model';
-import { Request, Response } from 'express';
+// import { Request, Response } from 'express';
 
 export interface IComment {
     user_name: string;
