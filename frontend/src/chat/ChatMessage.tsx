@@ -1,4 +1,4 @@
-import { Avatar, Chip } from "@mui/material";
+import { Avatar, Box, Chip } from "@mui/material";
 
 export type Message = {
     content: string;
@@ -7,7 +7,10 @@ export type Message = {
 
 export const ChatMessage = ({message} : {message: Message}) => {
     return (
-        <div className="">
-            <Chip avatar={<Avatar>{message.userName[0]}</Avatar>} label={message.content}/>
-        </div>);
+        <div>
+        <Box sx={{justifyContent: "flex-end", display: "flex"}}>
+            <Chip sx={{backgroundColor:"#ccffcc", height:"10vh"}} label={message.content}/>
+        </Box>
+        <Chip sx={{backgroundColor:"#e6ffff", height:"10vh"}} avatar={<Avatar sx={{backgroundColor:"#00cccc"}}>{message.userName[0]}</Avatar>} label={"adsfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf"}/>
+    </div>);
 };
