@@ -1,10 +1,111 @@
 import express from "express";
 const router = express.Router();
 import CommentController from '../controllers/comment_controller';
+/**
+* @swagger
+* tags:
+*   name: Comment
+*   description: The comments API
+*/
 
+/**
+* @swagger
+* components:
+*   schemas:
+*     Comment:
+*       type: object
+*       properties:
+*         post_id:
+*           type: string
+*           description: The related post id.
+*         user_name:
+*           type: string
+*           description: the user name who wrote the comment.
+*         content:
+*           type: string
+*           description: the content of the comment.
+*       example:
+*         post_id: '123'
+*         user_name: 'name'
+*         content: 'hello'
+*/
+
+/**
+* @swagger
+* /comments/:
+*   get:
+*     summary: get all comments
+*     tags: [Comment]
+*     responses:
+*       200:
+*         description: all the comments
+*         content:
+*           application/json:
+*             schema:
+*               $ref: '#/components/schemas/Comment'
+*/
 router.get("/", CommentController.getAllComments);
+
+/**
+* @swagger
+* /comments/:
+*   post:
+*     summary: add a comment
+*     tags: [Comment]
+*     requestBody:
+*       required: true
+*       content:
+*         application/json:
+*           schema:
+*             $ref: '#/components/schemas/Comment'
+*     responses:
+*       201:
+*         description: the new comment
+*         content:
+*           application/json:
+*             schema:
+*               $ref: '#/components/schemas/Comment'
+*/
 router.post("/", CommentController.addComment);
+
+/**
+* @swagger
+* /comments/{id}:
+*   delete:
+*     summary: delete a comment by id
+*     tags: [Comment]
+*     requestBody:
+*       required: true
+*       content:
+*         application/json:
+*           schema:
+*             $ref: '#/components/schemas/Comment'
+*     responses:
+*       204:
+*         description: success message
+*/
 router.delete("/:id", CommentController.deleteComment);
+
+/**
+* @swagger
+* /comments/{id}:
+*   patch:
+*     summary: update a comment
+*     tags: [Comment]
+*     requestBody:
+*       required: true
+*       content:
+*         application/json:
+*           schema:
+*             $ref: '#/components/schemas/Comment'
+*     responses:
+*       204:
+*         description: the updated comment
+*         content:
+*           application/json:
+*             schema:
+*               $ref: '#/components/schemas/Comment'
+*/
 router.patch("/:id", CommentController.editComment);
  
 
