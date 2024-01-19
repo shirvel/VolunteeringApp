@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import Comment from '../models/comment_model';
 import User from '../models/user_model';
-// import { Request, Response } from 'express';
+import Post from '../models/post_model';
 
 export interface IComment {
     user_name: string;
@@ -12,7 +12,9 @@ export interface IComment {
 
 const validateComment = async(comment: IComment, res: Response) => {
     let isValid = true;
-    // TODO: check the post id.
+    // Check the post id.
+    const post = await Post.findOne( { _id:  comment.post_id} );
+    if (!post)  isValid = false;
     // Check if the user exists
     const user = await User.findOne( { name:  comment.user_name} );
     if (!user)  isValid = false;

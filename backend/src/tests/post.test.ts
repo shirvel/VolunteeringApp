@@ -1,6 +1,6 @@
 
 import request from "supertest";
-import initApp from "../app";
+import { initApp } from "../app";
 import mongoose from "mongoose";
 import Post from "../models/post_model";
 import Category from "../models/category_model";

@@ -2,7 +2,6 @@ import express, { Express } from "express";
 import mongoose from 'mongoose';
 import env from "dotenv";
 import bodyParser from 'body-parser';
-import * as socketio from "socket.io";
 
 env.config();
 
