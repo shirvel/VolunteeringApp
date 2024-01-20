@@ -44,10 +44,7 @@ beforeAll(async () => {
   const response = await request(app).post("/auth/login").send(test_user);
   accessToken = response.body.accessToken;
 
-  const response_category =await request(app)
-  .post("/categories")
-  .set("Authorization", "JWT " + accessToken)
-  .send(test_category);
+  const response_category =await request(app).post("/categories").set("Authorization", "JWT " + accessToken).send(test_category);
 
 });
 
