@@ -24,7 +24,7 @@ export const initApp = (): Promise<Express> => {
       app.use(cors());
       app.use(bodyParser.urlencoded({ extended: true }));
       app.use(bodyParser.json());
-      app.use(userRoute);
+      app.use("/user", userRoute);
       app.use("/posts", postRoute)
       app.use("/categories", categoryRoutes)
       app.use("/comments", commentRoutes)

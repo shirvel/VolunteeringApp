@@ -1,7 +1,7 @@
 import request from "supertest";
 import User, { IUser } from '../models/user_model';
 import mongoose from 'mongoose';
-import initApp from '../app';
+import {initApp} from '../app';
 import { Express } from "express";
 import { IComment } from "../controllers/comment_controller";
 
