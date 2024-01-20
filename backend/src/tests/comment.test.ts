@@ -1,5 +1,5 @@
 import request from "supertest";
-import initApp from "../app";
+import {initApp} from "../app";
 import mongoose from "mongoose";
 import Comment from "../models/comment_model";
 import { Express } from "express";
@@ -31,6 +31,8 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
+  await Comment.deleteMany({});
+  await User.deleteMany({ email: test_user.email});
   await mongoose.connection.close();
 });
 
@@ -42,8 +44,9 @@ describe("Comment tests", () => {
     return response.body._id;
   };
 
-  test("Test Get All Comments - empty response", async () => {
+  test.only("Test Get All Comments - empty response", async () => {
     const response = await request(app).get("/comments").set("Authorization", "JWT " + accessToken);
+    console.log("ALL THE COMMETNS " + JSON.stringify(response));
     expect(response.statusCode).toBe(200);
     expect(response.body).toStrictEqual([]);
   });

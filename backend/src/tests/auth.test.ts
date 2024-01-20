@@ -1,13 +1,15 @@
 import request from "supertest";
 import User, { IUser } from '../models/user_model';
 import mongoose from 'mongoose';
-import initApp from '../app';
+import {initApp} from '../app';
 import { Express } from "express";
 import { IComment } from "../controllers/comment_controller";
 
 
 let app: Express;
 let accessToken: string;
+let refreshToken: string;
+let newRefreshToken: string
 
 const user: IUser = {
   email: "testUser@test.com",
@@ -29,7 +31,7 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
-    // await User.deleteMany();
+     await User.deleteMany();
      //TODO: Add it when we will have post implemented
   //   await Post.deleteMany();
   mongoose.connection.close();
@@ -66,6 +68,7 @@ afterAll(async () => {
         const response = await request(app).post('/auth/login').send(user)
         expect(response.statusCode).toEqual(200);
         accessToken = response.body.accessToken;
+        refreshToken = response.body.refreshToken;
         expect(accessToken).toBeDefined();
     });
 
@@ -93,4 +96,51 @@ afterAll(async () => {
         const response = await request(app).get('/user').set("Authorization", "JWT 333" + accessToken);
         expect(response.statusCode).toEqual(401);
     });
-});
+
+    describe("Auth: refresh token + logout Tests", ()=> {
+  
+      jest.setTimeout(10000);
+      test("Test access after timeout of token", async () => {
+          await new Promise(resolve => setTimeout(() => resolve("done"), 5000));
+          const response = await request(app)
+            .get("/comments")
+            .set("Authorization", "JWT " + accessToken).send();;
+          expect(response.statusCode).not.toBe(200);
+        });
+
+        test("Test Refresh token", async () => {
+          const response = await request(app).get("/auth/refresh").set("Authorization", "JWT " + refreshToken).send();
+          expect(response.statusCode).toBe(200);
+          expect(response.body.accessToken).toBeDefined();
+          expect(response.body.refreshToken).toBeDefined();
+      
+          const newAccessToken = response.body.accessToken;
+          newRefreshToken = response.body.refreshToken;
+      
+          const response2 = await request(app)
+            .get("/comments")
+            .set("Authorization", "JWT " + newAccessToken);
+          expect(response2.statusCode).toBe(200);
+        });
+
+        test("Test double use of refresh token", async () => {
+          const response = await request(app)
+            .get('/auth/refresh')
+            .set("Authorization", "JWT " + refreshToken)
+            .send();
+          expect(response.statusCode).not.toBe(200);
+      
+          // Verify that the new token is not valid as well
+          const response1 = await request(app)
+            .get("/auth/refresh")
+            .set("Authorization", "JWT " + newRefreshToken)
+            .send();
+          expect(response1.statusCode).not.toBe(200);
+        });
+
+        test("Test logout", async () => {
+          const response = await request(app).post('/auth/logout').send(user).set("Authorization", "JWT " + refreshToken);
+          expect(response.statusCode).not.toEqual(200);
+        });
+     }
+)});
