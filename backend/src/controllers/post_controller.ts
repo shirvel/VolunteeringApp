@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import { Request, Response } from 'express';
 
 export interface IPost {
+  user_id: string; 
   title: string;
   content: string;
   phoneNumber: string;
@@ -52,26 +53,9 @@ const getAllPosts = async (req, res) => {
 //  }
 //};
 
-//const addLike = async (req, res) => {
-//  const post = await Post.findOneAndUpdate(
-//    { _id: req.params.postId },
-//    { $inc: { likes: 1 } },
-//    { new: true }
-//  );
-//  try {
-//    const userId = req.user._id;
-//    if (!post) {
-//      return res.status(404).json({ error: 'Post not found' });
-//    }
-//    res.status(200).json(post);
-//  } catch (error) {
-//    res.status(500).json({ error: 'Failed to add like' });
-//  }
-//};
-
 const addLike = async (req, res) => {
   try {
-    const userId = req.user._id;
+    const userId = req.body.user_id;
     const postId = req.params.id;
 
     // Check if the user has already liked the post
@@ -97,12 +81,12 @@ const addLike = async (req, res) => {
     res.status(500).json({ error: 'Failed to add like' });
   }
 };
-/*
+
 // Add dislike to a post by its ID
 const addDislike = async (req, res) => {
   try {
-    const userId = req.user._id;
-    const postId = req.params.postId;
+    const userId = req.body.user_id;
+    const postId = req.params.id;
 
     // Check if the user has already disliked the post
     const post = await Post.findOne({ _id: postId, dislikes: { $in: [userId] } });
@@ -138,7 +122,7 @@ const addDislike = async (req, res) => {
     res.status(500).json({ error: 'Failed to add dislike' });
   }
 };
-*/
+
 
 const updatePostByID = async (req, res) => {
   try {
@@ -179,4 +163,4 @@ const deletePostById = async (req, res) => {
       res.status(500).json({ message: err.message });
     }
   };
-  export default {createPost, getAllPosts,  updatePostByID, deletePostById, addLike, findPostsByCategory}
+  export default {createPost, getAllPosts,  updatePostByID, deletePostById, addLike, findPostsByCategory, addDislike}

@@ -14,6 +14,7 @@ let app: Express;
 let accessToken: string;
 const { ObjectId } = require('mongoose').Types;
 const test_post: IPost = {
+  user_id: "1234",
   title: "Test Post",
   content: "This is a test post.",
   phoneNumber: "1234567890",
@@ -79,10 +80,17 @@ describe("Post tests", () => {
   });
 
   test("Test add like to post", async () => {
-    const response = await request(app).post(`/posts/${test_post._id}/like`).set("Authorization", "JWT " + accessToken);
+    const response = await request(app).post(`/posts/${test_post._id}/like`).set("Authorization", "JWT " + accessToken).send({user_id: "1234"});
     expect(response.statusCode).toBe(200);
     const post = response.body;
-    expect(response.body.likes.toBe(1));
+    expect(post.likes).toBe(1);
+  });
+
+  test("Test add dislike to post", async () => {
+    const response = await request(app).post(`/posts/${test_post._id}/dislike`).set("Authorization", "JWT " + accessToken).send({user_id: "1234"});
+    expect(response.statusCode).toBe(200);
+    const post = response.body;
+    expect(post.dislikes).toBe(1);
   });
 
   test("Test edit post", async () => {

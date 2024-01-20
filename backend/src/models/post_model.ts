@@ -1,6 +1,10 @@
 import mongoose from 'mongoose';
 
 const postSchema = new mongoose.Schema({
+    user_id: {
+        type: String,
+        required: true
+    },
     title: {
         type: String,
         required: true
@@ -27,8 +31,7 @@ const postSchema = new mongoose.Schema({
     },
     likedBy: [
         {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'User',
+          type: String,
         },
       ],
     dislikes: {

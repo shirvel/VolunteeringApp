@@ -4,8 +4,8 @@ import PostController from "../controllers/post_controller";
 
 router.get("/", PostController.getAllPosts)
 router.post("/", PostController.createPost);
-router.post("/posts/:id/like", PostController.addLike);
-//router.patch("/:id/dislike", PostController.addDislike);
+router.post("/:id/like", PostController.addLike);
+router.post("/:id/dislike", PostController.addDislike);
 router.patch("/:id", PostController.updatePostByID);
 router.delete("/:id", PostController.deletePostById);
 
