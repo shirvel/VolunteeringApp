@@ -23,6 +23,7 @@ const test_post: IPost = {
   likes: 0,
   likedBy: [],
   dislikes: 0,
+  dislikedBy: [],
 };
 
 const test_user: IUser = {
@@ -111,21 +112,3 @@ describe("Post tests", () => {
     });
      
   });
-/*
-  test("Test add dislike to post", async () => {
-    const response = await request(app)
-      .post(`/posts/${test_post._id}/dislike`)
-      .set("Authorization", "JWT " + accessToken);
-    expect(response.statusCode).toBe(200);
-    expect(response.body.dislikes).toBe(1);
-  });
-/*
-  test("Test update post", async () => {
-    const response = await request(app)
-      .patch(`/posts/${test_post._id}`)
-      .set("Authorization", "JWT " + accessToken)
-      .send({ content: "Updated content" });
-    expect(response.statusCode).toBe(200);
-    expect(response.body.content).toBe("Updated content");
-  });
-*/

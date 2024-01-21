@@ -175,7 +175,4 @@ router.patch("/:id", PostController.updatePostByID);
 *         description: success message
 */
 router.delete("/:id", PostController.deletePostById);
-
-//router.get('/category/:category', PostController.findPostsByCategory);
-
 export default router;

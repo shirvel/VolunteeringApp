@@ -37,7 +37,12 @@ const postSchema = new mongoose.Schema({
     dislikes: {
         type: Number,
         default: 0
-    }
+    },
+    dislikedBy: [
+        {
+            type: String,
+        },
+    ],
 });
 
 export default mongoose.model('Post', postSchema);

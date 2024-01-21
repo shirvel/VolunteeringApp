@@ -14,6 +14,7 @@ export interface IPost {
   likes: number;
   likedBy: string[];
   dislikes: number;
+  dislikedBy: string[];
   _id?: string;
 };
 
@@ -39,20 +40,6 @@ const getAllPosts = async (req, res) => {
       }
 
 };
-//const getPostByID = async (req, res) => {
-//    const post = await Post.findById(req.params.postId, req.body, { new: true })
-//    try {
-//        if(!post){
-//        console.log(`Post with ID ${req.params.postId} not found`);
-//        res.status(404).json({ error: 'Post not found.' });
-//    } else {
-//        res.status(200).json(post); // The post was found 
-//    } 
-//    }catch (err) {
-//        res.status(500).json({ error: 'An error occurred while searching the post.' });
-//  }
-//};
-
 const addLike = async (req, res) => {
   try {
     const userId = req.body.user_id;
