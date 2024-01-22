@@ -1,9 +1,13 @@
 import { initApp } from "./app";
 import swaggerUI from "swagger-ui-express"
 import swaggerJsDoc from "swagger-jsdoc"
+import { chatHandler } from "./common/chat_handler";
+import { Server } from "socket.io";
+import http from "http";
 
 
 initApp().then((app) => {
+    /* For Swagger */
     const options = {
         definition: {
           openapi: "3.0.0",
@@ -19,25 +23,16 @@ initApp().then((app) => {
     const specs = swaggerJsDoc(options);
     app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 
-    let http = require("http").Server(app);
-    let io = require("socket.io")(http, {
-        cors: {
-          origin: '*',
-        }
-      });
-    io.on("connection", (socket) => {
-        console.log("a user connected");
-        socket.on("message", (message) => {
-            console.log("a user send message");
-            io.emit("new_message", message);
-            console.log(message);
-        });
-        socket.on('disconnect', () => {
-            console.log('🔥: A user disconnected');
-          });
-    })
+    /* For the chat - socket */
+    const server = http.createServer(app);
+    const io = new Server(server, {cors: {
+             origin: '*',
+         }});
+    chatHandler(io);
+
+    /* Start listening for both app requests and docket requests */
     const port = process.env.PORT
-    http.listen(port, () => {
+    server.listen(port, () => {
     console.log(`Listening on port ${port}`);
     })
 });

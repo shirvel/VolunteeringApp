@@ -2,7 +2,6 @@ import express, { Express } from "express";
 import mongoose from 'mongoose';
 import env from "dotenv";
 import bodyParser from 'body-parser';
-import * as socketio from "socket.io";
 
 env.config();
 
@@ -11,6 +10,7 @@ import postRoute from "./routes/post_routes";
 import commentRoutes from "./routes/comment_routes";
 import categoryRoutes from "./routes/category_routes";
 import authRoute from "./routes/auth_route";
+import chatRoute from "./routes/chat_routes";
 import cors from "cors";
 
 export const initApp = (): Promise<Express> => {
@@ -29,6 +29,7 @@ export const initApp = (): Promise<Express> => {
       app.use("/categories", categoryRoutes)
       app.use("/comments", commentRoutes)
       app.use("/auth", authRoute)
+      app.use("/chat", chatRoute)
       resolve(app);
     })
   })

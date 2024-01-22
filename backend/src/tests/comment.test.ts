@@ -5,13 +5,27 @@ import Comment from "../models/comment_model";
 import { Express } from "express";
 import { IComment } from "../controllers/comment_controller";
 import User, { IUser } from '../models/user_model';
+import { IPost } from "../controllers/post_controller";
 
 let app: Express;
 let accessToken: string;
 
+const test_post: IPost = {
+  title: "Test Post",
+  content: "This is a test post.",
+  phoneNumber: "1234567890",
+  image: "test.jpg",
+  category: "test",
+  likes: 0,
+  likedBy: [],
+  dislikes: 0,
+  dislikedBy: [],
+  user_id: "1234",
+};
+
 const test_comment: IComment = {
   user_name: "comment_test",
-  post_id: "3456",
+  post_id: "",
   content: "hello"
 };
 
@@ -24,10 +38,16 @@ beforeAll(async () => {
   app = await initApp();
   await Comment.deleteMany({});
   await User.deleteMany({ email: test_user.email});
+  
   // Create the user to add comment
   await request(app).post("/auth/register").send(test_user);
   const response = await request(app).post("/auth/login").send(test_user);
   accessToken = response.body.accessToken;
+
+  // Create post to add comment to
+  const post_response = await request(app).post("/posts").set("Authorization", "JWT " + accessToken).send(test_post);
+  test_post._id = post_response.body._id;
+  test_comment.post_id = post_response.body._id;
 });
 
 afterAll(async () => {
@@ -44,9 +64,9 @@ describe("Comment tests", () => {
     return response.body._id;
   };
 
-  test.only("Test Get All Comments - empty response", async () => {
+  test("Test Get All Comments - empty response", async () => {
     const response = await request(app).get("/comments").set("Authorization", "JWT " + accessToken);
-    console.log("ALL THE COMMETNS " + JSON.stringify(response));
+    console.log("ALL THE COMMENTS " + JSON.stringify(response));
     expect(response.statusCode).toBe(200);
     expect(response.body).toStrictEqual([]);
   });

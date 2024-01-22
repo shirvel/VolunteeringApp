@@ -1,5 +1,5 @@
 import request from "supertest";
-import {initApp} from "../app";
+import { initApp } from "../app";
 import mongoose from "mongoose";
 import { Express } from "express";
 import User, { IUser } from "../models/user_model";

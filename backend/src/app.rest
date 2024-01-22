@@ -88,6 +88,7 @@ Content-Type: application/json
     "password": "1233456"
 }
 
+
 ###
 
 POST http://localhost:3000/auth/login
@@ -97,3 +98,7 @@ Content-Type: application/json
     "email": "ortal1@gmail.com",
     "password": "1233456"
 }
+
+
+###
+GET http://localhost:3000/chat/cooking
