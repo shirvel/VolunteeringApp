@@ -1,14 +1,9 @@
 import mongoose, { Schema } from 'mongoose';
+import { IChatRoom } from '../common/chat_handler';
 
-export type ChatMessage = {content: string, user_id: string};
-export interface IChatRoom {
-    category_id: string;
-    messages: ChatMessage;
-    _id?: string;
-  }
 
 const chatRoomSchema = new mongoose.Schema<IChatRoom>({
-    category_id: {
+    category_name: {
         type: String,
         required: true
     },
