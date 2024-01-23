@@ -133,7 +133,7 @@ router.post("/logout", Auth.logout);
 *          - bearerAuth: []
 *      responses:
 *        200:
-*           description: The acess & refresh tokens
+*           description: The access & refresh tokens
 *           content:
 *             application/json:
 *               schema:
