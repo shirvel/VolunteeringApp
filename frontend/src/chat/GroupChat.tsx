@@ -23,7 +23,7 @@ export const GroupChat = () => {
 	}, []);
 
 	return (
-		<div>
+		<div className="h-full">
 			<Grid container>
 				<Grid item xs={11} className="p-4">
 					<TextField

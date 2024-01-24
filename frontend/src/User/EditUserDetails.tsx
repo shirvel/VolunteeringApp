@@ -1,17 +1,15 @@
-import { TextField } from "@mui/material";
+import { Button } from "@mui/material";
+import { useState } from "react";
+import { EditUserDetailsModal } from "./EditUserDetailsModal";
 
-// export const EditUserDetails = () => {
-// 	const userDetails = { name: "shir", email: "Shir@gmail.com" };
+export type UserDetails = { name: string; email: string };
 
-// 	return (
-// 		<div>
-// 			<TextField
-// 				className="flex-grow w-full"
-// 				label="name"
-// 				variant="outlined"
-// 				value={messageToSend}
-// 				onChange={(event) => setMessageToSend(event.target.value)}
-// 			/>
-// 		</div>
-// 	);
-// };
+export const EditUserDetails = () => {
+	const [open, setOpen] = useState(false);
+	return (
+		<div className="p-4">
+			<Button onClick={() => setOpen(true)}>Update</Button>
+			<EditUserDetailsModal open={open} onClose={() => setOpen(false)} />
+		</div>
+	);
+};
