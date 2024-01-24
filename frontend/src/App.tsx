@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React from 'react';
 
 export const App = () => {
+        <Route path="/edit-user" element={<EditUserDetails />}></Route>
   return (
     <BrowserRouter>
     <Routes>
@@ -14,6 +15,7 @@ export const App = () => {
         </Route>
         <Route path="/signin" element={<Signin />}>
         </Route>
+        <Route path="/edit-user" element={<EditUserDetails />}></Route>
       </Routes>
     </BrowserRouter>
       
