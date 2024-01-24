@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
 
-const register = async (req, res) => {
+const register = async (req: Request, res: Response) => {
 
     // Check if the user is valid
     const email = req.body.email;
@@ -29,7 +29,7 @@ const register = async (req, res) => {
    }
 }
 
-const login = async (req, res) => {
+const login = async (req: Request, res: Response) => {
     console.log("Login");
     const email = req.body.email;
     const password = req.body.password;

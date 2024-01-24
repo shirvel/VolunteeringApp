@@ -1,6 +1,8 @@
 import express from "express";
 const router = express.Router();
 import CommentController from '../controllers/comment_controller';
+import authMiddleware from '../common/auth_middleware';
+
 /**
 * @swagger
 * tags:
@@ -44,7 +46,7 @@ import CommentController from '../controllers/comment_controller';
 *             schema:
 *               $ref: '#/components/schemas/Comment'
 */
-router.get("/", CommentController.getAllComments);
+router.get("/", authMiddleware, CommentController.getAllComments);
 
 /**
 * @swagger
@@ -66,7 +68,7 @@ router.get("/", CommentController.getAllComments);
 *             schema:
 *               $ref: '#/components/schemas/Comment'
 */
-router.post("/", CommentController.addComment);
+router.post("/", authMiddleware, CommentController.addComment);
 
 /**
 * @swagger
@@ -84,7 +86,7 @@ router.post("/", CommentController.addComment);
 *       204:
 *         description: success message
 */
-router.delete("/:id", CommentController.deleteComment);
+router.delete("/:id", authMiddleware, CommentController.deleteComment);
 
 /**
 * @swagger
@@ -106,7 +108,7 @@ router.delete("/:id", CommentController.deleteComment);
 *             schema:
 *               $ref: '#/components/schemas/Comment'
 */
-router.patch("/:id", CommentController.editComment);
+router.patch("/:id", authMiddleware, CommentController.editComment);
  
 
 export default router;
