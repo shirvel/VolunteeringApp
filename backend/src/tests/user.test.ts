@@ -22,7 +22,8 @@ beforeAll(async () => {
   console.log("beforeAll");
   await User.deleteMany();
   let userResponse = await request(app).post("/auth/register").send(user);
-  userId = await extractUserId(userResponse);
+  userId = userResponse.body._id;
+  console.log(`The use Id is ${userId}`);
   const response = await request(app).post("/auth/login").send(user);
   accessToken = response.body.accessToken;
 });
@@ -83,13 +84,3 @@ describe("User tests", () => {
     expect(response.body.length).toBe(0);
   });
 });
-
-export async function extractUserId(text: { text: any }): Promise<string> {
-  let text1 = JSON.stringify(text.text);
-  let text2 = text1.split("_id");
-  let text3 = text2[1].slice(3);
-  let text4 = text3.split(",");
-  let userId = text4[0].slice(2, -2);
-  console.log(`The user Id is ${userId}`);
-  return userId;
-}

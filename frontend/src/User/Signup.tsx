@@ -15,7 +15,7 @@ export const Signup: React.FC = () => {
 
   const clickedRegister = async () => {
     const newUser = {
-        //TODO: Add name after adding to the user model
+      //TODO: Add name after adding to the user model
       "email": email,
       "password": password,
     };
