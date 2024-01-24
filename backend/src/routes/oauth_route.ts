@@ -21,12 +21,14 @@ router.get('/', async function(req, res, next) {
             process.env.CLIENT_SECRET,
             redirectUrl
         );
-        const res = await oAuth2Client.getToken({code: code});
-        await oAuth2Client.setCredentials(res.tokens);
+        const resAuth = await oAuth2Client.getToken({code: code});
+        await oAuth2Client.setCredentials(resAuth.tokens);
         console.log('Tokens acquired');
         const user = oAuth2Client.credentials;
         console.log('credentials', user);
         await getUserData(oAuth2Client.credentials.access_token);
+        res.status(200).json(oAuth2Client.credentials.access_token);
+     //   res.send(200) // access token
      //   await getUserData(user.access_token);
     } catch(err) {
         console.log('Error with signing in with Google', err);
