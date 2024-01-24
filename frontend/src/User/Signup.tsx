@@ -8,16 +8,16 @@ const theme = createTheme();
 
 export const Signup: React.FC = () => {
   
-  //const [name, setName] = useState('');
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const clickedRegister = async () => {
     const newUser = {
-      //TODO: Add name after adding to the user model
       "email": email,
       "password": password,
+      "name": name
     };
 
     try {
@@ -77,7 +77,7 @@ export const Signup: React.FC = () => {
                 name="name"
                 autoComplete="name"
                 autoFocus
-                //onChange={(e) => setName(e.target.value)}
+                onChange={(e) => setName(e.target.value)}
               />
               <TextField
                 margin="normal"
