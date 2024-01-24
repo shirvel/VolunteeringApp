@@ -1,10 +1,7 @@
 import User, { IUser } from '../models/user_model';
 import { Request, Response } from 'express';
 
-// TODO: why Property 'query' does not exist on type 'Request' ?
-
-
-const getAllUsers = async (req, res) => {
+const getAllUsers = async (req: Request, res: Response) => {
     try {
         let users;
          if (req.params.email) {
@@ -23,7 +20,7 @@ const getAllUsers = async (req, res) => {
   
 };
 
-const getUserById = async (req, res) => {
+const getUserById = async (req: Request, res: Response) => {
     try {
         const users = await User.findById(req.params.id);
         res.send(users);
@@ -32,7 +29,7 @@ const getUserById = async (req, res) => {
     }
 };
 
-const putUserById = async (req, res) => {
+const putUserById = async (req: Request, res: Response) => {
        try {
            let user;
         if (req.body.email) {
@@ -46,7 +43,7 @@ const putUserById = async (req, res) => {
     }
    };
 
-   const deleteUserById = async (req, res) => {
+   const deleteUserById = async (req: Request, res: Response) => {
     console.log("deleteUserById");
     try {
         const users = await User.findByIdAndDelete(req.params.id);

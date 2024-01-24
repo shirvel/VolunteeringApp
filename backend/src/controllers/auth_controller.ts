@@ -3,14 +3,15 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
 
-const register = async (req, res) => {
+const register = async (req: Request, res: Response) => {
 
     // Check if the user is valid
     const email = req.body.email;
     const password = req.body.password;
+    const name = req.body.name;
 
-    if (email == null || password == null) {
-        return res.status(400).send("missing email or password!!!");
+    if (email == null || password == null || name == null) {
+        return res.status(400).send("Missing email, password or name!!!");
     }
 
    // Check if it not already registred
@@ -21,7 +22,7 @@ const register = async (req, res) => {
        }
        const salt = await bcrypt.genSalt(10);
         const encryptedPassword = await bcrypt.hash(password, salt);
-        const newUser = await User.create({ 'email': email, 'password': encryptedPassword });
+        const newUser = await User.create({ 'email': email, 'password': encryptedPassword, 'name': name });
         return res.status(201).send(newUser);
 
    } catch(err) {
@@ -29,7 +30,7 @@ const register = async (req, res) => {
    }
 }
 
-const login = async (req, res) => {
+const login = async (req: Request, res: Response) => {
     console.log("Login");
     const email = req.body.email;
     const password = req.body.password;

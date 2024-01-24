@@ -15,7 +15,8 @@ const test_category: ICategory = {
 
 const test_user: IUser = {
   email: "testUserEmail@gmail.com",
-  password: "a123456!G"
+  password: "a123456!G",
+  name: "Sharon"
 }
 
 beforeAll(async () => {

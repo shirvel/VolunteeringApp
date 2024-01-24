@@ -29,6 +29,7 @@ const test_post: IPost = {
 const test_user: IUser = {
   email: "testUserEmail@gmail.com",
   password: "a123456!G",
+  name: "Ron"
 };
 const test_category: ICategory = {
   name: "TestCategory"
