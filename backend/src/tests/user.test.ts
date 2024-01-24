@@ -13,6 +13,7 @@ let userId: string;
 const user: IUser = {
   email: "myUserEmail@gmail.com",
   password: "myPassword123456",
+  name: "Lior"
 };
 
 const newEmail = "myNewUserEmail@gmail.com"
@@ -50,6 +51,16 @@ describe("User tests", () => {
       .set("Authorization", "JWT " + accessToken);
     expect(response.statusCode).toBe(200);
     expect(response.body[0].email).toBe(user.email);
+    expect(response.body[0].name).toBe(user.name);
+  });
+
+  test("Test get User by name", async () => {
+    const response = await request(app)
+      .get(`/user?name=${user.name}`)
+      .set("Authorization", "JWT " + accessToken);
+    expect(response.statusCode).toBe(200);
+    expect(response.body[0].name).toBe(user.name);
+    expect(response.body[0].email).toBe(user.email);
   });
 
   test("Test get User by Id", async () => {
@@ -58,8 +69,8 @@ describe("User tests", () => {
       .set("Authorization", "JWT " + accessToken);
     expect(response.statusCode).toBe(200);
     expect(response.body.email).toBe(user.email);
+    expect(response.body.name).toBe(user.name);
   });
-
 
   test("Test update User by Id", async () => {
     let response = await request(app)
@@ -69,6 +80,7 @@ describe("User tests", () => {
     let response2 = await request(app).get("/user").set("Authorization", "JWT " + accessToken);
     expect(response2.body.length).toBe(1);
     expect(response2.body[0].email).toBe(newEmail);
+    expect(response2.body[0].name).toBe(user.name);
   });
 
   test("Test delete User by Id", async () => {
@@ -77,6 +89,7 @@ describe("User tests", () => {
       .set("Authorization", "JWT " + accessToken);
     expect(response.statusCode).toBe(200);
     expect(response.body.email).toBe(newEmail);
+    expect(response.body.name).toBe(user.name);
     response = await request(app)
       .get(`/user`)
       .set("Authorization", "JWT " + accessToken);

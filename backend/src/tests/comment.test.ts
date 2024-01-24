@@ -31,7 +31,8 @@ const test_comment: IComment = {
 
 const test_user: IUser = {
   email: "testUserEmail@gmail.com",
-  password: "a123456!G"
+  password: "a123456!G",
+  name: "Shaked"
 }
 
 beforeAll(async () => {
