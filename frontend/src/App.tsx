@@ -1,4 +1,5 @@
 import { GroupChat } from "./chat/GroupChat";
+import { Comment } from "./Comments/comment";
 import { Signup } from "./User/Signup";
 import { Signin } from "./User/Signin";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -13,6 +14,7 @@ export const App = () => {
 				<Route path="/signup" element={<Signup />}></Route>
 				<Route path="/signin" element={<Signin />}></Route>
 				<Route path="/edit-user" element={<EditUserDetails />}></Route>
+				<Route path="/comment" element={<Comment />}></Route>
 			</Routes>
 		</BrowserRouter>
 	);
