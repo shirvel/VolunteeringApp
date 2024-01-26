@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Container, Typography, Box, TextField, Button } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode'
 
 const theme = createTheme();
 
@@ -13,6 +14,19 @@ export const Signin: React.FC = () => {
   const [passwordError, setPasswordError] = useState<string | null>(null);
 
   const navigate = useNavigate();
+
+  interface tokenDetails {
+    accessToken: string,
+    refreshToken: string
+  }
+
+  const parseLocalStorageData = (data: tokenDetails) => {
+    localStorage.setItem('accessToken', data.accessToken);
+    localStorage.setItem('refreshToken', data.refreshToken);
+    const parsedToken = jwtDecode(data.accessToken);
+    localStorage.setItem("userId", parsedToken._id);
+    localStorage.setItem("userName", parsedToken.name);
+  }
 
   const clickedLogin = async () => {
     // Check for empty fields
@@ -46,7 +60,7 @@ export const Signin: React.FC = () => {
       });
 
       const data = await response.json();
-      console.log(JSON.stringify(data));
+      parseLocalStorageData(data);
       navigate('/chat', { replace: true });
     } catch (error) {
       console.error('Error during login:', error);

@@ -54,7 +54,7 @@ export const Signup: React.FC = () => {
 
       const data = await response.json();
       console.log(JSON.stringify(data));
-      navigate('/chat', { replace: true });
+      navigate('/signin', { replace: true });
     } catch (error) {
       console.error('Error during registration:', error);
     }
