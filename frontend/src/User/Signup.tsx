@@ -1,8 +1,8 @@
 // SignUp.tsx
-import React, { useState } from 'react';
-import { Container, Typography, Box, TextField, Button } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { Container, Typography, Box, TextField, Button } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
 
@@ -43,14 +43,14 @@ export const Signup: React.FC = () => {
       name: name,
     };
 
-    try {
-      const response = await fetch('http://127.0.0.1:3000/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newUser),
-      });
+		try {
+			const response = await fetch("http://127.0.0.1:3000/auth/register", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(newUser),
+			});
 
       const data = await response.json();
       console.log(JSON.stringify(data));
@@ -60,24 +60,23 @@ export const Signup: React.FC = () => {
     }
   };
 
-  return (
-    <div style={{ background: 'linear-gradient(to bottom, #ffffff, #d9d9d9)' }}>
-      <ThemeProvider theme={theme}>
-        <Container
-          component="main"
-          maxWidth="xs"
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: '100vh',
-          }}
-        >
-          {/* Sign Up Banner */}
-          <Typography component="h1" variant="h5" sx={{ marginBottom: 4 }}>
-            Sign Up
-          </Typography>
+	return (
+		<div style={{ background: "linear-gradient(to bottom, #ffffff, #d9d9d9)" }}>
+			<ThemeProvider theme={theme}>
+				<Container
+					component="main"
+					maxWidth="xs"
+					sx={{
+						display: "flex",
+						flexDirection: "column",
+						alignItems: "center",
+						justifyContent: "center",
+						height: "100vh",
+					}}>
+					{/* Sign Up Banner */}
+					<Typography component="h1" variant="h5" sx={{ marginBottom: 4 }}>
+						Sign Up
+					</Typography>
 
           {/* Signup Form */}
           <Box
