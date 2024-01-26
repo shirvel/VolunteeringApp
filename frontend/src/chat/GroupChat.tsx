@@ -4,6 +4,7 @@ import { ChatMessage, Message } from "./ChatMessage";
 import Button from "@mui/material/Button";
 import { io } from "socket.io-client";
 import { Grid, TextField } from "@mui/material";
+import React from "react";
 
 const socket = io("http://localhost:3000");
 export const GroupChat = () => {

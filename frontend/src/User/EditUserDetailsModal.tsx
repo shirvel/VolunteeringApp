@@ -2,6 +2,8 @@ import { Dialog, DialogTitle, TextField, Button, Grid } from "@mui/material";
 
 import { useState } from "react";
 import { UserDetails } from "./EditUserDetails";
+import React from "react";
+import { updateUser } from "./userService";
 
 export interface DialogProps {
 	open: boolean;
@@ -10,6 +12,7 @@ export interface DialogProps {
 
 const sendUserUpdateToServer = (userDetails: UserDetails) => {
 	console.log(userDetails);
+	updateUser(userDetails);
 };
 
 export const EditUserDetailsModal = (props: DialogProps) => {
