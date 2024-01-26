@@ -52,13 +52,13 @@ export const Signup: React.FC = () => {
 				body: JSON.stringify(newUser),
 			});
 
-			const data = await response.json();
-			console.log(JSON.stringify(data));
-			navigate("/chat", { replace: true });
-		} catch (error) {
-			console.error("Error during registration:", error);
-		}
-	};
+      const data = await response.json();
+      console.log(JSON.stringify(data));
+      navigate('/signin', { replace: true });
+    } catch (error) {
+      console.error('Error during registration:', error);
+    }
+  };
 
 	return (
 		<div style={{ background: "linear-gradient(to bottom, #ffffff, #d9d9d9)" }}>
