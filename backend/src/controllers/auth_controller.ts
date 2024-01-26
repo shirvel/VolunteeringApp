@@ -50,7 +50,7 @@ const login = async (req: Request, res: Response) => {
             return res.status(401).send("Error: Email or password incorrect");
         }
         const accessToken = await jwt.sign(
-            { _id: user._id }, 
+            { _id: user._id, name: user.name }, 
             process.env.JWT_ACCESS_TOKEN_SECRET, 
             { expiresIn: process.env.JWT_TOKEN_EXPIRATION });
         const refreshToken = jwt.sign({ _id: user._id }, process.env.JWT_REFRESH_SECRET);
