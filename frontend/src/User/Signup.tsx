@@ -7,17 +7,40 @@ import { useNavigate } from 'react-router-dom';
 const theme = createTheme();
 
 export const Signup: React.FC = () => {
-  
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [name, setName] = useState<string | null>('');
+  const [email, setEmail] = useState<string | null>('');
+  const [password, setPassword] = useState<string | null>('');
+  const [nameError, setNameError] = useState<string | null>(null);
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+
   const navigate = useNavigate();
 
   const clickedRegister = async () => {
+    // Check for empty fields
+    if (!name) {
+      setNameError('Name is required');
+      return;
+    }
+    if (!email) {
+      setEmailError('Email is required');
+      return;
+    }
+    if (!password) {
+      setPasswordError('Password is required');
+      return;
+    }
+
+    // Clear any previous error messages
+    setNameError(null);
+    setEmailError(null);
+    setPasswordError(null);
+
+    // Rest of your registration logic
     const newUser = {
-      "email": email,
-      "password": password,
-      "name": name
+      email: email,
+      password: password,
+      name: name,
     };
 
     try {
@@ -77,7 +100,12 @@ export const Signup: React.FC = () => {
                 name="name"
                 autoComplete="name"
                 autoFocus
-                onChange={(e) => setName(e.target.value)}
+                error={!!nameError}
+                helperText={nameError}
+                onChange={(e) => {
+                  setName(e.target.value);
+                  setNameError(null); // Clear error on input change
+                }}
               />
               <TextField
                 margin="normal"
@@ -87,7 +115,12 @@ export const Signup: React.FC = () => {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
-                onChange={(e) => setEmail(e.target.value)}
+                error={!!emailError}
+                helperText={emailError}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setEmailError(null); // Clear error on input change
+                }}
               />
               <TextField
                 margin="normal"
@@ -98,13 +131,18 @@ export const Signup: React.FC = () => {
                 type="password"
                 id="password"
                 autoComplete="current-password"
-                onChange={(e) => setPassword(e.target.value)}
+                error={!!passwordError}
+                helperText={passwordError}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setPasswordError(null); // Clear error on input change
+                }}
               />
               <Button
                 type="button"
                 fullWidth
                 variant="contained"
-                sx={{ marginTop: 2, background: '#2196f3', color: 'white' }}
+                sx={{ marginTop: 2, backgroundColor: '#2196f3', color: 'white' }}
                 onClick={clickedRegister}
               >
                 Register

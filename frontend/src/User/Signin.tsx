@@ -7,16 +7,33 @@ import { useNavigate } from 'react-router-dom';
 const theme = createTheme();
 
 export const Signin: React.FC = () => {
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
 
   const navigate = useNavigate();
 
   const clickedLogin = async () => {
+    // Check for empty fields
+    if (!email) {
+      setEmailError('Email is required');
+      return;
+    }
+
+    if (!password) {
+      setPasswordError('Password is required');
+      return;
+    }
+
+    // Clear any previous error messages
+    setEmailError(null);
+    setPasswordError(null);
+
+    // Rest of your login logic
     const user = {
-      "email": email,
-      "password": password,
+      email,
+      password,
     };
 
     try {
@@ -32,79 +49,85 @@ export const Signin: React.FC = () => {
       console.log(JSON.stringify(data));
       navigate('/chat', { replace: true });
     } catch (error) {
-      console.log(error)
-      console.error('Error during registration:', JSON.stringify(error));
+      console.error('Error during login:', error);
     }
   };
 
   return (
-      <div style={{background: 'linear-gradient(to bottom, #ffffff, #d9d9d9)'}}> 
+    <div style={{ background: 'linear-gradient(to bottom, #ffffff, #d9d9d9)' }}>
       <ThemeProvider theme={theme}>
-      <Container
-        component="main"
-        maxWidth="xs"
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100vh',
-        }}
-      >
-        {/* Sign In Banner */}
-        <Typography component="h1" variant="h5" sx={{ marginBottom: 4 }}>
-          Sign In
-        </Typography>
-
-        {/* Signin Form */}
-        <Box
+        <Container
+          component="main"
+          maxWidth="xs"
           sx={{
-            background: 'white',
-            borderRadius: 4,
-            padding: 3,
-            boxShadow: 2,
-            width: '100%',
-            boxSizing: 'border-box',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100vh',
           }}
         >
-          <form>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <Button
-              type="button"
-              fullWidth
-              variant="contained"
-              sx={{ marginTop: 2, background: '#2196f3', color: 'white' }}
-              onClick={clickedLogin}
-            >
-              Log In
-            </Button>
-          </form>
-        </Box>
-      </Container>
-    </ThemeProvider>
-      
-      
-      </div>
-    
+          {/* Sign In Banner */}
+          <Typography component="h1" variant="h5" sx={{ marginBottom: 4 }}>
+            Sign In
+          </Typography>
+
+          {/* Signin Form */}
+          <Box
+            sx={{
+              background: 'white',
+              borderRadius: 4,
+              padding: 3,
+              boxShadow: 2,
+              width: '100%',
+              boxSizing: 'border-box',
+            }}
+          >
+            <form>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                error={!!emailError}
+                helperText={emailError}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setEmailError(null); // Clear error on input change
+                }}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                error={!!passwordError}
+                helperText={passwordError}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setPasswordError(null); // Clear error on input change
+                }}
+              />
+              <Button
+                type="button"
+                fullWidth
+                variant="contained"
+                sx={{ marginTop: 2, background: '#2196f3', color: 'white' }}
+                onClick={clickedLogin}
+              >
+                Log In
+              </Button>
+            </form>
+          </Box>
+        </Container>
+      </ThemeProvider>
+    </div>
   );
 };
