@@ -70,10 +70,17 @@ router.get("/", authMiddleware, CommentController.getAllComments);
 */
 router.post("/", authMiddleware, CommentController.addComment);
 
+
 /**
 * @swagger
 * /comments/{id}:
 *   delete:
+*     parameters:
+*       - in: path
+*         name: id
+*         required: true
+*         type: string
+*         description: The id of the comment
 *     summary: delete a comment by id
 *     tags: [Comment]
 *     requestBody:
@@ -92,6 +99,12 @@ router.delete("/:id", authMiddleware, CommentController.deleteComment);
 * @swagger
 * /comments/{id}:
 *   patch:
+*     parameters:
+*       - in: path
+*         name: id
+*         required: true
+*         type: string
+*         description: The id of the comment
 *     summary: update a comment
 *     tags: [Comment]
 *     requestBody:
