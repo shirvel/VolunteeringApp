@@ -8,7 +8,7 @@ export const endpoints = {
 	},
 	POST: {
 		CREATE_POST: () => base + "posts/",
-	}
+	},
 	CHAT: {
 		GET_MESSAGES: (category_name: string) =>
 			base + "chat/" + category_name + "/",
