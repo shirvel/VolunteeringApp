@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import './Sidebar.css';
+import './sidebar.css';
 import EditIcon from '@mui/icons-material/Edit';
 import ChatIcon from '@mui/icons-material/Chat';
 import ViewListIcon from '@mui/icons-material/ViewList';
@@ -9,10 +9,9 @@ import CommentIcon from '@mui/icons-material/Comment';
 function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
-
+  interface SidebarProps {
+    toggleSidebar: () => void;
+  }
   return (
     <div className={`sidebar-container ${isOpen ? 'active' : ''}`}>
       <div className="sidebar">
