@@ -1,6 +1,7 @@
 import { Button } from "@mui/material";
 import { useState } from "react";
 import { EditUserDetailsModal } from "./EditUserDetailsModal";
+import React from "react"
 
 export type UserDetails = { name: string; email: string };
 

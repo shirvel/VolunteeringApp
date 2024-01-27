@@ -1,23 +1,38 @@
-import { GroupChat } from "./chat/GroupChat";
-import { Comment } from "./Comments/comment";
+import { GroupChat } from './chat/GroupChat';
+import React , { useState } from 'react';
+import Sidebar from './components/sidebar';
+import ViewPosts from './components/viewPosts';
 import { Signup } from "./User/Signup";
 import { Signin } from "./User/Signin";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import React from "react";
 import { EditUserDetails } from "./User/EditUserDetails";
-import { Posts } from "./Post/Posts";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Comment } from "./Comments/comment";
+import { useNavigate } from 'react-router-dom';
 
 export const App = () => {
-	return (
-		<BrowserRouter>
-			<Routes>
-				<Route path="/chat" element={<GroupChat />}></Route>
-				<Route path="/signup" element={<Signup />}></Route>
-				<Route path="/signin" element={<Signin />}></Route>
-				<Route path="/edit-user" element={<EditUserDetails />}></Route>
-				<Route path="/comment" element={<Comment />}></Route>
-				<Route path="/posts" element={<Posts />}></Route>
-			</Routes>
-		</BrowserRouter>
-	);
-};
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/Signin" element={<Signin />} />
+        <Route path="/signup" element={<Signup />}></Route>
+        <Route
+          path="/*"
+          element={
+            <div style={{ display: 'flex' }}>
+              <Sidebar />
+              <Routes>
+                <Route path="/chat" element={<GroupChat />} />
+                <Route path="/view-posts" element={<ViewPosts />} />
+                <Route path="/edit-user" element={<EditUserDetails />} />
+                <Route path="/comment" element={<Comment />}></Route>
+              </Routes>
+            </div>
+          }
+        />
+      </Routes>
+
+    </BrowserRouter>
+    );
+  };
+    
+
