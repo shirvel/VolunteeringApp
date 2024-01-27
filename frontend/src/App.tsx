@@ -8,6 +8,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Comment } from "./Comments/comment";
 import { ChatPage } from "./chat/ChatPage";
 import { Posts } from "./Post/Posts";
+import { AllPostComments } from "./Comments/allPostComments";
 
 export const App = () => {
 	return (
@@ -26,6 +27,7 @@ export const App = () => {
 								<Route path="/edit-user" element={<EditUserDetails />} />
 								<Route path="/comment" element={<Comment />}></Route>
 								<Route path="/posts" element={<Posts />}></Route>
+								<Route path="/comments" element={<AllPostComments />}></Route>
 							</Routes>
 						</div>
 					}
