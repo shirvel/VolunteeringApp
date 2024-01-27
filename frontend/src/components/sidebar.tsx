@@ -41,9 +41,6 @@ function Sidebar() {
             </li>
           </ul>
         </nav>
-        <button className="toggle-button" onClick={toggleSidebar}>
-          Toggle Sidebar
-        </button>
       </div>
     </div>
   );
