@@ -3,88 +3,63 @@ import { Dialog, DialogTitle, TextField, Button, Grid, InputLabel, NativeSelect,
 import { useState } from "react";
 import { CreatePostDetails } from "./Posts";
 import React from "react";
-import { createPost } from "./PostService";
+import { editPost } from "./PostService";
 
 export interface DialogProps {
 	open: boolean;
-	onClose: () => void;
+    onClose: () => void;
+    postDetails: CreatePostDetails;
+    postId: string
 }
 
-const sendPostCreateToServer = (postDetails: CreatePostDetails) => {
-	console.log(postDetails);
-	createPost(postDetails);
+const sendPostEditToServer = (content: string, postId: string) => {
+	console.log(content);
+	editPost(content, postId);
 };
 
-export const CreatePostModal = (props: DialogProps) => {
-	const { onClose, open } = props;
+export const EditPostModal = (props: DialogProps) => {
+	const { onClose, open, postDetails, postId } = props;
 
 	const handleClose = () => {
 		onClose();
     };
     
-	const handleCreate = () => {
+	const handleUpdate = () => {
 
-		// Check for empty fields
-		if (!title) {
-		setTitleError('Title is required');
-		return;
-		}
+		// Check for empty field
 		if (!content) {
 		setContentError('Content is required');
 		return;
 		}
-		if (!phoneNumber) {
-		setPhoneNumberError('Phone number is required');
-		return;
-		}
-	
+		
 		// Clear any previous error messages
-		setTitleError(null);
 		setContentError(null);
-		setPhoneNumberError(null);
-
-		sendPostCreateToServer({ title, content, phoneNumber, image, category });
-
-		setTitle('');
-		setContent('');
-		setPhoneNumber('');
-		setImage('');
-		setCategory('Community');
-
+		
+		sendPostEditToServer(content, postId);
 		onClose();
 	};
 					 
-    const [title, setTitle] = useState('');
-    const [content, setContent] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [image, setImage] = useState('');
-	const [category, setCategory] = useState('Community');
 
-	const [titleError, setTitleError] = useState<string | null>(null);
+    const [content, setContent] = useState(postDetails.content);
+
 	const [contentError, setContentError] = useState<string | null>(null);
-	const [phoneNumberError, setPhoneNumberError] = useState<string | null>(null);
 
 
 
 	return (
 		<Dialog onClose={handleClose} open={open}>
 			<DialogTitle className="flex items-center justify-center">
-				Create Post
+				Update Post
 			</DialogTitle>
 			<Grid container spacing={3} className="p-4">
 				<Grid item xs={12}>
+
 					<TextField
-					    required
+					    disabled
 						label="Title"
 						variant="outlined"
 						className="w-full"
-						value={title}
-						error={!!titleError}
-                		helperText={titleError}
-						onChange={(event) => {
-							setTitle(event.target.value)
-							setTitleError(null); // Clear error on input change
-						}}
+						value={postDetails.title}
 					/>
 				</Grid>
 				<Grid item xs={12}>
@@ -93,12 +68,12 @@ export const CreatePostModal = (props: DialogProps) => {
 						Category
 					</InputLabel>
 					<NativeSelect
+                        disabled
 						defaultValue={"Community"}
 						inputProps={{
 						name: 'category',
 						id: 'uncontrolled-native',
 						}}
-						onChange={(event) => setCategory(event.target.value)}
 					>
 						<option value={"Community"}>Community</option>
 						<option value={"Animals"}>Animals</option>
@@ -130,34 +105,28 @@ export const CreatePostModal = (props: DialogProps) => {
 
                 <Grid item xs={12}>
 					<TextField
-                		required
+                		disabled
 						label="Phone Number"
 						variant="outlined"
 						className="w-full"
-						value={phoneNumber}
-						error={!!phoneNumberError}
-                		helperText={phoneNumberError}
-						onChange={(event) => {
-							setPhoneNumber(event.target.value)
-							setPhoneNumberError(null); // Clear error on input change
-						}}
+						value={postDetails.phoneNumber}
+		
 					/>
 				</Grid>
 
                 <Grid item xs={12}>
 					<TextField
-					    required
+					    disabled
 						label="Image"
 						variant="outlined"
 						className="w-full"
-						value={image}
-						onChange={(event) => setImage(event.target.value)}
+						value={postDetails.image}
 					/>
 				</Grid>
 
             
 			</Grid>
-			<Button onClick={handleCreate}>Create Post</Button>
+			<Button onClick={handleUpdate}>Update Post</Button>
 		</Dialog>
 	);
 };
