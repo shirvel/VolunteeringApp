@@ -5,6 +5,7 @@ import { Signin } from "./User/Signin";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React from "react";
 import { EditUserDetails } from "./User/EditUserDetails";
+import { Posts } from "./Post/Posts";
 
 export const App = () => {
 	return (
@@ -15,6 +16,7 @@ export const App = () => {
 				<Route path="/signin" element={<Signin />}></Route>
 				<Route path="/edit-user" element={<EditUserDetails />}></Route>
 				<Route path="/comment" element={<Comment />}></Route>
+				<Route path="/posts" element={<Posts />}></Route>
 			</Routes>
 		</BrowserRouter>
 	);
