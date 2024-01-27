@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Sidebar from "./components/sidebar";
 import ViewPosts from "./components/viewPosts";
 import { Signup } from "./User/Signup";
@@ -6,8 +6,8 @@ import { Signin } from "./User/Signin";
 import { EditUserDetails } from "./User/EditUserDetails";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Comment } from "./Comments/comment";
-import { useNavigate } from "react-router-dom";
 import { ChatPage } from "./chat/ChatPage";
+import { Posts } from "./Post/Posts";
 
 export const App = () => {
 	return (
@@ -25,6 +25,7 @@ export const App = () => {
 								<Route path="/view-posts" element={<ViewPosts />} />
 								<Route path="/edit-user" element={<EditUserDetails />} />
 								<Route path="/comment" element={<Comment />}></Route>
+								<Route path="/posts" element={<Posts />}></Route>
 							</Routes>
 						</div>
 					}

@@ -38,3 +38,12 @@ export const post = async (endpoint: string, data: any) => {
 		console.log(error);
 	}
 };
+
+export const deleteEndpoint = async (endpoint: string) => {
+	try {
+		const response = await axios.delete(endpoint, getRequestConfig());
+		return response.data;
+	} catch (error) {
+		console.log(error);
+	}
+};
