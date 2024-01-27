@@ -5,4 +5,7 @@ export const endpoints = {
 	USER: {
 		UPDATE_USER: (id: string) => base + "user/" + id + "/",
 	},
+	POST: {
+		CREATE_POST: () => base + "posts/",
+	}
 };
