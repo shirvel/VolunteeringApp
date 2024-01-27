@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-// Define the IPost interface
 interface IPost {
   _id: string;
   title: string;
@@ -15,14 +14,14 @@ interface IPost {
 }
 
 const ViewPosts: React.FC = () => {
-  // Initialize the state variable for posts
+  
   const [posts, setPosts] = useState<IPost[]>([]);
 
-  // Fetch the posts when the component mounts
+  
   useEffect(() => {
     async function fetchPosts() {
       try {
-        const response = await fetch('http://localhost:3000/posts'); // Replace with your API endpoint
+        const response = await fetch('http://localhost:3000/posts'); 
         if (!response.ok) {
           throw new Error(`Failed to fetch posts. Status: ${response.status}`);
         }
@@ -44,7 +43,6 @@ const ViewPosts: React.FC = () => {
           <h2>{post.title}</h2>
           <p>{post.content}</p>
           <p>Category: {post.category}</p>
-          {/* Add more post details as needed */}
         </div>
       ))}
     </div>

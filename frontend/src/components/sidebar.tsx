@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 function Sidebar() {
   return (
     <div className="sidebar">
-      <h1>Sidebar</h1>
+      <h1>Please choose you option</h1>
       <nav>
         <ul>
           <li>
@@ -12,6 +12,9 @@ function Sidebar() {
           </li>
           <li>
             <Link to="/view-posts">View Posts</Link>
+          </li>
+          <li>
+            <Link to="/comment">Comment</Link>
           </li>
           <li>
             <Link to="/edit-user">Edit User</Link>
