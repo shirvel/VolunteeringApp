@@ -1,0 +1,68 @@
+/* Sidebar.css */
+
+body {
+    background-image: url("../../public/volunteer.jpg"); 
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    margin: 0; /* Remove default margin to cover the entire viewport */
+  }
+  
+  /* Styling for the sidebar container */
+  .sidebar-container {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 100vh;
+    background-color: none; /* Semi-transparent black background */
+  }
+  
+  /* Styling for the sidebar itself */
+  .sidebar {
+    text-align: center;
+    background-color: none; /* Semi-transparent black background */
+    padding: 20px;
+    border-radius: 10px;
+    color: white; /* Text color is white */
+    max-width: 400px; /* Adjust the max-width to your preference */
+    margin: auto; /* Center horizontally within the viewport */
+    position: absolute; /* Position the sidebar absolutely */
+    top: 50%; /* Move the top edge of the sidebar to the vertical center */
+    left: 50%; /* Move the left edge of the sidebar to the horizontal center */
+    transform: translate(-50%, -50%); /* Center both horizontally and vertically */
+    transition: transform 0.3s ease;
+  }
+  /* Styling for the "Choose Your Option" heading */
+  .option-title {
+    font-size: 36px; /* Larger font size */
+    margin-bottom: 20px; /* Add spacing below the title */
+    white-space: nowrap; /* Prevent text from wrapping to the next line */
+    overflow: hidden; /* Hide any overflow */
+    text-overflow: ellipsis; /* Display an ellipsis (...) if text overflows */
+  }
+  
+  /* Styling for the buttons */
+  .button-link {
+    display: block;
+    margin: 15px auto; /* Set margin to "auto" to center horizontally */
+    padding: 15px 30px; /* Larger padding to make buttons larger */
+    background-color: white; /* Button background color is white */
+    color: black; /* Text color is black */
+    text-decoration: none;
+    border-radius: 8px; /* Rounded corners */
+    font-size: 18px; /* Larger font size for buttons */
+    text-align: center; /* Center the text horizontally */
+    line-height: 36px; /* Set line height equal to button height to vertically center the text */
+    transition: background-color 0.3s ease; /* Smooth transition effect */
+  }
+  
+  /* Button hover effect */
+  .button-link:hover {
+    background-color: #f0f0f0; /* Light gray background color on hover */
+  }
+  
+  .sidebar.active {
+    transform: translateX(0);
+  }
+  
