@@ -14,6 +14,7 @@ export interface IChatRoom {
     _id?: string;
   }
 
+
 const handleNewMessage = async(message: ChatMessage, category: string, io: Server) => {
     // Add to DB
     const room = await ChatRoom.findOne({category_name: category});
@@ -21,7 +22,6 @@ const handleNewMessage = async(message: ChatMessage, category: string, io: Serve
         return null;
     }
     if (room.messages){
-        // room.messages.push(message);
         const old_messages = room.messages;
         room.messages = [...old_messages, message]
     } else {
@@ -31,7 +31,7 @@ const handleNewMessage = async(message: ChatMessage, category: string, io: Serve
 
     // Send new event for all the other clients
     console.log("a user send message");
-    io.emit("new_message", message);
+    io.emit(`new_message_${category}`, message);
     console.log(message);
 };
 
