@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import './sidebar.css';
 import EditIcon from '@mui/icons-material/Edit';
@@ -7,13 +7,8 @@ import ViewListIcon from '@mui/icons-material/ViewList';
 import CommentIcon from '@mui/icons-material/Comment';
 
 function Sidebar() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  interface SidebarProps {
-    toggleSidebar: () => void;
-  }
   return (
-    <div className={`sidebar-container ${isOpen ? 'active' : ''}`}>
+    <div className="sidebar-container">
       <div className="sidebar">
         <h1 className="option-title">Choose Your Option</h1>
         <nav>
