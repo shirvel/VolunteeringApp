@@ -1,6 +1,6 @@
 import { endpoints } from "../api/endpoints";
 import { CreatePostDetails } from "./Posts";
-import { deleteEndpoint, post, patch } from "../api/requests";
+import { deleteRequest, post, patch, get } from "../api/requests";
 
 export const getConnectedUser = () => {
 	const usrId = localStorage.getItem("userId");
@@ -30,7 +30,12 @@ export const editPost = async (content: string, postId: string) => {
 
 export const deletePost = async (postId: string) => {
 	console.log(endpoints.POST.DELETE_POST(postId));
-	const response = await deleteEndpoint(endpoints.POST.EDIT_POST(postId));
+	const response = await deleteRequest(endpoints.POST.EDIT_POST(postId));
 	const data = await response.data;
 	console.log(JSON.stringify(data));
+};
+
+export const getAllComments = async (postId: string) => {
+	const response = await get(endpoints.POST.GET_COMMENTS(postId));
+	return response.data;
 };

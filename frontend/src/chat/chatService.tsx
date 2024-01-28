@@ -9,6 +9,7 @@ export const loadFormerMessages = async (category_name: string) => {
 
 export const getAllCategories = async () => {
 	// const response = await get(endpoints.CATEGORIES.BASE);
+	// console.log(response);
 	// return response.data;
 	//TODO: Replace the mock after the api works
 	return ["cooking", "driving"];

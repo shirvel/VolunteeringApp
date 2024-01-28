@@ -61,4 +61,12 @@ const editComment = async(req: Request, res: Response) => {
     }
 };
 
-export default {addComment, getAllComments, deleteComment, editComment}
+const getByPost = async(req: Request, res: Response) => {
+    try{
+        res.status(200).json(await Comment.find({post_id: req.params.id}));
+    }catch (err) {
+        res.status(500).json( {message: err.message} );
+    }
+};
+
+export default {addComment, getAllComments, deleteComment, editComment, getByPost}
