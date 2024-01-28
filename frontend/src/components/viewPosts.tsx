@@ -30,6 +30,7 @@ const ViewPosts: React.FC<IViewPostsProps> = () => {
   const [posts, setPosts] = useState<IPost[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [weatherData, setWeatherData] = useState<any[]>([]); // Store weather data for each post
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
 
 
@@ -79,10 +80,14 @@ const ViewPosts: React.FC<IViewPostsProps> = () => {
 
   const filterPostsByCategory = (category: string) => {
     // Implement filtering logic here based on the selected category
+    setSelectedCategory(category);
   };
+  const filteredPosts = selectedCategory
+  ? posts.filter((post) => post.category === selectedCategory)
+  : posts;
 
   return (
-<div>
+    <div>
     <Box p={2} bgcolor="lightgray">
       <Typography variant="h4" align="center" gutterBottom>
         View Posts
@@ -90,9 +95,9 @@ const ViewPosts: React.FC<IViewPostsProps> = () => {
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Button
           variant="outlined"
-          onClick={() => filterPostsByCategory('Cooking')}
+          onClick={() => filterPostsByCategory('test')}
         >
-          Cooking
+          test
         </Button>
         <Button
           variant="outlined"
@@ -101,7 +106,7 @@ const ViewPosts: React.FC<IViewPostsProps> = () => {
           Driving
         </Button>
       </Box>
-      {posts.map((post, index) => (
+      {filteredPosts.map((post, index) => (
         <Card key={post._id} sx={{ display: 'flex', flexDirection: 'column', marginBottom: 2 }}>
           <CardMedia
             component="img"
@@ -114,9 +119,6 @@ const ViewPosts: React.FC<IViewPostsProps> = () => {
               {post.title}
             </Typography>
             <Typography variant="body1">{post.content}</Typography>
-            <Typography variant="body2" color="textSecondary">
-              Category: {post.category}
-            </Typography>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               {weatherData[index] ? (
                 <>
