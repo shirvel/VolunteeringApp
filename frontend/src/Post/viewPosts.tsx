@@ -47,7 +47,7 @@ const ViewPosts: React.FC<IViewPostsProps> = () => {
          const weatherPromises = data.map(async (post: IPost) => {
           const apiKey = "c4b0c9fa960f9b84cd0964869bca6f3c";
           const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
-          const weatherResponse = await fetch(apiUrl + "Ashdod" + `&appid=${apiKey}`); //will be post.location
+          const weatherResponse = await fetch(apiUrl + "Singapore" + `&appid=${apiKey}`); //will be post.location
           if (weatherResponse.status === 404) {
             return null;
           }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Sidebar from './components/sidebar';
-import ViewPosts from './components/viewPosts';
+import ViewPosts from './Post/viewPosts';
 import { Signup } from './User/Signup';
 import { Signin } from './User/Signin';
 import { EditUserDetails } from './User/EditUserDetails';
