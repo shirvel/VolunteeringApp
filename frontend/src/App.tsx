@@ -1,38 +1,50 @@
-import React from "react";
-import Sidebar from "./components/sidebar";
-import ViewPosts from "./components/viewPosts";
-import { Signup } from "./User/Signup";
-import { Signin } from "./User/Signin";
-import { EditUserDetails } from "./User/EditUserDetails";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { CommentComp } from "./Comments/comment";
-import { ChatPage } from "./chat/ChatPage";
-import { Posts } from "./Post/Posts";
-import { AllPostComments } from "./Comments/allPostComments";
+import React, { useState } from 'react';
+import Sidebar from './components/sidebar';
+import ViewPosts from './Post/viewPosts';
+import { Signup } from './User/Signup';
+import { Signin } from './User/Signin';
+import { EditUserDetails } from './User/EditUserDetails';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Comment } from './Comments/comment';
+import { ChatPage } from './chat/ChatPage';
+import { Posts } from './Post/Posts';
 
 export const App = () => {
-	return (
-		<BrowserRouter>
-			<Routes>
-				<Route path="/Signin" element={<Signin />} />
-				<Route path="/signup" element={<Signup />}></Route>
-				<Route
-					path="/*"
-					element={
-						<div style={{ display: "flex" }}>
-							<Sidebar />
-							<Routes>
-								<Route path="/chat" element={<ChatPage />} />
-								<Route path="/view-posts" element={<ViewPosts />} />
-								<Route path="/edit-user" element={<EditUserDetails />} />
-								<Route path="/comment" element={<CommentComp />}></Route>
-								<Route path="/posts" element={<Posts />}></Route>
-								<Route path="/comments" element={<AllPostComments />}></Route>
-							</Routes>
-						</div>
-					}
-				/>
-			</Routes>
-		</BrowserRouter>
-	);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!isSidebarOpen);
+  };
+
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/Signin" element={<Signin />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route
+          path="/*"
+          element={
+            <div style={{ display: 'flex' }}>
+              <Sidebar />
+              <Routes>
+                <Route path="/chat" element={<ChatPage />} />
+                <Route
+                  path="/view-posts"
+                  element={
+                    <ViewPosts
+                      isSidebarOpen={isSidebarOpen}
+                      toggleSidebar={toggleSidebar}
+                    />
+                  }
+                />
+                <Route path="/edit-user" element={<EditUserDetails />} />
+                <Route path="/comment" element={<Comment />} />
+                <Route path="/posts" element={<Posts />} />
+              </Routes>
+            </div>
+          }
+        />
+      </Routes>
+    </BrowserRouter>
+  );
 };
