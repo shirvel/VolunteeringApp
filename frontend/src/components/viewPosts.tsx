@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Card, CardContent, CardMedia, Typography, Button, Dialog } from '@mui/material';
+import CloudIcon from '@mui/icons-material/Cloud';
+import ClearIcon from '@mui/icons-material/WbSunny';
+import RainIcon from '@mui/icons-material/CloudQueue';
+import DrizzleIcon from '@mui/icons-material/Grain';
+import MistIcon from '@mui/icons-material/Opacity';
+
 
 interface IViewPostsProps {
   isSidebarOpen: boolean;
@@ -18,26 +24,14 @@ interface IPost {
   dislikes: number;
   dislikedBy: string[];
 }
-interface WeatherData {
-  name: string;
-  main: {
-    temp: number;
-    humidity: number;
-  };
-  wind: {
-    speed: number;
-  };
-}
 
 
-const ViewPosts: React.FC<IViewPostsProps> = ({ isSidebarOpen, toggleSidebar }) => {
+const ViewPosts: React.FC<IViewPostsProps> = () => {
   const [posts, setPosts] = useState<IPost[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
-  const [location, setLocation] = useState('Ashdod'); // Initialize with a default location
-  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
+  const [weatherData, setWeatherData] = useState<any[]>([]); // Store weather data for each post
 
 
-  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     async function fetchPosts() {
@@ -48,6 +42,20 @@ const ViewPosts: React.FC<IViewPostsProps> = ({ isSidebarOpen, toggleSidebar }) 
         }
         const data = await response.json();
         setPosts(data);
+         // Fetch weather data for each post's location
+         const weatherPromises = data.map(async (post: IPost) => {
+          const apiKey = "c4b0c9fa960f9b84cd0964869bca6f3c";
+          const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+          const weatherResponse = await fetch(apiUrl + "Ashdod" + `&appid=${apiKey}`); //will be post.location
+          if (weatherResponse.status === 404) {
+            return null;
+          }
+          const weatherData = await weatherResponse.json();
+          return weatherData;
+        });
+
+        const weatherResults = await Promise.all(weatherPromises);
+        setWeatherData(weatherResults);
       } catch (error) {
         console.error(error);
       }
@@ -65,107 +73,89 @@ const ViewPosts: React.FC<IViewPostsProps> = ({ isSidebarOpen, toggleSidebar }) 
         console.error(error);
       }
     }
-    async function getweather(city: string) {
-      try {
-        const apiKey = "c4b0c9fa960f9b84cd0964869bca6f3c";
-        const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
-        const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
-        if (response.ok) {
-          const data = await response.json();
-          setWeatherData(data);
-        } else {
-          setWeatherData(null); // Clear weather data if API call fails
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
     fetchPosts();
     fetchCategories();
-    getweather("Ashdod"); //mock 
   }, []);
 
   const filterPostsByCategory = (category: string) => {
     // Implement filtering logic here based on the selected category
   };
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   return (
-    <div>
-      <Button onClick={toggleSidebar}>
-        {isSidebarOpen ? 'Close Sidebar' : 'Open Sidebar'}
-      </Button>
-      <Dialog onClose={handleClose} open={open}>
-        {/* Your dialog content here */}
-      </Dialog>
-      <Box p={2} bgcolor="lightgray">
-        <Typography variant="h4" align="center" gutterBottom>
-          View Posts
-        </Typography>
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Button
-            variant="outlined"
-            onClick={() => filterPostsByCategory('Cooking')}
-          >
-            Cooking
-          </Button>
-          <Button
-            variant="outlined"
-            onClick={() => filterPostsByCategory('Driving')}
-          >
-            Driving
-          </Button>
-        </Box>
-        <div className="weather">
-          {weatherData ? (
-            <>
-              <h2 className="city">{weatherData.name}</h2>
-              <h1 className="temp">{Math.round(weatherData.main.temp)}°C</h1>
-              <div className="details">
-                <div className="col">
-                  <p className="humidity">{weatherData.main.humidity}%</p>
-                    <p>Humidity</p>
-                </div>
-              <div className="col">
-                <p className="wind">{weatherData.wind.speed} km/h</p>
-                <p>Wind Speed</p>
-              </div>
-            </div>
-          </>
-        ) : (
-          <p>Loading weather data...</p>
-        )}
-      </div>
-        {posts.map((post) => (
-          <Card key={post._id} sx={{ display: 'flex', flexDirection: 'column', marginBottom: 2 }}>
-            <CardMedia
-              component="img"
-              sx={{ width: 200, objectFit: 'cover' }}
-              image={post.image}
-              alt={post.title}
-            />
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                {post.title}
-              </Typography>
-              <Typography variant="body1">{post.content}</Typography>
-              <Typography variant="body2" color="textSecondary">
-                Category: {post.category}
-              </Typography>
-            </CardContent>
-          </Card>
-        ))}
+<div>
+    <Box p={2} bgcolor="lightgray">
+      <Typography variant="h4" align="center" gutterBottom>
+        View Posts
+      </Typography>
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Button
+          variant="outlined"
+          onClick={() => filterPostsByCategory('Cooking')}
+        >
+          Cooking
+        </Button>
+        <Button
+          variant="outlined"
+          onClick={() => filterPostsByCategory('Driving')}
+        >
+          Driving
+        </Button>
       </Box>
-    </div>
-  );
+      {posts.map((post, index) => (
+        <Card key={post._id} sx={{ display: 'flex', flexDirection: 'column', marginBottom: 2 }}>
+          <CardMedia
+            component="img"
+            sx={{ width: 200, objectFit: 'cover' }}
+            image={post.image}
+            alt={post.title}
+          />
+          <CardContent>
+            <Typography variant="h6" gutterBottom>
+              {post.title}
+            </Typography>
+            <Typography variant="body1">{post.content}</Typography>
+            <Typography variant="body2" color="textSecondary">
+              Category: {post.category}
+            </Typography>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              {weatherData[index] ? (
+                <>
+                  <div style={{ flex: 1 }}>
+                    <Typography variant="body2" color="textSecondary">
+                      Temp: {Math.round(weatherData[index].main.temp)}°C
+                    </Typography>
+                  </div>
+                  <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    {renderWeatherIcon(weatherData[index].weather[0].main)}
+                  </div>
+                </>
+              ) : (
+                <Typography variant="body2" color="textSecondary">
+                  Weather data not available
+                </Typography>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      ))}
+    </Box>
+  </div>
+);
 };
-
+function renderWeatherIcon(weatherCondition: string) {
+  switch (weatherCondition) {
+    case 'Clouds':
+      return <CloudIcon color="primary" />;
+    case 'Clear':
+      return <ClearIcon color="primary" />;
+    case 'Rain':
+      return <RainIcon color="primary" />;
+    case 'Drizzle':
+      return <DrizzleIcon color="primary" />;
+    case 'Mist':
+      return <MistIcon color="primary" />;
+    default:
+      return null;
+  }
+}
 export default ViewPosts;
