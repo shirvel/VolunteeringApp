@@ -11,6 +11,7 @@ import commentRoutes from "./routes/comment_routes";
 import categoryRoutes from "./routes/category_routes";
 import authRoute from "./routes/auth_route";
 import chatRoute from "./routes/chat_routes";
+import fileRoute from "./routes/file_routes";
 import cors from "cors";
 
 export const initApp = (): Promise<Express> => {
@@ -24,12 +25,20 @@ export const initApp = (): Promise<Express> => {
       app.use(cors());
       app.use(bodyParser.urlencoded({ extended: true }));
       app.use(bodyParser.json());
+      app.use((req, res, next) => {
+        res.header("Acces-Control-Allow-Origin", "*");
+        res.header("Acces-Control-Allow-Methods", "*");
+        res.header("Acces-Control-Allow-Headers", "*");
+        next();
+      })
       app.use("/user", userRoute);
       app.use("/posts", postRoute)
       app.use("/categories", categoryRoutes)
       app.use("/comments", commentRoutes)
       app.use("/auth", authRoute)
       app.use("/chat", chatRoute)
+      app.use("/file", fileRoute)
+      app.use("/public", express.static("public"))
       resolve(app);
     })
   })
