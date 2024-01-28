@@ -16,13 +16,13 @@ export type CreatePostDetails =  {
 
 // TODO: use the real post id and remove this func
 export const getPostDetailsMock = () => {
-    return { post_id: "65b50a593728b5f851e68e53", 
-              user_id: "65b4cc6fd5c541695cb7a7e4",
-              details: {title: 'My title',
-                content: 'This is a contant4444',
-                phoneNumber: '0525381648',
-                image: 'path to image',
-                category: 'Elderly'
+    return { post_id: "65b6adc90d8a9bb172743b89", 
+              user_id: "65b6ad960d8a9bb172743b85",
+              details: {title: 'oo post',
+                content: 'This is a content',
+                phoneNumber: '54354',
+                image: 'lk',
+                category: 'Community'
             } as CreatePostDetails
         };
 }

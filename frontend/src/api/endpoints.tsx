@@ -5,6 +5,7 @@ export const endpoints = {
 	BASE: "http://127.0.0.1:3000/",
 	USER: {
 		UPDATE_USER: (id: string) => base + "user/" + id + "/",
+		CREATE_USER: () => base + "auth/register/"
 	},
 	POST: {
 		CREATE_POST: () => base + "posts/",

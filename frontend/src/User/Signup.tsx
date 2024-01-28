@@ -1,10 +1,25 @@
 // SignUp.tsx
-import React, { useState } from "react";
-import { Container, Typography, Box, TextField, Button } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import React, { useState, ChangeEvent } from "react";
+import { Container, Typography, Box, TextField, Button, Skeleton, Grid } from "@mui/material";
+import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import avatar from '../assets/avatar.jpeg';
+import { CreateUserInfo, createUser } from "./userService";
 
 const theme = createTheme();
+
+const VisuallyHiddenInput = styled('input')({
+  clip: 'rect(0 0 0 0)',
+  clipPath: 'inset(50%)',
+  height: 1,
+  overflow: 'hidden',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  whiteSpace: 'nowrap',
+  width: 1,
+});
 
 export const Signup: React.FC = () => {
   const [name, setName] = useState<string | null>('');
@@ -13,8 +28,33 @@ export const Signup: React.FC = () => {
   const [nameError, setNameError] = useState<string | null>(null);
   const [emailError, setEmailError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   const navigate = useNavigate();
+
+  const pickedImage = (event: ChangeEvent<HTMLInputElement>) => {
+    if(event.target.files && event.target.files.length > 0) {
+      setImageFile(event.target.files[0]);
+    }
+  } 
+
+  // const uploadImg = (file: File) => {
+  //     const formData = new FormData();
+  //     if (file) {
+  //       formData.append("file", file);
+  //       apiClient.post('/file?file=123.jpeg', formData, {
+  //       headers: {
+  //       'Content-Type': 'image/jpeg'
+  //       }
+  //     }).then(res => {
+  //     console.log(res);
+  //     const url = res.data.url
+  //     setImageSrc(url);
+  //     }).catch(err => {
+  //     console.log(err);
+  //     });
+  //     }
+  //   }
 
   const clickedRegister = async () => {
     // Check for empty fields
@@ -36,24 +76,16 @@ export const Signup: React.FC = () => {
     setEmailError(null);
     setPasswordError(null);
 
-    // Rest of your registration logic
-    const newUser = {
+    const newUser: CreateUserInfo = {
       email: email,
       password: password,
       name: name,
+      imageUrl: URL.createObjectURL(imageFile)
     };
 
 		try {
-			const response = await fetch("http://127.0.0.1:3000/auth/register", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(newUser),
-			});
+      createUser(newUser)
 
-      const data = await response.json();
-      console.log(JSON.stringify(data));
       navigate('/signin', { replace: true });
     } catch (error) {
       console.error('Error during registration:', error);
@@ -61,7 +93,7 @@ export const Signup: React.FC = () => {
   };
 
 	return (
-		<div style={{ background: "linear-gradient(to bottom, #ffffff, #d9d9d9)" }}>
+		<div style={{ background: "linear-gradient(to bottom, #ffffff, #2196f3)" }}>
 			<ThemeProvider theme={theme}>
 				<Container
 					component="main"
@@ -74,7 +106,8 @@ export const Signup: React.FC = () => {
 						height: "100vh",
 					}}>
 					{/* Sign Up Banner */}
-					<Typography component="h1" variant="h5" sx={{ marginBottom: 4 }}>
+          <Typography component="h1" variant="h5" sx={{ marginBottom: 4, 
+         }}>
 						Sign Up
 					</Typography>
 
@@ -90,6 +123,34 @@ export const Signup: React.FC = () => {
             }}
           >
             <form>
+
+            <Grid container justifyContent="center" alignItems="center">
+            <Grid item>
+
+            <Box>
+              <img
+                src={imageFile === null ? avatar : URL.createObjectURL(imageFile)}
+                alt="Avatar"
+                style={{
+                  width: '250px',
+                  height: '250px',
+                  borderRadius: '50%', // Make it circular
+                  objectFit: 'cover', // Preserve aspect ratio while filling the box
+                  marginBottom: '20px'
+                }}
+              />
+            </Box>
+             
+
+           </Grid>
+            </Grid>
+
+            <Button sx={{
+              background: '#2196f3' }} size="small" component="label" variant="contained" startIcon={<CloudUploadIcon />}>
+              Upload photo
+              <VisuallyHiddenInput type="file" onChange={pickedImage}/>
+            </Button>
+            
               <TextField
                 margin="normal"
                 required
