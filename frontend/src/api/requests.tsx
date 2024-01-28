@@ -39,7 +39,7 @@ export const post = async (endpoint: string, data: any) => {
 	}
 };
 
-export const deleteEndpoint = async (endpoint: string) => {
+export const deleteRequest = async (endpoint: string) => {
 	try {
 		const response = await axios.delete(endpoint, getRequestConfig());
 		return response.data;

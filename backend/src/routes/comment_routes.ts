@@ -122,6 +122,34 @@ router.delete("/:id", authMiddleware, CommentController.deleteComment);
 *               $ref: '#/components/schemas/Comment'
 */
 router.patch("/:id", authMiddleware, CommentController.editComment);
- 
+
+
+/**
+* @swagger
+* /get_by_post/{postId}:
+*   get:
+*     parameters:
+*       - in: path
+*         name: postId
+*         required: true
+*         type: string
+*         description: The id of the post to get its comments
+*     summary: get all postId comments
+*     tags: [Comment]
+*     requestBody:
+*       required: true
+*       content:
+*         application/json:
+*           schema:
+*             $ref: '#/components/schemas/Comment'
+*     responses:
+*       200:
+*         description: the comments
+*         content:
+*           application/json:
+*             schema:
+*               $ref: '#/components/schemas/Comment'
+*/
+router.get("/get_by_post/:postId", authMiddleware, CommentController.getByPost);
 
 export default router;

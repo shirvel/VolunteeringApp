@@ -10,7 +10,9 @@ export const endpoints = {
 	POST: {
 		CREATE_POST: () => base + "posts/",
 		EDIT_POST: (postId: string) => base + "posts/" + postId + "/",
-		DELETE_POST: (postId: string) => base + "posts/" + postId + "/"
+		DELETE_POST: (postId: string) => base + "posts/" + postId + "/",
+		GET_COMMENTS: (postId: string) =>
+			base + "comments/get_by_post/" + postId + "/",
 	},
 	CHAT: {
 		GET_MESSAGES: (category_name: string) =>

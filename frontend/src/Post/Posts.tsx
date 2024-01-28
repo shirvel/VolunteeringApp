@@ -6,13 +6,13 @@ import { getConnectedUser } from "./PostService";
 import { EditPostModal } from "./EditPostModal";
 import { DeletePostModal } from "./DeletePostModal";
 
-export type CreatePostDetails =  {
-    title: string;
-    content: string;
-    phoneNumber: string;
-    image: string;
-    category: string;
-  };
+export type CreatePostDetails = {
+	title: string;
+	content: string;
+	phoneNumber: string;
+	image: string;
+	category: string;
+};
 
 // TODO: use the real post id and remove this func
 export const getPostDetailsMock = () => {
@@ -28,34 +28,43 @@ export const getPostDetailsMock = () => {
 }
 
 export const Posts = () => {
+	const [open, setOpen] = useState<string | null>(null);
 
-    const [open, setOpen] = useState<string | null>(null);
-    
 	return (
-        <div>
-
-		<div className="p-4">
-			<Button onClick={() => setOpen('create')}>Create post</Button>
-			<CreatePostModal open={open === 'create'} onClose={() => setOpen(null)} />
+		<div>
+			<div className="p-4">
+				<Button onClick={() => setOpen("create")}>Create post</Button>
+				<CreatePostModal
+					open={open === "create"}
+					onClose={() => setOpen(null)}
+				/>
+			</div>
+			{
+				// TODO: Add the specific post_creator_user_id + post_details + post_id
+				getConnectedUser().id === getPostDetailsMock().user_id ? (
+					<div>
+						<div className="p-4">
+							<Button onClick={() => setOpen("update")}>Edit post</Button>
+							<EditPostModal
+								open={open === "update"}
+								onClose={() => setOpen(null)}
+								postDetails={getPostDetailsMock().details}
+								postId={getPostDetailsMock().post_id}
+							/>
+						</div>
+						<div className="p-4">
+							<Button onClick={() => setOpen("delete")}>Delete post</Button>
+							<DeletePostModal
+								open={open === "delete"}
+								onClose={() => setOpen(null)}
+								postId={getPostDetailsMock().post_id}
+							/>
+						</div>
+					</div>
+				) : (
+					<div />
+				)
+			}
 		</div>
-        { 
-        // TODO: Add the specific post_creator_user_id + post_details + post_id 
-        getConnectedUser().id === getPostDetailsMock().user_id ?
-            (<div>
-            <div className="p-4">
-                <Button onClick={() => setOpen('update')}>Edit post</Button>
-                <EditPostModal open={open === 'update'} onClose={() => setOpen(null)} postDetails={getPostDetailsMock().details} postId={getPostDetailsMock().post_id}/>
-            </div>
-            <div className="p-4">
-                <Button onClick={() => setOpen('delete')}>Delete post</Button>
-                <DeletePostModal open={open === 'delete'} onClose={() => setOpen(null)} postId={getPostDetailsMock().post_id}/>
-            </div>
-            </div>
-            ) 
-            : 
-            (<div/>)
-        }
-
-        </div>
 	);
 };
