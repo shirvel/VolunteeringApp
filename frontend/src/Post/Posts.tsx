@@ -10,7 +10,7 @@ export type CreatePostDetails = {
 	title: string;
 	content: string;
 	phoneNumber: string;
-	image: string;
+	image: string | null;
 	category: string;
 };
 

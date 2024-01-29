@@ -5,7 +5,7 @@ import { Signup } from './User/Signup';
 import { Signin } from './User/Signin';
 import { EditUserDetails } from './User/EditUserDetails';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Comment } from './Comments/comment';
+// import { Comment } from './Comments/comment';
 import { ChatPage } from './chat/ChatPage';
 import { Posts } from './Post/Posts';
 

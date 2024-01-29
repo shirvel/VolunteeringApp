@@ -6,6 +6,9 @@ import { useNavigate } from "react-router-dom";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import avatar from '../assets/avatar.jpeg';
 import { CreateUserInfo, createUser } from "./userService";
+import {uploadFile} from './../File/FileService'
+
+import { get } from "./../api/requests";
 
 const theme = createTheme();
 
@@ -37,25 +40,17 @@ export const Signup: React.FC = () => {
       setImageFile(event.target.files[0]);
     }
   } 
-
-  // const uploadImg = (file: File) => {
-  //     const formData = new FormData();
-  //     if (file) {
-  //       formData.append("file", file);
-  //       apiClient.post('/file?file=123.jpeg', formData, {
-  //       headers: {
-  //       'Content-Type': 'image/jpeg'
-  //       }
-  //     }).then(res => {
-  //     console.log(res);
-  //     const url = res.data.url
-  //     setImageSrc(url);
-  //     }).catch(err => {
-  //     console.log(err);
-  //     });
-  //     }
-  //   }
-
+/*
+  const tempRegister = async () => {
+    
+    const response = await get(
+      'http://127.0.0.1:3000/user'
+    );
+    const data = await response.data;
+    console.log(JSON.stringify(response));
+    console.log(JSON.stringify(data));
+  }
+*/
   const clickedRegister = async () => {
     // Check for empty fields
     if (!name) {
@@ -76,14 +71,16 @@ export const Signup: React.FC = () => {
     setEmailError(null);
     setPasswordError(null);
 
-    const newUser: CreateUserInfo = {
-      email: email,
-      password: password,
-      name: name,
-      imageUrl: URL.createObjectURL(imageFile)
-    };
-
 		try {
+      const url = await uploadFile(imageFile)
+
+      const newUser: CreateUserInfo = {
+        email: email,
+        password: password,
+        name: name,
+        imageUrl: url
+      };
+
       createUser(newUser)
 
       navigate('/signin', { replace: true });

@@ -89,7 +89,7 @@ function Sidebar() {
                 <Link
                   to="/posts"
                   className="button-link"
-                  onClick={() => openEditUserDialog()}
+                  onClick={() => openCreatePostDialog()}
                 >
                   <AddCircleOutlineIcon /> Create Post
                 </Link>
