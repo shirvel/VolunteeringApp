@@ -1,57 +1,14 @@
-/* Sidebar.css */
+/* App.css */
 body {
-  background-image: url('../../public/volunteer.jpg'); /* Replace 'your-image-url.jpg' with the actual URL of your background image */
-  background-size: cover; /* Cover the entire viewport with the background image */
-  background-repeat: no-repeat; /* Prevent the background image from repeating */
-  background-position: center; /* Center the background image */
-  margin: 0; /* Remove default margin */
-  padding: 0; /* Remove default padding */
-  font-family: Arial, sans-serif; /* Specify a font-family for the page */
+  margin: 0;
+  padding: 0;
+  background-image: url('../../public/volunteer.jpg'); /* Replace with your background image URL */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
-.sidebar-container {
-  width: 250px;
-  background-color: rgba(0, 0, 0, 0.5); /* Add a semi-transparent black background behind the sidebar content */
-  color: white;
-  padding: 20px;
-  display: flex; /* Use flexbox to align items vertically */
-  flex-direction: column; /* Align items vertically in a column */
+.app-bar {
+  background-color: rgba(0, 0, 0, 0.7); /* Adjust the opacity as needed */
 }
-    
-    .option-title {
-      font-size: 20px;
-      margin-bottom: 20px;
-      align-self: flex-start; /* Align the title to the left side */
-    }
-    
-    /* Style the buttons */
-    .button-link {
-      display: block;
-      text-decoration: none;
-      color: white;
-      padding: 10px 20px; /* Add horizontal padding to the buttons */
-      text-align: left; /* Align text to the left */
-      border: none; /* Remove button borders */
-      background-color: transparent; /* Make buttons transparent */
-      transition: background-color 0.3s ease; /* Add a smooth transition effect */
-    }
-    
-    /* Style the Main button */
-    .main-button {
-      background-color: #555;
-      width: 100%;
-      text-align: left;
-      padding-left: 20px;
-      margin-bottom: 10px; /* Add spacing between Main button and other buttons */
-    }
-    
-    /* Add a light black rectangle around the buttons */
-    .button-link:hover {
-      background-color: #555;
-    }
-    
-    /* Style the icons */
-    .icon {
-      margin-right: 10px;
-    }
-    

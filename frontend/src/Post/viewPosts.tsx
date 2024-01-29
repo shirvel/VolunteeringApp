@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Card, CardContent, CardMedia, Typography, Button, Dialog } from '@mui/material';
+import { Box, Card, CardContent, CardMedia, Typography, Button, Dialog , Fab, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import CloudIcon from '@mui/icons-material/Cloud';
 import ClearIcon from '@mui/icons-material/WbSunny';
 import RainIcon from '@mui/icons-material/CloudQueue';
 import DrizzleIcon from '@mui/icons-material/Grain';
 import MistIcon from '@mui/icons-material/Opacity';
+import AddIcon from '@mui/icons-material/Add'; 
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import { useNavigate } from 'react-router-dom';
+
+
 
 
 interface IViewPostsProps {
@@ -31,6 +37,9 @@ const ViewPosts: React.FC<IViewPostsProps> = () => {
   const [categories, setCategories] = useState<string[]>([]);
   const [weatherData, setWeatherData] = useState<any[]>([]); // Store weather data for each post
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(true);
+  const navigate = useNavigate();
+
 
 
 
@@ -61,7 +70,7 @@ const ViewPosts: React.FC<IViewPostsProps> = () => {
         console.error(error);
       }
     }
-
+/*
     async function fetchCategories() {
       try {
         const response = await fetch('http://localhost:3000/categories');
@@ -74,8 +83,9 @@ const ViewPosts: React.FC<IViewPostsProps> = () => {
         console.error(error);
       }
     }
-    fetchPosts();
     fetchCategories();
+    */
+    fetchPosts();
   }, []);
 
   const filterPostsByCategory = (category: string) => {
@@ -86,11 +96,28 @@ const ViewPosts: React.FC<IViewPostsProps> = () => {
   ? posts.filter((post) => post.category === selectedCategory)
   : posts;
 
+  const handleAddClick = () => {
+    navigate('/posts');
+  };
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+  };
+
+  const handleNavigateToPosts = () => {
+    navigate('/posts'); // Navigate to '/posts'
+    handleCloseDialog(); // Optionally close the dialog after navigation
+  };
+  const mockLikes = [5, 8, 12, 3, 6, 10, 15, 7];
+  const mockDislikes = [2, 4, 6, 1, 3, 5, 8, 3];
+
+
   return (
-    <div>
-    <Box p={2} bgcolor="lightgray">
-      <Typography variant="h4" align="center" gutterBottom>
-        View Posts
+    <div style={{ backgroundColor: 'lightgray', minHeight: '100vh', width: '100%' }}>
+    <Box p={2} display="flex" flexDirection="column">
+      <Box display="flex" justifyContent="space-between" alignItems="center"  marginBottom={2}></Box>
+      <Typography variant="h4" align="center" gutterBottom> 
+        Posts Page 
       </Typography>
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Button
@@ -105,7 +132,23 @@ const ViewPosts: React.FC<IViewPostsProps> = () => {
         >
           Driving
         </Button>
+        <Box
+          display="flex"
+          justifyContent="flex-end"
+          alignItems="flex-start"
+          marginTop={2}
+        >
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<AddIcon />}
+            onClick={handleAddClick}// Handle adding a new post here (e.g., open a dialog or navigate to a new page)
+          >
+            Add
+          </Button>
+        </Box>
       </Box>
+       
       {filteredPosts.map((post, index) => (
         <Card key={post._id} sx={{ display: 'flex', flexDirection: 'column', marginBottom: 2 }}>
           <CardMedia
@@ -138,8 +181,23 @@ const ViewPosts: React.FC<IViewPostsProps> = () => {
               )}
             </div>
           </CardContent>
+          <Box display="flex" alignItems="flex-start" justifyContent="space-between">
+            <div>
+              <Fab size="small" color="primary" onClick={() => handleLike(post._id)}>
+                <ThumbUpIcon />
+              </Fab>
+              <Typography variant="body2">{mockLikes[index]}</Typography>
+            </div>
+            <div>
+              <Fab size="small" color="secondary" onClick={() => handleDislike(post._id)}>
+                <ThumbDownIcon />
+              </Fab>
+              <Typography variant="body2">{mockDislikes[index]}</Typography>
+            </div>
+          </Box>
         </Card>
       ))}
+
     </Box>
   </div>
 );
