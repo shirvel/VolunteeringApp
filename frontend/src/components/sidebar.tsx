@@ -1,6 +1,7 @@
-import React , { useState }from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import './sidebar.css';
+import { Drawer, List, ListItem, ListItemIcon, ListItemText, Typography, Divider } from '@mui/material';
+import { styled } from '@mui/system'; // Import styled from @mui/system
 import EditIcon from '@mui/icons-material/Edit';
 import ChatIcon from '@mui/icons-material/Chat';
 import ViewListIcon from '@mui/icons-material/ViewList';
@@ -11,12 +12,96 @@ import { EditUserDetailsModal } from "../User/EditUserDetailsModal";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import HomeIcon from '@mui/icons-material/Home';
 
-function Sidebar() {
+const drawerWidth = 250;
+import backgroundImage from '../../public/volunteer.jpg'; // Import the image
+const SidebarContainer = styled('div')({
+  display: 'flex',
+});
+
+const Sidebar = styled(Drawer)({
+  width: drawerWidth,
+  flexShrink: 0,
+});
+
+const SidebarPaper = {
+  width: drawerWidth,
+  background: 'rgba(0, 0, 0, 0.5)', // Semi-transparent black background
+};
+
+const backgroundImageStyle: React.CSSProperties = {
+  backgroundImage: `url('${backgroundImage}')`, // Set your background image URL here
+  backgroundSize: 'cover',
+  position: 'absolute',
+  width: '100%',
+  height: '100%',
+  zIndex: -1, // Place the background image behind other content
+};
+
+const OptionTitle = styled('h1')({
+  fontSize: 20,
+  marginBottom: 20,
+  alignSelf: 'flex-start', // Align the title to the left side
+});
+
+const ButtonLink = styled('a')({
+  display: 'block',
+  textDecoration: 'none',
+  color: 'white',
+  padding: '10px 20px', // Add horizontal padding to the buttons
+  textAlign: 'left', // Align text to the left
+  border: 'none', // Remove button borders
+  backgroundColor: 'transparent', // Make buttons transparent
+  transition: 'background-color 0.3s ease', // Add a smooth transition effect
+});
+
+const MainButton = styled('button')({
+  backgroundColor: '#555',
+  width: '100%',
+  textAlign: 'left',
+  paddingLeft: 20,
+  marginBottom: 10, // Add spacing between Main button and other buttons
+});
+
+const ButtonListItem = styled(ListItem)({
+  '&:hover': {
+    backgroundColor: '#555',
+  },
+});
+
+const Icon = styled('span')({
+  marginRight: 10,
+});
+
+const StyledHomeIcon = styled(HomeIcon)({
+  marginRight: 10,
+});
+
+const StyledChatIcon = styled(ChatIcon)({
+  marginRight: 10,
+});
+
+const StyledViewListIcon = styled(ViewListIcon)({
+  marginRight: 10,
+});
+
+const StyledCommentIcon = styled(CommentIcon)({
+  marginRight: 10,
+});
+
+const StyledAddCircleOutlineIcon = styled(AddCircleOutlineIcon)({
+  marginRight: 10,
+});
+
+const ContentWrapper = styled('div')({
+  width: '100%',
+  position: 'relative',
+});
+
+function SidebarComponent() {
   const [isCreatePostDialogOpen, setCreatePostDialogOpen] = useState(false); // State for dialog visibility
   const [isEditUserDialogOpen, setEditUserDialogOpen] = useState(false);
   const [isMainButtonVisible, setMainButtonVisible] = useState(true);
   const [areOtherButtonsVisible, setOtherButtonsVisible] = useState(false);
-
 
   // Function to open the Create Post dialog
   const openCreatePostDialog = () => {
@@ -27,97 +112,99 @@ function Sidebar() {
   const closeCreatePostDialog = () => {
     setCreatePostDialogOpen(false);
   };
+
   const openEditUserDialog = () => {
     setEditUserDialogOpen(true);
   };
-  
+
   // Function to close the Edit User dialog
   const closeEditUserDialog = () => {
     setEditUserDialogOpen(false);
   };
 
   return (
-    <div className="sidebar-container">
-    <div className="sidebar">
-      <h1 className="option-title">Choose Your Option</h1>
-      <nav>
-        <ul>
+    <SidebarContainer>
+      <Sidebar
+        sx={SidebarPaper} // Apply styles using sx prop
+        variant="permanent"
+        anchor="left"
+      >
+        <OptionTitle>Choose Your Option</OptionTitle>
+        <List>
           {isMainButtonVisible && (
-            <li className="button-list-item">
+            <ButtonListItem>
               {/* Show the Main button */}
-              <button
-                className="button-link main-button"
+              <MainButton
+                className={`button-link ${MainButton}`}
                 onClick={() => {
                   setMainButtonVisible(false);
                   setOtherButtonsVisible(true);
                 }}
               >
-                <HomeIcon /> Main
-              </button>
-            </li>
+                <StyledHomeIcon /> Main
+              </MainButton>
+            </ButtonListItem>
           )}
           {areOtherButtonsVisible && (
             <>
-              <li>
+              <ButtonListItem>
                 {/* Show the Chat button */}
-                <Link to="/chat" className="button-link">
-                  <ChatIcon /> Chat
+                <Link to="/chat" className={`button-link ${ButtonLink}`}>
+                  <StyledChatIcon /> Chat
                 </Link>
-              </li>
-              <li>
+              </ButtonListItem>
+              <ButtonListItem>
                 {/* Show the View Posts button */}
-                <Link to="/view-posts" className="button-link">
-                  <ViewListIcon /> View Posts
+                <Link to="/view-posts" className={`button-link ${ButtonLink}`}>
+                  <StyledViewListIcon /> View Posts
                 </Link>
-              </li>
-              <li>
+              </ButtonListItem>
+              <ButtonListItem>
                 {/* Show the Comment button */}
-                <Link to="/comment" className="button-link">
-                  <CommentIcon /> Comment
+                <Link to="/comment" className={`button-link ${ButtonLink}`}>
+                  <StyledCommentIcon /> Comment
                 </Link>
-              </li>
-              <li>
+              </ButtonListItem>
+              <ButtonListItem>
                 <Link
                   to="/edit-user"
-                  className="button-link"
+                  className={`button-link ${ButtonLink}`}
                   onClick={() => openEditUserDialog()}
                 >
-                  <EditIcon /> Edit User
+                  <EditIcon/> Edit User
                 </Link>
-              </li>
-              <li>
+              </ButtonListItem>
+              <ButtonListItem>
                 <Link
                   to="/posts"
-                  className="button-link"
-                  onClick={() => openEditUserDialog()}
+                  className={`button-link ${ButtonLink}`}
+                  onClick={() => openCreatePostDialog()}
                 >
-                  <AddCircleOutlineIcon /> Create Post
+                  <StyledAddCircleOutlineIcon /> Create Post
                 </Link>
-              </li>
+              </ButtonListItem>
             </>
           )}
-        </ul>
-      </nav>
-    </div>
-    {!isMainButtonVisible && (
-      <li>
-        <button
-          className="button-link back-button"
-          onClick={() => {
-            setMainButtonVisible(true);
-            setOtherButtonsVisible(false);
-          }}
-        >
-          <ArrowBackIcon /> Back
-        </button>
-      </li>
-    )}
-
-    {/* Pass the dialog state to CreatePostModal */}
-    <CreatePostModal open={isCreatePostDialogOpen} onClose={closeCreatePostDialog} />
-    <EditUserDetailsModal open={isEditUserDialogOpen} onClose={closeEditUserDialog} />
-  </div>
-);
+        </List>
+        {!isMainButtonVisible && (
+          <ButtonListItem>
+            <button
+              className={`button-link back-button ${ButtonLink}`}
+              onClick={() => {
+                setMainButtonVisible(true);
+                setOtherButtonsVisible(false);
+              }}
+            >
+              <ArrowBackIcon/> Back
+            </button>
+          </ButtonListItem>
+        )}
+      </Sidebar>
+      <ContentWrapper>
+        <div style={backgroundImageStyle}></div>
+      </ContentWrapper>
+    </SidebarContainer>
+  );
 }
 
-export default Sidebar;
+export default SidebarComponent;
