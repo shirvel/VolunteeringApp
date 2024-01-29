@@ -2,10 +2,16 @@ import { Avatar, Divider, IconButton, Paper } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import React, { useState } from "react";
-import { CommentI, deleteComment, editComment } from "./CommentService";
+import { CommentI, editComment } from "./CommentService";
 import { EditCommentModal } from "./EditCommentModal";
 
-export const CommentComp = ({ comment }: { comment: CommentI }) => {
+export const CommentComp = ({
+	comment,
+	deleteComment,
+}: {
+	comment: CommentI;
+	deleteComment: () => void;
+}) => {
 	const [openEdit, setOpenEdit] = useState(false);
 	const [content, setContent] = useState(comment.content);
 	return (
@@ -16,7 +22,7 @@ export const CommentComp = ({ comment }: { comment: CommentI }) => {
 					<IconButton onClick={() => setOpenEdit(true)}>
 						<EditIcon />
 					</IconButton>
-					<IconButton onClick={() => deleteComment(comment._id)}>
+					<IconButton onClick={deleteComment}>
 						<DeleteIcon />
 					</IconButton>
 				</div>
