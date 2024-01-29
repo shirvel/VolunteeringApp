@@ -1,9 +1,12 @@
-import { Dialog, DialogTitle, TextField, Button, Grid, InputLabel, NativeSelect, FormControl } from "@mui/material";
-
-import { useState } from "react";
+import { Dialog, DialogTitle, TextField, Button, Grid, InputLabel, NativeSelect, FormControl, Box } from "@mui/material";
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
+import ClearIcon from '@mui/icons-material/Clear';
+import { useState, ChangeEvent } from "react";
 import { CreatePostDetails } from "./Posts";
 import React from "react";
 import { createPost } from "./PostService";
+import {uploadFile} from './../File/FileService'
 
 export interface DialogProps {
 	open: boolean;
@@ -15,14 +18,36 @@ const sendPostCreateToServer = (postDetails: CreatePostDetails) => {
 	createPost(postDetails);
 };
 
+const VisuallyHiddenInput = styled('input')({
+	clip: 'rect(0 0 0 0)',
+	clipPath: 'inset(50%)',
+	height: 1,
+	overflow: 'hidden',
+	position: 'absolute',
+	bottom: 0,
+	left: 0,
+	whiteSpace: 'nowrap',
+	width: 1,
+  });
+
 export const CreatePostModal = (props: DialogProps) => {
 	const { onClose, open } = props;
 
 	const handleClose = () => {
 		onClose();
-    };
+	};
+	
+	const pickedImage = (event: ChangeEvent<HTMLInputElement>) => {
+		if(event.target.files && event.target.files.length > 0) {
+		  setImageFile(event.target.files[0]);
+		}
+	  } 
+
+	const removeImage = () => {
+		setImageFile(null);
+	};
     
-	const handleCreate = () => {
+	const handleCreate = async () => {
 
 		// Check for empty fields
 		if (!title) {
@@ -43,12 +68,13 @@ export const CreatePostModal = (props: DialogProps) => {
 		setContentError(null);
 		setPhoneNumberError(null);
 
+		const image = await uploadFile(imageFile)
 		sendPostCreateToServer({ title, content, phoneNumber, image, category });
 
 		setTitle('');
 		setContent('');
 		setPhoneNumber('');
-		setImage('');
+		setImageFile(null);
 		setCategory('Community');
 
 		onClose();
@@ -57,13 +83,12 @@ export const CreatePostModal = (props: DialogProps) => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
-    const [image, setImage] = useState('');
 	const [category, setCategory] = useState('Community');
+	const [imageFile, setImageFile] = useState<File | null>(null);
 
 	const [titleError, setTitleError] = useState<string | null>(null);
 	const [contentError, setContentError] = useState<string | null>(null);
 	const [phoneNumberError, setPhoneNumberError] = useState<string | null>(null);
-
 
 
 	return (
@@ -144,19 +169,45 @@ export const CreatePostModal = (props: DialogProps) => {
 					/>
 				</Grid>
 
-                <Grid item xs={12}>
-					<TextField
-					    required
-						label="Image"
-						variant="outlined"
-						className="w-full"
-						value={image}
-						onChange={(event) => setImage(event.target.value)}
-					/>
-				</Grid>
-
-            
+				<Grid item xs={12}>
+				<Button sx={{
+              background: '#2196f3' }} size="small" component="label" variant="contained" startIcon={<CloudUploadIcon />}>
+              Upload photo
+              <VisuallyHiddenInput type="file" onChange={pickedImage}/>
+            </Button>
 			</Grid>
+			{imageFile ? (
+				<Grid item xs={12}>
+				<Box position="relative">
+						<Button
+						sx={{
+						color: 'white',
+						position: 'absolute',
+						top: 0,
+						left: -10,
+						zIndex: 1,
+						}}
+						onClick={removeImage}
+					>
+						<ClearIcon />
+					</Button>
+				  <img
+					src={URL.createObjectURL(imageFile)}
+					alt="Photo"
+					style={{
+					  width: '250px',
+					  height: '250px',
+					  borderRadius: '5%', 
+					  objectFit: 'cover',
+					  marginBottom: '20px'
+					}}
+				  />
+				</Box>
+				</Grid>
+			) : (<Grid/>)}
+			
+			</Grid>
+			
 			<Button onClick={handleCreate}>Create Post</Button>
 		</Dialog>
 	);

@@ -9,7 +9,7 @@ export interface IPost {
   title: string;
   content: string;
   phoneNumber: string;
-  image: string;
+  image?: string;
   category: string;
   likes: number;
   likedBy: string[];

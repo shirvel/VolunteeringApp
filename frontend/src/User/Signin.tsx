@@ -68,7 +68,7 @@ export const Signin: React.FC = () => {
 	};
 
 	return (
-		<div style={{ background: "linear-gradient(to bottom, #ffffff, #d9d9d9)" }}>
+		<div style={{ background: "linear-gradient(to bottom, #ffffff, #2196f3)" }}>
 			<ThemeProvider theme={theme}>
 				<Container
 					component="main"
