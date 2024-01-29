@@ -62,6 +62,7 @@ import Auth from '../controllers/auth_controller';
 */
 
 router.post("/register", Auth.register);
+router.post("/google", Auth.googleSignin);
 
 /**
 * @swagger

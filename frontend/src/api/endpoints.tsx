@@ -8,7 +8,8 @@ export const endpoints = {
 	},
 	USER: {
 		UPDATE_USER: (id: string) => base + "user/" + id + "/",
-		CREATE_USER: () => base + "auth/register/"
+		CREATE_USER: () => base + "auth/register/",
+		CREATE_USER_GOOGLE: () =>  base + "auth/google/"
 	},
 	POST: {
 		CREATE_POST: () => base + "posts/",
