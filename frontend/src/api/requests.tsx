@@ -13,7 +13,6 @@ const getRequestConfig = () => {
 export const get = async (endpoint: string) => {
 	try {
 		const response = await axios.get(endpoint, getRequestConfig());
-
 		return response.data;
 	} catch (error) {
 		console.log(error);

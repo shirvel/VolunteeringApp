@@ -1,28 +1,25 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
 function Sidebar() {
-  return (
-    <div className="sidebar">
-      <h1>Please choose you option</h1>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/chat">Chat</Link>
-          </li>
-          <li>
-            <Link to="/view-posts">View Posts</Link>
-          </li>
-          <li>
-            <Link to="/comment">Comment</Link>
-          </li>
-          <li>
-            <Link to="/edit-user">Edit User</Link>
-          </li>
-        </ul>
-      </nav>
-    </div>
-  );
+	return (
+		<div className="sidebar">
+			<h1>Please choose you option</h1>
+			<nav>
+				<ul>
+					<li>
+						<Link to="/chat">Chat</Link>
+					</li>
+					<li>
+						<Link to="/view-posts">View Posts</Link>
+					</li>
+					<li>
+						<Link to="/edit-user">Edit User</Link>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	);
 }
 
 export default Sidebar;
