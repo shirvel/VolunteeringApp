@@ -9,6 +9,7 @@ const register = async (req: Request, res: Response) => {
     const email = req.body.email;
     const password = req.body.password;
     const name = req.body.name;
+    const imageUrl = req.body.imageUrl;
 
     if (email == null || password == null || name == null) {
         return res.status(400).send("Missing email, password or name!!!");
@@ -22,7 +23,7 @@ const register = async (req: Request, res: Response) => {
        }
        const salt = await bcrypt.genSalt(10);
         const encryptedPassword = await bcrypt.hash(password, salt);
-        const newUser = await User.create({ 'email': email, 'password': encryptedPassword, 'name': name });
+        const newUser = await User.create({ 'email': email, 'password': encryptedPassword, 'name': name, 'imageUrl': imageUrl });
         return res.status(201).send(newUser);
 
    } catch(err) {
