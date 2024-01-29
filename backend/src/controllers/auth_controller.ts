@@ -1,7 +1,9 @@
-import User from '../models/user_model';
+import User, { IUser } from '../models/user_model';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
+import { OAuth2Client } from 'google-auth-library';
+import { Document } from 'mongoose';
 
 const register = async (req: Request, res: Response) => {
 
@@ -127,4 +129,56 @@ const logout = async (req: Request, res: Response) => {
     });
 }
 
-export default { register, login, logout, refresh};
+const client = new OAuth2Client();
+const googleSignin = async (req: Request, res: Response) => {
+    console.log(req.body);
+    try {
+        const ticket = await client.verifyIdToken({
+            idToken: req.body.credential,
+            audience: process.env.GOOGLE_CLIENT_ID,
+        });
+        const payload = ticket.getPayload();
+        const email = payload?.email;
+        if (email != null) {
+            let user = await User.findOne({ 'email': email });
+            if (user == null) {
+                user = await User.create(
+                    {
+                        'email': email,
+                        'password': 'pass',
+                        'name': payload?.name,
+                        'imageUrl': payload?.picture
+                    });
+            }
+            const tokens = await generateTokens(user);
+            res.status(200).send(
+                {
+                    email: user.email,
+                    name: user.name,
+                    _id: user._id,
+                    imageUrl: user.imageUrl,
+                    ...tokens
+                })
+        }
+    } catch (err) {
+        return res.status(400).send(err.message);
+    }
+}
+
+const generateTokens = async (user: Document & IUser) => {
+    const accessToken = await jwt.sign({ _id: user._id, name: user.name }, process.env.JWT_ACCESS_TOKEN_SECRET, { expiresIn: process.env.JWT_TOKEN_EXPIRATION });
+    const refreshToken = jwt.sign({ _id: user._id }, process.env.JWT_REFRESH_SECRET);
+    if (user.refreshTokens == null) {
+        user.refreshTokens = [refreshToken];
+    } else {
+        user.refreshTokens.push(refreshToken);
+    }
+    await user.save();
+
+    return {
+        'accessToken': accessToken,
+        'refreshToken': refreshToken
+    };
+}
+
+export default { register, login, logout, refresh, googleSignin};

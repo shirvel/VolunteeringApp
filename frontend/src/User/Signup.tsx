@@ -1,14 +1,13 @@
 // SignUp.tsx
 import React, { useState, ChangeEvent } from "react";
-import { Container, Typography, Box, TextField, Button, Skeleton, Grid } from "@mui/material";
+import { Container, Typography, Box, TextField, Button, Grid } from "@mui/material";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import avatar from '../assets/avatar.jpeg';
-import { CreateUserInfo, createUser } from "./userService";
-import {uploadFile} from './../File/FileService'
-
-import { get } from "./../api/requests";
+import { CreateUserInfo, createUser, googleSignin, parseLocalStorageData } from "./userService";
+import {uploadFile} from './../File/FileService';
+import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 
 const theme = createTheme();
 
@@ -22,6 +21,14 @@ const VisuallyHiddenInput = styled('input')({
   left: 0,
   whiteSpace: 'nowrap',
   width: 1,
+});
+
+const GoogleLoginContainer = styled('div')({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  marginTop: 15,
+  width: "100%"
 });
 
 export const Signup: React.FC = () => {
@@ -88,6 +95,24 @@ export const Signup: React.FC = () => {
       console.error('Error during registration:', error);
     }
   };
+
+  const onGoogleLoginSuccess = async (credentialResponse: CredentialResponse) => {
+    console.log(credentialResponse);
+    try {
+      const response = await googleSignin(credentialResponse);
+      parseLocalStorageData(response);
+      console.log(response);
+    }
+    catch(error) {
+      console.log(error);
+    }
+    navigate('/',  { replace: true });
+    
+  }
+
+  const onGoogleLoginFaliure = () => {
+    console.log("Google login failed!");
+  }
 
 	return (
 		<div style={{ background: "linear-gradient(to bottom, #ffffff, #2196f3)" }}>
@@ -204,6 +229,9 @@ export const Signup: React.FC = () => {
               >
                 Register
               </Button>
+              <GoogleLoginContainer>
+              <GoogleLogin onSuccess={onGoogleLoginSuccess} onError={onGoogleLoginFaliure} width="350" locale="en_US"/>
+              </GoogleLoginContainer>
             </form>
           </Box>
         </Container>
