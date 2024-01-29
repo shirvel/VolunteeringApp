@@ -25,4 +25,8 @@ export const endpoints = {
 	CATEGORIES: {
 		BASE: base + "categories/",
 	},
+	COMMENTS: {
+		BASE: base + "comments/",
+		DELETE_OR_EDIT: (commentId: string) => base + "comments/" + commentId + "/",
+	},
 };

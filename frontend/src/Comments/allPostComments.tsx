@@ -1,35 +1,50 @@
 import { getAllComments } from "../Post/PostService";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { CommentComp, CommentI } from "./comment";
+import { CommentComp } from "./comment";
+import { CommentI, deleteComment } from "./CommentService";
 
 export const AllPostComments = () => {
 	const [searchParams] = useSearchParams();
-	const [comments, setComments] = useState<CommentI[]>([
-		{
-			post_id: searchParams.get("postId") ?? "test",
-			user_name: "test",
-			content: "content",
+	const [comments, setComments] = useState<CommentI[]>([]);
+
+	const deleteCommentFromPostComments = useCallback(
+		(commentId: string) => () => {
+			deleteComment(commentId);
+			setComments((comments) =>
+				comments.filter((comment) => comment._id != commentId)
+			);
 		},
-	]);
+		[comments, setComments]
+	);
 
 	useEffect(() => {
 		const postId = searchParams.get("postId");
 		const loadAllComments = async () => {
 			if (postId) {
-				const response = getAllComments(postId);
-				// setComments(response);
-				console.log(response);
+				const response = await getAllComments(postId);
+				setComments(response);
 			}
 		};
 		loadAllComments();
 	}, []);
+
 	return (
-		<div>
-			comments for post: {searchParams.get("postId")}
-			{comments.map((comment, index) => (
-				<CommentComp comment={comment} />
-			))}
-		</div>
+		<>
+			{comments.length !== 0 ? (
+				<div>
+					{comments.map((comment, index) => (
+						<div key={index}>
+							<CommentComp
+								comment={comment}
+								deleteComment={deleteCommentFromPostComments(comment._id)}
+							/>
+						</div>
+					))}
+				</div>
+			) : (
+				<div>This post has no comments yet</div>
+			)}
+		</>
 	);
 };

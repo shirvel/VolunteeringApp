@@ -1,19 +1,44 @@
-import { Avatar, Grid, Paper } from "@mui/material";
-import React from "react";
+import { Avatar, Divider, IconButton, Paper } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import React, { useState } from "react";
+import { CommentI, editComment } from "./CommentService";
+import { EditCommentModal } from "./EditCommentModal";
 
-export type CommentI = { post_id: string; user_name: string; content: string };
-
-export const CommentComp = ({ comment }: { comment: CommentI }) => {
+export const CommentComp = ({
+	comment,
+	deleteComment,
+}: {
+	comment: CommentI;
+	deleteComment: () => void;
+}) => {
+	const [openEdit, setOpenEdit] = useState(false);
+	const [content, setContent] = useState(comment.content);
 	return (
 		<Paper className="p-4 w-50">
-			<Grid container wrap="nowrap" spacing={2}>
-				<Grid item>
-					<Avatar alt={comment.user_name} src={"userImage"} />
-				</Grid>
-				<Grid item xs zeroMinWidth>
-					<p style={{ textAlign: "left" }}>{comment.content}</p>
-				</Grid>
-			</Grid>
+			<div className="flex items-center justify-between">
+				<Avatar alt={comment.user_name} src={"userImage"} />
+				<div>
+					<IconButton onClick={() => setOpenEdit(true)}>
+						<EditIcon />
+					</IconButton>
+					<IconButton onClick={deleteComment}>
+						<DeleteIcon />
+					</IconButton>
+				</div>
+			</div>
+			<Divider className="py-2" />
+			{content}
+			<EditCommentModal
+				handleUpdate={(newContent: string) => {
+					editComment(comment, newContent);
+					setContent(newContent);
+					setOpenEdit(false);
+				}}
+				open={openEdit}
+				onClose={() => setOpenEdit(false)}
+				comment={comment}
+			/>
 		</Paper>
 	);
 };
