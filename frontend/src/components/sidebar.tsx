@@ -9,6 +9,7 @@ import { CreatePostModal } from "../Post/CreatePostModal";
 import { EditUserDetailsModal } from "../User/EditUserDetailsModal";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import HomeIcon from "@mui/icons-material/Home";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 function Sidebar() {
 	const [isCreatePostDialogOpen, setCreatePostDialogOpen] = useState(false); // State for dialog visibility
@@ -81,6 +82,14 @@ function Sidebar() {
 										className="button-link"
 										onClick={() => openCreatePostDialog()}>
 										<AddCircleOutlineIcon /> Create Post
+									</Link>
+								</li>
+								<li>
+									<Link
+										to="/signin"
+										className="button-link"
+										onClick={() => localStorage.clear()}>
+										<LogoutIcon /> Logout
 									</Link>
 								</li>
 							</>
