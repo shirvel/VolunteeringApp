@@ -14,6 +14,8 @@ import RainIcon from "@mui/icons-material/CloudQueue";
 import DrizzleIcon from "@mui/icons-material/Grain";
 import MistIcon from "@mui/icons-material/Opacity";
 import { createSearchParams } from "react-router-dom";
+import { AddCommentModal } from "../Comments/AddCommentModal";
+import { getAllComments } from "./PostService";
 
 interface IViewPostsProps {
 	isSidebarOpen: boolean;
@@ -38,6 +40,8 @@ const ViewPosts: React.FC<IViewPostsProps> = () => {
 	const [categories, setCategories] = useState<string[]>([]);
 	const [weatherData, setWeatherData] = useState<any[]>([]); // Store weather data for each post
 	const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+	const [openAddComment, setOpenAddComment] = useState(false);
+	const [numberOfComments, setNumberOfComments] = useState(0); //TODO: change to real number in only post
 
 	const navigate = useNavigate();
 	const moveToCommentPage = useCallback((post: IPost) => {
@@ -138,8 +142,19 @@ const ViewPosts: React.FC<IViewPostsProps> = () => {
 							</Typography>
 							<Typography variant="body1">{post.content}</Typography>
 							<Button onClick={() => moveToCommentPage(post)}>
-								to this post comments
+								{numberOfComments} comments
 							</Button>
+							<Button onClick={() => setOpenAddComment(true)}>
+								Add Comment
+							</Button>
+							<AddCommentModal
+								open={openAddComment}
+								onClose={() => setOpenAddComment(false)}
+								postId={post._id}
+								handleAddComment={() => {
+									setNumberOfComments((num) => num + 1);
+								}}
+							/>
 							<div
 								style={{
 									display: "flex",
