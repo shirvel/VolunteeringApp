@@ -98,16 +98,14 @@ function Sidebar() {
 				</nav>
 			</div>
 			{!isMainButtonVisible && (
-				<li>
-					<button
-						className="button-link back-button"
-						onClick={() => {
-							setMainButtonVisible(true);
-							setOtherButtonsVisible(false);
-						}}>
-						<ArrowBackIcon /> Back
-					</button>
-				</li>
+				<button
+					className="button-link back-button"
+					onClick={() => {
+						setMainButtonVisible(true);
+						setOtherButtonsVisible(false);
+					}}>
+					<ArrowBackIcon /> Back
+				</button>
 			)}
 
 			{/* Pass the dialog state to CreatePostModal */}
