@@ -24,7 +24,12 @@ export const App = () => {
 				<Route
 					path="/*"
 					element={
-						<div style={{ display: "flex" }}>
+						<div
+							style={{
+								display: "flex",
+								minHeight: "100vh",
+								minWidth: "100wh",
+							}}>
 							<Sidebar />
 							<Routes>
 								<Route path="/chat" element={<ChatPage />} />

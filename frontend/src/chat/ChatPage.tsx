@@ -22,7 +22,7 @@ export const ChatPage = () => {
 	}, [searchParams]);
 
 	return (
-		<div>
+		<div className="w-full">
 			<div className="flex items-center">
 				{categories.map((category, index) => (
 					<div className="p-4">
@@ -40,7 +40,7 @@ export const ChatPage = () => {
 					</div>
 				))}
 			</div>
-			<div className="p-4">
+			<div className="p-4 w-full">
 				<GroupChat />
 			</div>
 		</div>
