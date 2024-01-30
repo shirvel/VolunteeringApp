@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./sidebar.css";
-import EditIcon from "@mui/icons-material/Edit";
 import ChatIcon from "@mui/icons-material/Chat";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
@@ -10,6 +9,7 @@ import { EditUserDetailsModal } from "../User/EditUserDetailsModal";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import HomeIcon from "@mui/icons-material/Home";
 import LogoutIcon from "@mui/icons-material/Logout";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 
 function Sidebar() {
 	const [isCreatePostDialogOpen, setCreatePostDialogOpen] = useState(false); // State for dialog visibility
@@ -25,9 +25,6 @@ function Sidebar() {
 	// Function to close the Create Post dialog
 	const closeCreatePostDialog = () => {
 		setCreatePostDialogOpen(false);
-	};
-	const openEditUserDialog = () => {
-		setEditUserDialogOpen(true);
 	};
 
 	// Function to close the Edit User dialog
@@ -70,18 +67,15 @@ function Sidebar() {
 								</li>
 								<li>
 									<Link
-										to="/edit-user"
-										className="button-link"
-										onClick={() => openEditUserDialog()}>
-										<EditIcon /> Edit User
-									</Link>
-								</li>
-								<li>
-									<Link
 										to="/posts"
 										className="button-link"
 										onClick={() => openCreatePostDialog()}>
 										<AddCircleOutlineIcon /> Create Post
+									</Link>
+								</li>
+								<li>
+									<Link to="/user-details" className="button-link">
+										<ManageAccountsIcon /> Your details
 									</Link>
 								</li>
 								<li>
@@ -112,10 +106,6 @@ function Sidebar() {
 			<CreatePostModal
 				open={isCreatePostDialogOpen}
 				onClose={closeCreatePostDialog}
-			/>
-			<EditUserDetailsModal
-				open={isEditUserDialogOpen}
-				onClose={closeEditUserDialog}
 			/>
 		</div>
 	);

@@ -33,7 +33,7 @@ const putUserById = async (req: Request, res: Response) => {
        try {
            let user;
         if (req.body.email) {
-             user = await User.findOneAndUpdate({_id: req.params.id}, {"email" :req.body.email});
+             user = await User.findOneAndUpdate({_id: req.params.id}, {"email" :req.body.email, "name": req.body.name});
         
         }
         res.status(204).json({"message": user});

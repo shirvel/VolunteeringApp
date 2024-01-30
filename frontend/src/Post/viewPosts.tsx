@@ -109,7 +109,7 @@ const ViewPosts: React.FC<IViewPostsProps> = () => {
 		: posts;
 
 	return (
-		<div>
+		<div className="overflow-y-scroll h-screen w-full">
 			<Box p={2} bgcolor="lightgray">
 				<Typography variant="h4" align="center" gutterBottom>
 					View Posts
