@@ -124,6 +124,7 @@ const updatePostByID = async (req, res) => {
 
 const deletePostById = async (req, res) => {
     try {
+      await Comment.deleteMany({post_id: req.params.id});
       const post = await Post.findOneAndDelete({_id: req.params.id});
       if (!post) {
         console.log(`Post with ID ${req.params.postId} wasn't found for deletion`);
