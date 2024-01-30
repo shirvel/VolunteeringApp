@@ -15,7 +15,6 @@ import DrizzleIcon from "@mui/icons-material/Grain";
 import MistIcon from "@mui/icons-material/Opacity";
 import { createSearchParams } from "react-router-dom";
 import { AddCommentModal } from "../Comments/AddCommentModal";
-import { getAllComments } from "./PostService";
 import MessageIcon from "@mui/icons-material/Message";
 
 interface IViewPostsProps {
