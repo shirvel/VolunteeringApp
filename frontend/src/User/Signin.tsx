@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Container, Typography, Box, TextField, Button } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
+import { parseLocalStorageData } from "./userService";
 
 const theme = createTheme();
 
@@ -14,19 +14,6 @@ export const Signin: React.FC = () => {
 	const [passwordError, setPasswordError] = useState<string | null>(null);
 
 	const navigate = useNavigate();
-
-	interface tokenDetails {
-		accessToken: string;
-		refreshToken: string;
-	}
-
-	const parseLocalStorageData = (data: tokenDetails) => {
-		localStorage.setItem("accessToken", data.accessToken);
-		localStorage.setItem("refreshToken", data.refreshToken);
-		const parsedToken = jwtDecode(data.accessToken);
-		localStorage.setItem("userId", parsedToken._id);
-		localStorage.setItem("userName", parsedToken.name);
-	};
 
 	const clickedLogin = async () => {
 		// Check for empty fields
@@ -68,7 +55,7 @@ export const Signin: React.FC = () => {
 	};
 
 	return (
-		<div style={{ background: "linear-gradient(to bottom, #ffffff, #d9d9d9)" }}>
+		<div style={{ background: "linear-gradient(to bottom, #ffffff, #2196f3)" }}>
 			<ThemeProvider theme={theme}>
 				<Container
 					component="main"

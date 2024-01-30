@@ -1,14 +1,58 @@
-/* App.css */
+/* Sidebar.css */
 body {
-  margin: 0;
-  padding: 0;
-  background-image: url('../../public/volunteer.jpg'); /* Replace with your background image URL */
-  background-size: cover;
+  background-image: url('../../public/volunteer.jpg');
+  background-size: cover; 
+  background-repeat: no-repeat; 
   background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  margin: 0; 
+  padding: 0;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
 }
 
-.app-bar {
-  background-color: rgba(0, 0, 0, 0.7); /* Adjust the opacity as needed */
+.sidebar-container {
+  width: 250px;
+  background-color: rgba(0, 0, 0, 0.5); 
+  color: white;
+  padding: 20px;
+  display: flex; 
+  flex-direction: column; 
 }
+    
+    .option-title {
+      font-size: 20px;
+      margin-bottom: 20px;
+      align-self: flex-start; 
+    }
+    
+
+    .button-link {
+      display: block;
+      text-decoration: none;
+      color: white;
+      padding: 10px 20px; 
+      text-align: left; 
+      border: none; 
+      background-color: transparent; 
+      transition: background-color 0.3s ease; 
+    }
+    
+   
+    .main-button {
+      background-color: #555;
+      width: 100%;
+      text-align: left;
+      padding-left: 20px;
+      margin-bottom: 10px; 
+    }
+    
+   
+    .button-link:hover {
+      background-color: #555;
+    }
+    
+    
+    .icon {
+      margin-right: 10px;
+    }
+    

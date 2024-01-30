@@ -1,9 +1,22 @@
-import { Dialog, DialogTitle, TextField, Button, Grid, InputLabel, NativeSelect, FormControl } from "@mui/material";
-
-import { useState } from "react";
+import {
+	Dialog,
+	DialogTitle,
+	TextField,
+	Button,
+	Grid,
+	InputLabel,
+	NativeSelect,
+	FormControl,
+	Box,
+} from "@mui/material";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { styled } from "@mui/material/styles";
+import ClearIcon from "@mui/icons-material/Clear";
+import { useState, ChangeEvent } from "react";
 import { CreatePostDetails } from "./Posts";
 import React from "react";
 import { createPost } from "./PostService";
+import { uploadFile } from "./../File/FileService";
 
 export interface DialogProps {
 	open: boolean;
@@ -15,56 +28,76 @@ const sendPostCreateToServer = (postDetails: CreatePostDetails) => {
 	createPost(postDetails);
 };
 
+const VisuallyHiddenInput = styled("input")({
+	clip: "rect(0 0 0 0)",
+	clipPath: "inset(50%)",
+	height: 1,
+	overflow: "hidden",
+	position: "absolute",
+	bottom: 0,
+	left: 0,
+	whiteSpace: "nowrap",
+	width: 1,
+});
+
 export const CreatePostModal = (props: DialogProps) => {
 	const { onClose, open } = props;
 
 	const handleClose = () => {
 		onClose();
-    };
-    
-	const handleCreate = () => {
+	};
 
+	const pickedImage = (event: ChangeEvent<HTMLInputElement>) => {
+		if (event.target.files && event.target.files.length > 0) {
+			setImageFile(event.target.files[0]);
+		}
+	};
+
+	const removeImage = () => {
+		setImageFile(null);
+	};
+
+	const handleCreate = async () => {
 		// Check for empty fields
 		if (!title) {
-		setTitleError('Title is required');
-		return;
+			setTitleError("Title is required");
+			return;
 		}
 		if (!content) {
-		setContentError('Content is required');
-		return;
+			setContentError("Content is required");
+			return;
 		}
 		if (!phoneNumber) {
-		setPhoneNumberError('Phone number is required');
-		return;
+			setPhoneNumberError("Phone number is required");
+			return;
 		}
-	
+
 		// Clear any previous error messages
 		setTitleError(null);
 		setContentError(null);
 		setPhoneNumberError(null);
 
+		const image = await uploadFile(imageFile);
 		sendPostCreateToServer({ title, content, phoneNumber, image, category });
 
-		setTitle('');
-		setContent('');
-		setPhoneNumber('');
-		setImage('');
-		setCategory('Community');
+		setTitle("");
+		setContent("");
+		setPhoneNumber("");
+		setImageFile(null);
+		setCategory("Community");
 
 		onClose();
 	};
-					 
-    const [title, setTitle] = useState('');
-    const [content, setContent] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [image, setImage] = useState('');
-	const [category, setCategory] = useState('Community');
+
+	const [title, setTitle] = useState("");
+	const [content, setContent] = useState("");
+	const [phoneNumber, setPhoneNumber] = useState("");
+	const [category, setCategory] = useState("Community");
+	const [imageFile, setImageFile] = useState<File | null>(null);
 
 	const [titleError, setTitleError] = useState<string | null>(null);
 	const [contentError, setContentError] = useState<string | null>(null);
 	const [phoneNumberError, setPhoneNumberError] = useState<string | null>(null);
-
-
 
 	return (
 		<Dialog onClose={handleClose} open={open}>
@@ -74,45 +107,44 @@ export const CreatePostModal = (props: DialogProps) => {
 			<Grid container spacing={3} className="p-4">
 				<Grid item xs={12}>
 					<TextField
-					    required
+						required
 						label="Title"
 						variant="outlined"
 						className="w-full"
 						value={title}
 						error={!!titleError}
-                		helperText={titleError}
+						helperText={titleError}
 						onChange={(event) => {
-							setTitle(event.target.value)
+							setTitle(event.target.value);
 							setTitleError(null); // Clear error on input change
 						}}
 					/>
 				</Grid>
 				<Grid item xs={12}>
-				<FormControl sx={{ width: '100%' }}>
-					<InputLabel variant="standard" htmlFor="uncontrolled-native">
-						Category
-					</InputLabel>
-					<NativeSelect
-						defaultValue={"Community"}
-						inputProps={{
-						name: 'category',
-						id: 'uncontrolled-native',
-						}}
-						onChange={(event) => setCategory(event.target.value)}
-					>
-						<option value={"Community"}>Community</option>
-						<option value={"Animals"}>Animals</option>
-						<option value={"Elderly"}>Elderly</option>
-						<option value={"Cooking"}>Cooking</option>
-						<option value={"Transportation"}>Transportation</option>
-						<option value={"Other"}>Other</option>
-					</NativeSelect>
+					<FormControl sx={{ width: "100%" }}>
+						<InputLabel variant="standard" htmlFor="uncontrolled-native">
+							Category
+						</InputLabel>
+						<NativeSelect
+							defaultValue={"Community"}
+							inputProps={{
+								name: "category",
+								id: "uncontrolled-native",
+							}}
+							onChange={(event) => setCategory(event.target.value)}>
+							<option value={"Community"}>Community</option>
+							<option value={"Animals"}>Animals</option>
+							<option value={"Elderly"}>Elderly</option>
+							<option value={"Cooking"}>Cooking</option>
+							<option value={"Transportation"}>Transportation</option>
+							<option value={"Other"}>Other</option>
+						</NativeSelect>
 					</FormControl>
 				</Grid>
 
-                <Grid item xs={12}>
+				<Grid item xs={12}>
 					<TextField
-                		required
+						required
 						multiline
 						rows={8}
 						label="Content"
@@ -120,43 +152,75 @@ export const CreatePostModal = (props: DialogProps) => {
 						className="w-full"
 						value={content}
 						error={!!contentError}
-                		helperText={contentError}
+						helperText={contentError}
 						onChange={(event) => {
-							setContent(event.target.value)
+							setContent(event.target.value);
 							setContentError(null); // Clear error on input change
 						}}
 					/>
 				</Grid>
 
-                <Grid item xs={12}>
+				<Grid item xs={12}>
 					<TextField
-                		required
+						required
 						label="Phone Number"
 						variant="outlined"
 						className="w-full"
 						value={phoneNumber}
 						error={!!phoneNumberError}
-                		helperText={phoneNumberError}
+						helperText={phoneNumberError}
 						onChange={(event) => {
-							setPhoneNumber(event.target.value)
+							setPhoneNumber(event.target.value);
 							setPhoneNumberError(null); // Clear error on input change
 						}}
 					/>
 				</Grid>
 
-                <Grid item xs={12}>
-					<TextField
-					    required
-						label="Image"
-						variant="outlined"
-						className="w-full"
-						value={image}
-						onChange={(event) => setImage(event.target.value)}
-					/>
+				<Grid item xs={12}>
+					<Button
+						sx={{
+							background: "#2196f3",
+						}}
+						size="small"
+						component="label"
+						variant="contained"
+						startIcon={<CloudUploadIcon />}>
+						Upload photo
+						<VisuallyHiddenInput type="file" onChange={pickedImage} />
+					</Button>
 				</Grid>
-
-            
+				{imageFile ? (
+					<Grid item xs={12}>
+						<Box position="relative">
+							<Button
+								sx={{
+									color: "white",
+									position: "absolute",
+									top: 0,
+									left: -10,
+									zIndex: 1,
+								}}
+								onClick={removeImage}>
+								<ClearIcon />
+							</Button>
+							<img
+								src={URL.createObjectURL(imageFile)}
+								alt="Photo"
+								style={{
+									width: "250px",
+									height: "250px",
+									borderRadius: "5%",
+									objectFit: "cover",
+									marginBottom: "20px",
+								}}
+							/>
+						</Box>
+					</Grid>
+				) : (
+					<Grid />
+				)}
 			</Grid>
+
 			<Button onClick={handleCreate}>Create Post</Button>
 		</Dialog>
 	);

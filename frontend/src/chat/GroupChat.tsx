@@ -40,6 +40,7 @@ export const GroupChat = () => {
 			<Grid container>
 				<Grid item xs={11} className="p-4">
 					<TextField
+						color="secondary"
 						className="flex-grow w-full"
 						label="Type your message"
 						variant="outlined"
@@ -49,6 +50,7 @@ export const GroupChat = () => {
 				</Grid>
 				<Grid item xs={1}>
 					<Button
+						color="secondary"
 						className="p-4 h-full"
 						onClick={() => {
 							console.log(messageToSend);

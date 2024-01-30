@@ -3,8 +3,13 @@ const base = "http://127.0.0.1:3000/";
 export const socketUrl = "http://localhost:3000";
 export const endpoints = {
 	BASE: "http://127.0.0.1:3000/",
+	FILE: {
+		UPLOAD_FILE: () => base + 'file/'
+	},
 	USER: {
 		UPDATE_USER: (id: string) => base + "user/" + id + "/",
+		CREATE_USER: () => base + "auth/register/",
+		CREATE_USER_GOOGLE: () =>  base + "auth/google/"
 	},
 	POST: {
 		CREATE_POST: () => base + "posts/",
@@ -19,5 +24,9 @@ export const endpoints = {
 	},
 	CATEGORIES: {
 		BASE: base + "categories/",
+	},
+	COMMENTS: {
+		BASE: base + "comments/",
+		DELETE_OR_EDIT: (commentId: string) => base + "comments/" + commentId + "/",
 	},
 };

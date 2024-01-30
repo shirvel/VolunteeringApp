@@ -22,18 +22,27 @@ export const ChatPage = () => {
 	}, [searchParams]);
 
 	return (
-		<div>
-			{categories.map((category, index) => (
-				<Button
-					key={index}
-					variant={
-						category === searchParams.get("category") ? "contained" : "outlined"
-					}
-					onClick={() => onClickCategory(category)}>
-					{category}
-				</Button>
-			))}
-			<GroupChat />
+		<div className="w-full">
+			<div className="flex items-center">
+				{categories.map((category, index) => (
+					<div className="p-4">
+						<Button
+							color="secondary"
+							key={index}
+							variant={
+								category === searchParams.get("category")
+									? "contained"
+									: "outlined"
+							}
+							onClick={() => onClickCategory(category)}>
+							{category}
+						</Button>
+					</div>
+				))}
+			</div>
+			<div className="p-4 w-full">
+				<GroupChat />
+			</div>
 		</div>
 	);
 };

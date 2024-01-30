@@ -1,9 +1,10 @@
 import axios from "axios";
 
-const getRequestConfig = () => {
+const getRequestConfig = (headers?: any) => {
 	const token = localStorage.getItem("accessToken");
 	return {
 		headers: {
+			...headers,
 			Authorization: "JWT " + token,
 		},
 	};
@@ -13,7 +14,6 @@ const getRequestConfig = () => {
 export const get = async (endpoint: string) => {
 	try {
 		const response = await axios.get(endpoint, getRequestConfig());
-
 		return response.data;
 	} catch (error) {
 		console.log(error);
@@ -30,9 +30,9 @@ export const patch = async (endpoint: string, data: any) => {
 	}
 };
 
-export const post = async (endpoint: string, data: any) => {
+export const post = async (endpoint: string, data: any, headers?: any) => {
 	try {
-		const response = await axios.post(endpoint, data, getRequestConfig());
+		const response = await axios.post(endpoint, data, getRequestConfig(headers));
 		return response.data;
 	} catch (error) {
 		console.log(error);

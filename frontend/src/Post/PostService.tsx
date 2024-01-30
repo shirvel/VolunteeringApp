@@ -1,6 +1,7 @@
 import { endpoints } from "../api/endpoints";
 import { CreatePostDetails } from "./Posts";
 import { deleteRequest, post, patch, get } from "../api/requests";
+import { CommentI } from "Comments/CommentService";
 
 export const getConnectedUser = () => {
 	const usrId = localStorage.getItem("userId");
@@ -37,5 +38,5 @@ export const deletePost = async (postId: string) => {
 
 export const getAllComments = async (postId: string) => {
 	const response = await get(endpoints.POST.GET_COMMENTS(postId));
-	return response.data;
+	return response as CommentI[];
 };
