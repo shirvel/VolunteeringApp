@@ -75,8 +75,11 @@ const login = async (req: Request, res: Response) => {
 }
 
 const refresh = async (req: Request, res: Response) => {
-    const authHeader = req.headers['authorization'];
+    console.log('start refresh');
+    const authHeader = req.headers['Authorization'] as string;
+    console.log('authHeader=' + authHeader)
     const refreshToken = authHeader && authHeader.split(' ')[1]; // Bearer <token>
+    console.log('refreshToken=' + refreshToken)
     if (refreshToken == null) return res.sendStatus(401);
     jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET, async (err, user: { '_id': string }) => {
         if (err) {
@@ -84,17 +87,22 @@ const refresh = async (req: Request, res: Response) => {
             return res.sendStatus(401);
         }
         try {
+            console.log('try=')
             const userDb = await User.findOne({ '_id': user._id });
             if (!userDb.refreshTokens || !userDb.refreshTokens.includes(refreshToken)) {
                 userDb.refreshTokens = [];
                 await userDb.save();
                 return res.sendStatus(401);
             }
+            console.log('AFTER USER DB=')
             const accessToken = jwt.sign({ _id: user._id }, process.env.JWT_ACCESS_TOKEN_SECRET, { expiresIn: process.env.JWT_TOKEN_EXPIRATION });
             const newRefreshToken = jwt.sign({ _id: user._id }, process.env.JWT_REFRESH_SECRET);
             userDb.refreshTokens = userDb.refreshTokens.filter(t => t !== refreshToken);
             userDb.refreshTokens.push(newRefreshToken);
+            console.log('BEFIRE save')
             await userDb.save();
+            console.log('after save  AT: ' + accessToken + "    RT: " + refreshToken)
+
             return res.status(200).send({
                 'accessToken': accessToken,
                 'refreshToken': refreshToken

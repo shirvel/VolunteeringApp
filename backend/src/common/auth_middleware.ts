@@ -9,11 +9,13 @@ export interface AuthResquest extends Request {
 //req: AuthResquest
 
 const authMiddleware = (req, res, next) => {
-    const authHeader = req.headers['authorization'];
+    console.log('start mid')
+    const authHeader = req.headers['Authorization'];
+    console.log('auth=' + authHeader)
     const token = authHeader && authHeader.split(' ')[1]; // Bearer <token>
     
     if (token == null) return res.sendStatus(401);
-
+    console.log('start verify')
     jwt.verify(token, process.env.JWT_ACCESS_TOKEN_SECRET, (err, user) => {
         console.log
         (err);

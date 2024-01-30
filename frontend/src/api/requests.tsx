@@ -1,19 +1,21 @@
-import axios from "axios";
+import axios from "../api/axiosConfig";
 
 const getRequestConfig = (headers?: any) => {
 	const token = localStorage.getItem("accessToken");
 	return {
 		headers: {
-			...headers,
 			Authorization: "JWT " + token,
+			...headers
 		},
 	};
 };
 
 //TODO: add token to every request
-export const get = async (endpoint: string) => {
+export const get = async (endpoint: string, headers?: any) => {
 	try {
-		const response = await axios.get(endpoint, getRequestConfig());
+		console.log('config=' + JSON.stringify(getRequestConfig(headers)))
+		const response = await axios.get(endpoint, getRequestConfig(headers));
+		console.log('done')
 		return response.data;
 	} catch (error) {
 		console.log(error);
@@ -47,3 +49,4 @@ export const deleteRequest = async (endpoint: string) => {
 		console.log(error);
 	}
 };
+
