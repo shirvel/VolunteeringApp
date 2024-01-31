@@ -34,7 +34,11 @@ export const patch = async (endpoint: string, data: any) => {
 
 export const post = async (endpoint: string, data: any, headers?: any) => {
 	try {
-		const response = await axios.post(endpoint, data, getRequestConfig(headers));
+		const response = await axios.post(
+			endpoint,
+			data,
+			getRequestConfig(headers)
+		);
 		return response.data;
 	} catch (error) {
 		console.log(error);

@@ -1,34 +1,25 @@
 import { Dialog, DialogTitle, TextField, Button, Grid } from "@mui/material";
 
 import { useState } from "react";
-import { UserDetails } from "./EditUserDetails";
 import React from "react";
-import { updateUser } from "./userService";
+import { UserDetails } from "./UserDetailsComp";
 
 export interface DialogProps {
 	open: boolean;
 	onClose: () => void;
 }
 
-const sendUserUpdateToServer = (userDetails: UserDetails) => {
-	console.log(userDetails);
-	updateUser(userDetails);
-};
-
-export const EditUserDetailsModal = (props: DialogProps) => {
-	const { onClose, open } = props;
+export const EditUserDetailsModal = (
+	props: DialogProps & {
+		handleUpdate: (details: UserDetails) => void;
+		details: UserDetails;
+	}
+) => {
+	const { onClose, open, handleUpdate, details } = props;
 
 	const handleClose = () => {
 		onClose();
 	};
-
-	const handleUpdate = () => {
-		sendUserUpdateToServer({ name: username, email });
-		onClose();
-	};
-
-	// TODO: Remove Mock
-	const details = { name: "shir", email: "Shir@gmail.com" };
 
 	const [username, setUsername] = useState(details.name);
 	const [email, setEmail] = useState(details.email);
@@ -58,7 +49,9 @@ export const EditUserDetailsModal = (props: DialogProps) => {
 					/>
 				</Grid>
 			</Grid>
-			<Button onClick={handleUpdate}>Update</Button>
+			<Button onClick={() => handleUpdate({ email, name: username })}>
+				Update
+			</Button>
 		</Dialog>
 	);
 };

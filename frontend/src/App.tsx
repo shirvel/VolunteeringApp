@@ -3,10 +3,10 @@ import Sidebar from "./components/sidebar";
 import ViewPosts from "./Post/viewPosts";
 import { Signup } from "./User/Signup";
 import { Signin } from "./User/Signin";
-import { EditUserDetails } from "./User/EditUserDetails";
+import { UserDetailsComp } from "./User/UserDetailsComp";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ChatPage } from "./chat/ChatPage";
-import { Posts } from "./Post/Posts";
+import { Posts } from "./Post/Posts-deprecated";
 import { AllPostComments } from "./Comments/allPostComments";
 
 export const App = () => {
@@ -24,7 +24,12 @@ export const App = () => {
 				<Route
 					path="/*"
 					element={
-						<div style={{ display: "flex" }}>
+						<div
+							style={{
+								display: "flex",
+								minHeight: "100vh",
+								minWidth: "100wh",
+							}}>
 							<Sidebar />
 							<Routes>
 								<Route path="/chat" element={<ChatPage />} />
@@ -37,7 +42,7 @@ export const App = () => {
 										/>
 									}
 								/>
-								<Route path="/edit-user" element={<EditUserDetails />} />
+								<Route path="/user-details" element={<UserDetailsComp />} />
 								<Route path="/comments" element={<AllPostComments />}></Route>
 								<Route path="/posts" element={<Posts />} />
 							</Routes>

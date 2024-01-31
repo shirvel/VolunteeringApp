@@ -50,6 +50,7 @@ router.get("/", authMiddleware, User.getAllUsers);
 
 
 router.get("/:id", authMiddleware, User.getUserById);
+router.get("/get_by_name/:name", authMiddleware, User.getUserByName);
 router.patch("/:id", authMiddleware, User.putUserById);
 router.delete("/:id", authMiddleware, User.deleteUserById);
 
