@@ -1,6 +1,6 @@
 // SignUp.tsx
 import React, { useState, ChangeEvent } from "react";
-import { Container, Typography, Box, TextField, Button, Grid } from "@mui/material";
+import { Container, Typography, Box, TextField, Button, Grid, Link } from "@mui/material";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -133,7 +133,7 @@ export const Signup: React.FC = () => {
 						component="h1"
 						variant="h5"
 						sx={{
-						marginBottom: 6,
+						marginBottom: 4,
 						fontSize: "4rem",
 						color: "#ffffff",
 						fontWeight: "bold",
@@ -246,6 +246,27 @@ export const Signup: React.FC = () => {
               <GoogleLoginContainer>
               <GoogleLogin onSuccess={onGoogleLoginSuccess} onError={onGoogleLoginFaliure} width="350" locale="en_US"/>
               </GoogleLoginContainer>
+
+              <Typography
+							variant="body2"
+							color="textSecondary"
+							sx={{ marginTop: 3, textAlign: "center" }}
+							>
+							Have an account already?{" "}
+
+							<Link
+							component="button"
+							variant="body2"
+							//onClick={() => clickedSignup} 
+							 onClick={() => {
+							 	navigate("/signin", {replace: true});
+							 }}
+							sx={{ fontWeight: "bold", cursor: "pointer" }}
+							>
+							Sign In
+							</Link>
+							</Typography>
+
             </form>
           </Box>
         </Container>
