@@ -75,7 +75,9 @@ const ViewPosts: React.FC<IViewPostsProps> = () => {
 					))}
 				</Box>
 				{filteredPosts.map((post, index) => (
-					<Post weatherData={weatherData[index]} post={post} />
+					<div key={index}>
+						<Post weatherData={weatherData[index]} post={post} />
+					</div>
 				))}
 			</Box>
 		</div>
