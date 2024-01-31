@@ -2,6 +2,7 @@ import { endpoints } from "../api/endpoints";
 import { CreatePostDetails } from "./Posts-deprecated";
 import { deleteRequest, post, patch, get } from "../api/requests";
 import { CommentI } from "Comments/CommentService";
+import { IPost, Post } from "./Post";
 
 export const getConnectedUser = () => {
 	const usrId = localStorage.getItem("userId");
@@ -28,6 +29,14 @@ export const editPost = async (content: string, postId: string) => {
 	const data = await response.data;
 	console.log(JSON.stringify(data));
 };
+export const getallposts = async (): Promise<IPost[]> => {
+    console.log(endpoints.POST.GET_ALL_POSTS());
+    const response = await fetch(endpoints.POST.GET_ALL_POSTS());
+    const data = await response.json(); // Corrected line
+    console.log(JSON.stringify(data));
+    return data;
+};
+
 
 export const deletePost = async (postId: string) => {
 	console.log(endpoints.POST.DELETE_POST(postId));
