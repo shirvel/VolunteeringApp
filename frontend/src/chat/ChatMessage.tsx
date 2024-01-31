@@ -1,5 +1,7 @@
 import { Avatar, Box, Chip } from "@mui/material";
-import React from "react";
+import { UserDetails } from "../User/UserDetailsComp";
+import { getUserById } from "../User/userService";
+import React, { useEffect, useState } from "react";
 
 export type Message = {
 	content: string;
@@ -8,11 +10,21 @@ export type Message = {
 };
 
 const isMessageFromCurrentUser = (message: Message) => {
-	console.log();
 	return message.userId === localStorage.getItem("userId");
 };
 
 export const ChatMessage = ({ message }: { message: Message }) => {
+	const [writerDetails, setWriterDetails] = useState<UserDetails | null>();
+
+	useEffect(() => {
+		const loadUserDetails = async () => {
+			const details = await getUserById(message.userId);
+			setWriterDetails(details);
+		};
+		loadUserDetails();
+	}, []);
+
+	if (!message.userName) return null;
 	return (
 		<div>
 			{isMessageFromCurrentUser(message) ? (
@@ -26,7 +38,9 @@ export const ChatMessage = ({ message }: { message: Message }) => {
 				<Chip
 					sx={{ backgroundColor: "#e6ffff", height: "10vh" }}
 					avatar={
-						<Avatar sx={{ backgroundColor: "#00cccc" }}>
+						<Avatar
+							sx={{ backgroundColor: "#00cccc" }}
+							src={writerDetails?.imageUrl}>
 							{message.userName[0]}
 						</Avatar>
 					}

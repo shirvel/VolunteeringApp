@@ -6,7 +6,7 @@ import { Signin } from "./User/Signin";
 import { UserDetailsComp } from "./User/UserDetailsComp";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ChatPage } from "./chat/ChatPage";
-import { Posts } from "./Post/Posts";
+import { Posts } from "./Post/Posts-deprecated";
 import { AllPostComments } from "./Comments/allPostComments";
 import { Navigate } from 'react-router-dom';
 import PrivateRoute from './components/privateRoute';

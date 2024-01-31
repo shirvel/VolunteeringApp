@@ -13,7 +13,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useState, ChangeEvent } from "react";
-import { CreatePostDetails } from "./Posts";
+import { CreatePostDetails } from "./Posts-deprecated";
 import React from "react";
 import { createPost } from "./PostService";
 import { uploadFile } from "./../File/FileService";

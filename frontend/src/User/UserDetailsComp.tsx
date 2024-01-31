@@ -48,19 +48,21 @@ export const UserDetailsComp = () => {
 				<Typography className="flex justify-center">
 					{userDetails?.email}
 				</Typography>
-				<img
-					src={userDetails?.imageUrl}
-					alt="Avatar"
-					style={{
-						width: "200px",
-						height: "200px",
-						borderRadius: "50%",
-						objectFit: "cover",
-						marginLeft: "auto",
-						marginRight: "auto",
-						marginBottom: "20px",
-					}}
-				/>
+				{userDetails?.imageUrl && (
+					<img
+						src={userDetails?.imageUrl}
+						alt="Avatar"
+						style={{
+							width: "200px",
+							height: "200px",
+							borderRadius: "50%",
+							objectFit: "cover",
+							marginLeft: "auto",
+							marginRight: "auto",
+							marginBottom: "20px",
+						}}
+					/>
+				)}
 				<div className="flex justify-center">
 					<Button variant="contained" onClick={() => setOpen(true)}>
 						<EditIcon />
@@ -68,11 +70,14 @@ export const UserDetailsComp = () => {
 					</Button>
 				</div>
 			</Card>
-			<EditUserDetailsModal
-				open={open}
-				handleUpdate={handleUpdate}
-				onClose={() => setOpen(false)}
-			/>
+			{userDetails && (
+				<EditUserDetailsModal
+					open={open}
+					handleUpdate={handleUpdate}
+					details={userDetails}
+					onClose={() => setOpen(false)}
+				/>
+			)}
 		</div>
 	);
 };

@@ -20,6 +20,15 @@ const getAllUsers = async (req: Request, res: Response) => {
   
 };
 
+const getUserByName = async (req: Request, res: Response) => {
+    try {
+        const users = await User.findOne({name: req.params.name});
+        res.send(users);
+    } catch (err) {
+        res.status(500).json( {message: err.message} );
+    }
+};
+
 const getUserById = async (req: Request, res: Response) => {
     try {
         const users = await User.findById(req.params.id);
@@ -53,4 +62,4 @@ const putUserById = async (req: Request, res: Response) => {
     }
 };
 
-export default { getAllUsers, getUserById, putUserById, deleteUserById };
+export default { getAllUsers, getUserById, putUserById, deleteUserById, getUserByName };

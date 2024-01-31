@@ -28,11 +28,6 @@ function Sidebar() {
 		setCreatePostDialogOpen(false);
 	};
 
-	// Function to close the Edit User dialog
-	const closeEditUserDialog = () => {
-		setEditUserDialogOpen(false);
-	};
-
 	return (
 		<div className="sidebar-container">
 			<div className="sidebar">

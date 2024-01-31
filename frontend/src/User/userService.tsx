@@ -13,11 +13,20 @@ export type CreateUserInfo = {
 	refreshToken?: string;
 };
 
+export const getUserById = async (id: string) => {
+	const response = await get(endpoints.USER.UPDATE_USER(id));
+	return response as UserDetails;
+};
+
+export const getUserByName = async (name: string) => {
+	const response = await get(endpoints.USER.GET_BY_NAME(name));
+	return response as UserDetails;
+};
+
 export const getConnectedUser = async () => {
 	const connectedUserId = localStorage.getItem("userId");
 	if (connectedUserId) {
-		const response = await get(endpoints.USER.UPDATE_USER(connectedUserId));
-		return response as UserDetails;
+		return await getUserById(connectedUserId);
 	}
 	return null;
 };
@@ -35,8 +44,7 @@ export const updateUser = async (user: UserDetails) => {
 
 export const createUser = async (user: CreateUserInfo) => {
 	const response = await post(endpoints.USER.CREATE_USER(), user);
-	const data = await response.data;
-	console.log(JSON.stringify(data));
+	console.log(JSON.stringify(response));
 };
 
 export const googleSignin = async (credentialResponse: CredentialResponse) => {

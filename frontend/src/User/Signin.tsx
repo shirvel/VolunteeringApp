@@ -1,6 +1,6 @@
 // Signin.tsx
 import React, { useState } from "react";
-import { Container, Typography, Box, TextField, Button } from "@mui/material";
+import { Container, Typography, Box, TextField, Button, Link } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { parseLocalStorageData } from "./userService";
@@ -54,6 +54,10 @@ export const Signin: React.FC = () => {
 		}
 	};
 
+	// const clickedSignup = async () => {
+	// 	navigate("/signin", { replace: true });
+	// }
+
 	return (
 		<div style={{ background: "linear-gradient(to bottom, #ffffff, #2196f3)" }}>
 			<ThemeProvider theme={theme}>
@@ -68,9 +72,23 @@ export const Signin: React.FC = () => {
 						height: "100vh",
 					}}>
 					{/* Sign In Banner */}
-					<Typography component="h1" variant="h5" sx={{ marginBottom: 4 }}>
-						Sign In
-					</Typography>
+					<Typography
+						component="h1"
+						variant="h5"
+						sx={{
+						marginBottom: 6,
+						fontSize: "4rem",
+						color: "#ffffff",
+						fontWeight: "bold",
+						position: "relative",
+						textAlign: "center",
+						// Add a black border around the text
+						WebkitTextStroke: "1px black", // for WebKit browsers
+						textStroke: "2px black", // for other browsers
+						}}
+						>
+							Sign In
+						</Typography>
 
 					{/* Signin Form */}
 					<Box
@@ -122,6 +140,27 @@ export const Signin: React.FC = () => {
 								onClick={clickedLogin}>
 								Log In
 							</Button>
+
+							<Typography
+							variant="body2"
+							color="textSecondary"
+							sx={{ marginTop: 3, textAlign: "center" }}
+						>
+							Don't have an account yet?{" "}
+
+							<Link
+							component="button"
+							variant="body2"
+							//onClick={() => clickedSignup} 
+							 onClick={() => {
+							 	navigate("/signup", {replace: true});
+							 }}
+							sx={{ fontWeight: "bold", cursor: "pointer" }}
+							>
+							Sign up
+							</Link>
+							</Typography>
+
 						</form>
 					</Box>
 				</Container>

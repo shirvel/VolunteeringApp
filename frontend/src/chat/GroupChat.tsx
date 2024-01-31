@@ -25,7 +25,8 @@ export const GroupChat = () => {
 		const loadAllMessages = async () => {
 			if (category) {
 				const response = await loadFormerMessages(category);
-				setMessages(response);
+				console.log(response);
+				setMessages(response.messages);
 			}
 		};
 		loadAllMessages();
@@ -68,11 +69,13 @@ export const GroupChat = () => {
 					</Button>
 				</Grid>
 			</Grid>
-			{messages?.map((message, index) => (
-				<div key={index}>
-					<ChatMessage message={message} />
-				</div>
-			))}
+			<div className="overflow-y-scroll h-80">
+				{messages?.map((message, index) => (
+					<div key={index}>
+						<ChatMessage message={message} />
+					</div>
+				))}
+			</div>
 		</div>
 	);
 };

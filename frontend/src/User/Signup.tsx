@@ -1,6 +1,6 @@
 // SignUp.tsx
 import React, { useState, ChangeEvent } from "react";
-import { Container, Typography, Box, TextField, Button, Grid } from "@mui/material";
+import { Container, Typography, Box, TextField, Button, Grid, Link } from "@mui/material";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -8,6 +8,7 @@ import avatar from '../assets/avatar.jpeg';
 import { CreateUserInfo, createUser, googleSignin, parseLocalStorageData } from "./userService";
 import {uploadFile} from './../File/FileService';
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
+import { get } from "../api/requests";
 
 const theme = createTheme();
 
@@ -128,10 +129,23 @@ export const Signup: React.FC = () => {
 						height: "100vh",
 					}}>
 					{/* Sign Up Banner */}
-          <Typography component="h1" variant="h5" sx={{ marginBottom: 4, 
-         }}>
-						Sign Up
-					</Typography>
+          <Typography
+						component="h1"
+						variant="h5"
+						sx={{
+						marginBottom: 4,
+						fontSize: "4rem",
+						color: "#ffffff",
+						fontWeight: "bold",
+						position: "relative",
+						textAlign: "center",
+						// Add a black border around the text
+						WebkitTextStroke: "1px black", // for WebKit browsers
+						textStroke: "2px black", // for other browsers
+						}}
+						>
+							Sign Up
+						</Typography>
 
           {/* Signup Form */}
           <Box
@@ -156,8 +170,8 @@ export const Signup: React.FC = () => {
                 style={{
                   width: '250px',
                   height: '250px',
-                  borderRadius: '50%', // Make it circular
-                  objectFit: 'cover', // Preserve aspect ratio while filling the box
+                  borderRadius: '50%', 
+                  objectFit: 'cover', 
                   marginBottom: '20px'
                 }}
               />
@@ -232,6 +246,27 @@ export const Signup: React.FC = () => {
               <GoogleLoginContainer>
               <GoogleLogin onSuccess={onGoogleLoginSuccess} onError={onGoogleLoginFaliure} width="350" locale="en_US"/>
               </GoogleLoginContainer>
+
+              <Typography
+							variant="body2"
+							color="textSecondary"
+							sx={{ marginTop: 3, textAlign: "center" }}
+							>
+							Have an account already?{" "}
+
+							<Link
+							component="button"
+							variant="body2"
+							//onClick={() => clickedSignup} 
+							 onClick={() => {
+							 	navigate("/signin", {replace: true});
+							 }}
+							sx={{ fontWeight: "bold", cursor: "pointer" }}
+							>
+							Sign In
+							</Link>
+							</Typography>
+
             </form>
           </Box>
         </Container>
