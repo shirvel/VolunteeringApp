@@ -1,6 +1,7 @@
 import express from "express";
 const router = express.Router();
 import multer from "multer";
+import post_controller from "../controllers/post_controller";
 
 const base = "http://" + process.env.DOMAIN_BASE + ":" + process.env.PORT + "/";
 const storage = multer.diskStorage({
