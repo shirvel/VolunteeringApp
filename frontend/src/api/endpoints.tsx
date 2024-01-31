@@ -15,6 +15,9 @@ export const endpoints = {
 		CREATE_POST: () => base + "posts/",
 		EDIT_POST: (postId: string) => base + "posts/" + postId + "/",
 		DELETE_POST: (postId: string) => base + "posts/" + postId + "/",
+		AddLike: (postId: string) => base + "posts/" + postId + "/like",
+		AddDisLike: (postId: string) => base + "posts/" + postId + "/dislike",
+		getAllPosts: () => base + "post/",
 		GET_COMMENTS: (postId: string) =>
 			base + "comments/get_by_post/" + postId + "/",
 	},
@@ -29,4 +32,7 @@ export const endpoints = {
 		BASE: base + "comments/",
 		DELETE_OR_EDIT: (commentId: string) => base + "comments/" + commentId + "/",
 	},
+	WEATHER: {
+		GET_WEATHER: (location: string) => "https://api.openweathermap.org/data/2.5/weather?units=metric&q=" + location + `&appid=${process.env.APIWEATHERKEY}`
+	}
 };

@@ -5,6 +5,7 @@ import React from "react";
 import { getConnectedUser } from "./PostService";
 import { EditPostModal } from "./EditPostModal";
 import { DeletePostModal } from "./DeletePostModal";
+import { Addikemodel }from "./AddLikeToPost";
 
 export type CreatePostDetails = {
 	title: string;
@@ -12,6 +13,8 @@ export type CreatePostDetails = {
 	phoneNumber: string;
 	image: string | null;
 	category: string;
+	likes: number;
+	dislikes: number;
 };
 
 // TODO: use the real post id and remove this func
@@ -22,13 +25,18 @@ export const getPostDetailsMock = () => {
                 content: 'This is a content',
                 phoneNumber: '54354',
                 image: 'lk',
-                category: 'Community'
+                category: 'Community',
+				likes: 10,
+				dislikes: 0,
             } as CreatePostDetails
         };
 }
 
 export const Posts = () => {
 	const [open, setOpen] = useState<string | null>(null);
+	const [likeCount, setLikeCount] = useState(getPostDetailsMock().details.likes);
+	const [dislikeCount, setDislikeCount] = useState(getPostDetailsMock().details.dislikes);
+
 
 	return (
 		<div>
@@ -52,6 +60,12 @@ export const Posts = () => {
 								postId={getPostDetailsMock().post_id}
 							/>
 						</div>
+						<div className="p-4">
+                			<Addikemodel 
+								postId={getPostDetailsMock().post_id}
+								userId={getPostDetailsMock().user_id}
+							/>
+            			</div>
 						<div className="p-4">
 							<Button onClick={() => setOpen("delete")}>Delete post</Button>
 							<DeletePostModal

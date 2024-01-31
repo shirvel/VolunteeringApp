@@ -11,6 +11,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 
+
 function Sidebar() {
 	const [isCreatePostDialogOpen, setCreatePostDialogOpen] = useState(false); // State for dialog visibility
 	const [isEditUserDialogOpen, setEditUserDialogOpen] = useState(false);
