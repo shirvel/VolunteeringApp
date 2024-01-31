@@ -8,6 +8,7 @@ import avatar from '../assets/avatar.jpeg';
 import { CreateUserInfo, createUser, googleSignin, parseLocalStorageData } from "./userService";
 import {uploadFile} from './../File/FileService';
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
+import { get } from "../api/requests";
 
 const theme = createTheme();
 
@@ -169,8 +170,8 @@ export const Signup: React.FC = () => {
                 style={{
                   width: '250px',
                   height: '250px',
-                  borderRadius: '50%', // Make it circular
-                  objectFit: 'cover', // Preserve aspect ratio while filling the box
+                  borderRadius: '50%', 
+                  objectFit: 'cover', 
                   marginBottom: '20px'
                 }}
               />
