@@ -44,8 +44,7 @@ export const updateUser = async (user: UserDetails) => {
 
 export const createUser = async (user: CreateUserInfo) => {
 	const response = await post(endpoints.USER.CREATE_USER(), user);
-	const data = await response.data;
-	console.log(JSON.stringify(data));
+	console.log(JSON.stringify(response));
 };
 
 export const googleSignin = async (credentialResponse: CredentialResponse) => {

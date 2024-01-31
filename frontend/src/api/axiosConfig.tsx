@@ -1,3 +1,4 @@
+
 import { jwtDecode } from "jwt-decode";
 import { endpoints } from "./endpoints";
 import axios from "axios";
@@ -5,7 +6,10 @@ import axios from "axios";
 const duplicateAxiosInstance = axios.create();
 
 axios.interceptors.request.use(async (config) => {
-	let accessToken = localStorage.getItem("accessToken");
+  let accessToken = localStorage.getItem("accessToken");
+  if (!accessToken) {
+    return config;
+  }
 	const decodedTokenExpiration = jwtDecode(accessToken as string).exp;
     const currentTime = Date.now();
 	if (currentTime.valueOf() / 1000 > (decodedTokenExpiration as number)) {
@@ -23,7 +27,8 @@ axios.interceptors.response.use((response) => {
     return response;
   }, async (error) => {
     const originalRequest = error.config;
-    if (error.response.status === 401 && !originalRequest._retry) {
+    console.log(error)
+    if (error && error.response.status === 401 && !originalRequest._retry && originalRequest.headers['Authorization']) {
       originalRequest._retry = true;
       
       await getNewTokens();
