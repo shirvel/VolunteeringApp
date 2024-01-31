@@ -48,7 +48,7 @@ export const Signin: React.FC = () => {
 
 			const data = await response.json();
 			parseLocalStorageData(data);
-			navigate("/chat", { replace: true });
+			navigate("/view-posts", { replace: true }); //cahnged to view-posts 
 		} catch (error) {
 			console.error("Error during login:", error);
 		}
