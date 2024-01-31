@@ -28,6 +28,15 @@ export const editPost = async (content: string, postId: string) => {
 	const data = await response.data;
 	console.log(JSON.stringify(data));
 };
+export const getAllPosts = async () => {
+	console.log(endpoints.POST.getAllPosts());
+	const response = await fetch(endpoints.POST.getAllPosts());
+	if (!response.ok) {
+        throw new Error('Network response was not ok');
+	}else {
+		return await response.json();
+	}
+};
 
 export const addLike  = async (postId: string, userId: string) => {
 	console.log(endpoints.POST.AddLike(postId));

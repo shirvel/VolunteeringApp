@@ -3,6 +3,8 @@ import { Box, Button } from "@mui/material";
 
 import { IPost, Post } from "./Post";
 import { Category, getAllCategories } from "../chat/chatService";
+import { getAllPosts } from "./PostService";
+import { getWeather, renderWeatherIcon } from './weather';
 
 interface IViewPostsProps {
 	isSidebarOpen: boolean;
@@ -15,32 +17,13 @@ const ViewPosts: React.FC<IViewPostsProps> = () => {
 	const [weatherData, setWeatherData] = useState<any[]>([]); // Store weather data for each post
 	const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
+  
+
 	useEffect(() => {
 		async function fetchPosts() {
 			try {
-				const response = await fetch("http://localhost:3000/posts");
-				if (!response.ok) {
-					throw new Error(`Failed to fetch posts. Status: ${response.status}`);
-				}
-				const data = await response.json();
-				setPosts(data);
-				// Fetch weather data for each post's location
-				const weatherPromises = data.map(async (post: IPost) => {
-					const apiKey = "c4b0c9fa960f9b84cd0964869bca6f3c";
-					const apiUrl =
-						"https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
-					const weatherResponse = await fetch(
-						apiUrl + "Tel Aviv" + `&appid=${apiKey}`
-					); //will be post.location
-					if (weatherResponse.status === 404) {
-						return null;
-					}
-					const weatherData = await weatherResponse.json();
-					return weatherData;
-				});
-
-				const weatherResults = await Promise.all(weatherPromises);
-				setWeatherData(weatherResults);
+				const allPostsData = await getAllPosts()
+				setPosts(allPostsData);
 			} catch (error) {
 				console.error(error);
 			}
@@ -63,7 +46,6 @@ const ViewPosts: React.FC<IViewPostsProps> = () => {
 
 	return (
 		<div className="overflow-y-scroll h-screen w-full">
-			<Box p={2} bgcolor="lightgray">
 				<Box display="flex" justifyContent="space-between" alignItems="center">
 					{categories.map((category, index) => (
 						<Button
@@ -79,7 +61,6 @@ const ViewPosts: React.FC<IViewPostsProps> = () => {
 						<Post weatherData={weatherData[index]} post={post} />
 					</div>
 				))}
-			</Box>
 		</div>
 	);
 };
