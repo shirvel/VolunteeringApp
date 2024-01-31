@@ -28,7 +28,7 @@ export const Post = ({
 	post: IPost;
 	weatherData: any;
 }) => {
-	const [numberOfComments, setNumberOfComments] = useState(0); //TODO: change to real number in only post
+	const [numberOfComments, setNumberOfComments] = useState(0);
 	const [openAddComment, setOpenAddComment] = useState(false);
 
 	const navigate = useNavigate();

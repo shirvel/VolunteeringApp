@@ -10,7 +10,6 @@ const getRequestConfig = (headers?: any) => {
 	};
 };
 
-//TODO: add token to every request
 export const get = async (endpoint: string) => {
 	try {
 		const response = await axios.get(endpoint, getRequestConfig());
@@ -32,7 +31,11 @@ export const patch = async (endpoint: string, data: any) => {
 
 export const post = async (endpoint: string, data: any, headers?: any) => {
 	try {
-		const response = await axios.post(endpoint, data, getRequestConfig(headers));
+		const response = await axios.post(
+			endpoint,
+			data,
+			getRequestConfig(headers)
+		);
 		return response.data;
 	} catch (error) {
 		console.log(error);

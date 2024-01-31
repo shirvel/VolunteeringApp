@@ -10,16 +10,16 @@ export interface DialogProps {
 }
 
 export const EditUserDetailsModal = (
-	props: DialogProps & { handleUpdate: (details: UserDetails) => void }
+	props: DialogProps & {
+		handleUpdate: (details: UserDetails) => void;
+		details: UserDetails;
+	}
 ) => {
-	const { onClose, open, handleUpdate } = props;
+	const { onClose, open, handleUpdate, details } = props;
 
 	const handleClose = () => {
 		onClose();
 	};
-
-	// TODO: Remove Mock
-	const details = { name: "shir", email: "Shir@gmail.com" };
 
 	const [username, setUsername] = useState(details.name);
 	const [email, setEmail] = useState(details.email);
