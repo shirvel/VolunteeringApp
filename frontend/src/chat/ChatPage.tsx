@@ -20,7 +20,7 @@ export const ChatPage = () => {
 			onClickCategory(response[0].name);
 		};
 		getCategories();
-	}, [searchParams]);
+	}, []);
 
 	return (
 		<div className="w-full">
