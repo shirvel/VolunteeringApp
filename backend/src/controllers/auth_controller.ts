@@ -76,7 +76,7 @@ const login = async (req: Request, res: Response) => {
 
 const refresh = async (req: Request, res: Response) => {
     console.log('start refresh');
-    const authHeader = req.headers['Authorization'] as string;
+    const authHeader = req.headers['authorization'] as string;
     console.log('authHeader=' + authHeader)
     const refreshToken = authHeader && authHeader.split(' ')[1]; // Bearer <token>
     console.log('refreshToken=' + refreshToken)
@@ -95,17 +95,17 @@ const refresh = async (req: Request, res: Response) => {
                 return res.sendStatus(401);
             }
             console.log('AFTER USER DB=')
-            const accessToken = jwt.sign({ _id: user._id }, process.env.JWT_ACCESS_TOKEN_SECRET, { expiresIn: process.env.JWT_TOKEN_EXPIRATION });
+            const newAccessToken = jwt.sign({ _id: user._id }, process.env.JWT_ACCESS_TOKEN_SECRET, { expiresIn: process.env.JWT_TOKEN_EXPIRATION });
             const newRefreshToken = jwt.sign({ _id: user._id }, process.env.JWT_REFRESH_SECRET);
             userDb.refreshTokens = userDb.refreshTokens.filter(t => t !== refreshToken);
             userDb.refreshTokens.push(newRefreshToken);
             console.log('BEFIRE save')
             await userDb.save();
-            console.log('after save  AT: ' + accessToken + "    RT: " + refreshToken)
+            console.log('after save  AT: ' + newAccessToken + "    RT: " + refreshToken)
 
             return res.status(200).send({
-                'accessToken': accessToken,
-                'refreshToken': refreshToken
+                'accessToken': newAccessToken,
+                'refreshToken': newRefreshToken
             });
         } catch (err) {
             res.sendStatus(401).send(err.message);

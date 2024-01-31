@@ -10,7 +10,7 @@ export interface AuthResquest extends Request {
 
 const authMiddleware = (req, res, next) => {
     console.log('start mid')
-    const authHeader = req.headers['Authorization'];
+    const authHeader = req.headers['authorization'];
     console.log('auth=' + authHeader)
     const token = authHeader && authHeader.split(' ')[1]; // Bearer <token>
     

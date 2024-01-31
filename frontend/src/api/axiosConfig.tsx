@@ -2,6 +2,7 @@ import { jwtDecode } from "jwt-decode";
 import { endpoints } from "./endpoints";
 import axios from "axios";
 
+const duplicateAxiosInstance = axios.create();
 
 axios.interceptors.request.use(async (config) => {
 	let accessToken = localStorage.getItem("accessToken");
@@ -29,7 +30,7 @@ axios.interceptors.response.use((response) => {
       const newAccessToken = localStorage.getItem("accessToken");
 
       // Set the new token in the header and retry the request
-      axios.defaults.headers.common['Authorization'] = `JWT ${newAccessToken}`;
+      originalRequest.headers['Authorization'] = `JWT ${newAccessToken}`;
       return axios(originalRequest);
     }
     return Promise.reject(error);
@@ -42,7 +43,7 @@ export const getNewTokens = async () => {
 	// 	endpoints.USER.CREATE_NEW_TOKENS(),
 	// 	refreshTokenHeader
     // );
-    const response = await axios.get(endpoints.USER.CREATE_NEW_TOKENS(), {headers: refreshTokenHeader});
+    const response = await duplicateAxiosInstance.get(endpoints.USER.CREATE_NEW_TOKENS(), {headers: refreshTokenHeader});
 	// const data = await response.data;
 
     const data = response.data;
