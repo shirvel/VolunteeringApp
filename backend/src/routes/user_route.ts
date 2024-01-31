@@ -51,12 +51,33 @@ import authMiddleware from '../common/auth_middleware';
 *               $ref: '#/components/schemas/User'
 */
 
-router.get("/", User.getAllUsers);
+router.get("/", authMiddleware, User.getAllUsers);
+
+/**
+* @swagger
+* /user/{id}:
+*   get:
+*     parameters:
+*       - in: path
+*         name: id
+*         required: true
+*         type: string
+*         description: The id of the user 
+*     summary: get user with this id
+*     tags: [User]
+*     responses:
+*       200:
+*         description: the user with this id
+*         content:
+*           application/json:
+*             schema:
+*               $ref: '#/components/schemas/User'
+*/
+
+router.get("/:id", authMiddleware, User.getUserById);
 
 
-
-router.get("/:id", User.getUserById);
-router.get("/get_by_name/:name", User.getUserByName);
+router.get("/get_by_name/:name", authMiddleware, User.getUserByName);
 
 /**
 * @swagger
@@ -85,7 +106,7 @@ router.get("/get_by_name/:name", User.getUserByName);
 *               $ref: '#/components/schemas/User'
 */
 
-router.patch("/:id", User.putUserById);
+router.patch("/:id", authMiddleware, User.putUserById);
 
 
 /**
@@ -111,7 +132,7 @@ router.patch("/:id", User.putUserById);
 *         description: success message
 */
 
-router.delete("/:id", User.deleteUserById);
+router.delete("/:id", authMiddleware, User.deleteUserById);
 
 
 export default router;
