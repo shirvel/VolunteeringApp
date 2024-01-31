@@ -48,7 +48,7 @@ export const Signup: React.FC = () => {
       setImageFile(event.target.files[0]);
     }
   } 
-
+/*
   const tempRegister = async () => {
     
     const response = await get(
@@ -58,7 +58,7 @@ export const Signup: React.FC = () => {
     console.log(JSON.stringify(response));
     console.log(JSON.stringify(data));
   }
-
+*/
   const clickedRegister = async () => {
     // Check for empty fields
     if (!name) {
@@ -226,7 +226,7 @@ export const Signup: React.FC = () => {
                 fullWidth
                 variant="contained"
                 sx={{ marginTop: 2, backgroundColor: '#2196f3', color: 'white' }}
-                onClick={tempRegister}
+                onClick={clickedRegister}
               >
                 Register
               </Button>

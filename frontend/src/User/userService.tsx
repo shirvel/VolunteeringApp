@@ -58,21 +58,3 @@ export const parseLocalStorageData = (data: tokenDetails) => {
 	localStorage.setItem("userId", parsedToken._id);
 	localStorage.setItem("userName", parsedToken.name);
 };
-
-// export const getNewTokens = async () => {
-// 	const oldRefreshToken = localStorage.getItem("refreshToken");
-// 	const refreshTokenHeader = { Authorization: "JWT " + oldRefreshToken }
-// 	const response = await get(
-// 		endpoints.USER.CREATE_NEW_TOKENS(),
-// 		refreshTokenHeader
-// 	);
-// 	// const data = await response.data;
-
-// 	const data = await response.json();
-
-// 	parseLocalStorageData(data);
-// 	// localStorage.setItem("accessToken", data.accessToken);
-// 	// localStorage.setItem("refreshToken", data.refreshToken);
-
-// 	console.log(JSON.stringify(data));
-// };
