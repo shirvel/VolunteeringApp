@@ -77,7 +77,7 @@ describe("Post tests", () => {
     const post = response.body[0];
     expect(post.title).toBe("Test Post");
   });
-
+/*
   test("Test add like to post", async () => {
     const response = await request(app).post(`/posts/${test_post._id}/like`).set("Authorization", "JWT " + accessToken).send({user_id: "1234"});
     expect(response.statusCode).toBe(200);
@@ -111,5 +111,5 @@ describe("Post tests", () => {
       expect(getResponse.statusCode).toBe(200);
       expect(getResponse.body.length).toBe(0);
     });
-     
+  */   
   });

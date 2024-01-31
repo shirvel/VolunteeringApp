@@ -52,12 +52,12 @@ export const Signup: React.FC = () => {
   const tempRegister = async () => {
     
     const response = await get(
-      'http://127.0.0.1:3000/user'
+      'http://127.1:3000/user'
     );
     const data = await response.data;
     console.log(JSON.stringify(response));
     console.log(JSON.stringify(data));
-  }
+  
 */
   const clickedRegister = async () => {
     // Check for empty fields

@@ -21,7 +21,16 @@ export const get = async (endpoint: string, headers?: any) => {
 		console.log(error);
 	}
 };
-
+export const fetch = async (endpoint: string, headers?: any) => {
+	try {
+		console.log('config=' + JSON.stringify(getRequestConfig(headers)))
+		const response = await axios.fetch(endpoint, getRequestConfig(headers));
+		console.log('done')
+		return response.json;
+	} catch (error) {
+		console.log(error);
+	}
+};
 export const patch = async (endpoint: string, data: any) => {
 	try {
 		console.log(getRequestConfig());

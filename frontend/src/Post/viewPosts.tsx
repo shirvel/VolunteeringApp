@@ -63,7 +63,7 @@ const ViewPosts: React.FC<IViewPostsProps> = () => {
 
 	return (
 		<div className="overflow-y-scroll h-screen w-full">
-			<Box p={2} bgcolor="lightgray">
+			<Box p={2} bgcolor="none">
 				<Box display="flex" justifyContent="space-between" alignItems="center">
 					{categories.map((category, index) => (
 						<Button
