@@ -594,6 +594,10 @@ video {
   display: none;
 }
 
+.h-80 {
+  height: 20rem;
+}
+
 .h-full {
   height: 100%;
 }
@@ -624,6 +628,10 @@ video {
 
 .overflow-y-scroll {
   overflow-y: scroll;
+}
+
+.border {
+  border-width: 1px;
 }
 
 .p-4 {

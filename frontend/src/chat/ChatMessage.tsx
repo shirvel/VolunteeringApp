@@ -13,6 +13,7 @@ const isMessageFromCurrentUser = (message: Message) => {
 };
 
 export const ChatMessage = ({ message }: { message: Message }) => {
+	if (!message.userName) return null;
 	return (
 		<div>
 			{isMessageFromCurrentUser(message) ? (
