@@ -1,8 +1,8 @@
-const base = "http://127.0.0.1:3000/";
+const base = "http://localhost:3000/";
 
 export const socketUrl = "http://localhost:3000";
 export const endpoints = {
-	BASE: "http://127.0.0.1:3000/",
+	BASE: "http://localhost:3000/",
 	FILE: {
 		UPLOAD_FILE: () => base + "file/",
 	},
