@@ -19,6 +19,7 @@ export interface IPost {
 	likedBy: string[];
 	dislikes: number;
 	dislikedBy: string[];
+	location: string;
 }
 
 export const Post = ({

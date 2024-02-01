@@ -36,8 +36,20 @@ export const getallposts = async (): Promise<IPost[]> => {
     console.log(JSON.stringify(data));
     return data;
 };
-
-
+export const fetchWeatherForPost = async (location: string): Promise<any> => {
+	const apikey = "c4b0c9fa960f9b84cd0964869bca6f3c"
+	const apiurl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q="
+    try {
+        const weatherResponse = await fetch(apiurl + encodeURIComponent(location) + `&appid=${apikey}`);
+        if (!weatherResponse.ok) {
+            return null;
+        }
+        return await weatherResponse.json();
+    } catch (error) {
+        console.error('Error fetching weather data:', error);
+        return null; 
+    }
+};
 export const deletePost = async (postId: string) => {
 	console.log(endpoints.POST.DELETE_POST(postId));
 	const response = await deleteRequest(endpoints.POST.EDIT_POST(postId));

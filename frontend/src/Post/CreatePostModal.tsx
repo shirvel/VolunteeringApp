@@ -71,20 +71,26 @@ export const CreatePostModal = (props: DialogProps) => {
 			setPhoneNumberError("Phone number is required");
 			return;
 		}
+		if (!location) {
+			setTitleError("location is required");
+			return;
+		}
 
 		// Clear any previous error messages
 		setTitleError(null);
 		setContentError(null);
 		setPhoneNumberError(null);
+		setTitleError(null);
 
 		const image = await uploadFile(imageFile);
-		sendPostCreateToServer({ title, content, phoneNumber, image, category });
+		sendPostCreateToServer({ title, content, phoneNumber, image, category, location });
 
 		setTitle("");
 		setContent("");
 		setPhoneNumber("");
 		setImageFile(null);
 		setCategory("Community");
+		setlocation("")
 
 		onClose();
 	};
@@ -92,12 +98,14 @@ export const CreatePostModal = (props: DialogProps) => {
 	const [title, setTitle] = useState("");
 	const [content, setContent] = useState("");
 	const [phoneNumber, setPhoneNumber] = useState("");
+	const [location, setlocation] = useState("");
 	const [category, setCategory] = useState("Community");
 	const [imageFile, setImageFile] = useState<File | null>(null);
 
 	const [titleError, setTitleError] = useState<string | null>(null);
 	const [contentError, setContentError] = useState<string | null>(null);
 	const [phoneNumberError, setPhoneNumberError] = useState<string | null>(null);
+	const [locationError, setlocationError] = useState<string | null>(null);
 
 	return (
 		<Dialog onClose={handleClose} open={open}>
@@ -156,6 +164,21 @@ export const CreatePostModal = (props: DialogProps) => {
 						onChange={(event) => {
 							setContent(event.target.value);
 							setContentError(null); // Clear error on input change
+						}}
+					/>
+				</Grid>
+				<Grid item xs={12}>
+					<TextField
+						required
+						label="Location"
+						variant="outlined"
+						className="w-full"
+						value={location}
+						error={!!locationError}
+						helperText={locationError}
+						onChange={(event) => {
+							setlocation(event.target.value);
+							setlocationError(null); // Clear error on input change
 						}}
 					/>
 				</Grid>
