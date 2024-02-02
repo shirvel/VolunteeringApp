@@ -1,6 +1,7 @@
 import express from "express";
 const router = express.Router();
 import PostController from "../controllers/post_controller";
+import authMiddleware from '../common/auth_middleware';
 
 /**
 * @swagger
@@ -94,7 +95,7 @@ router.get("/", PostController.getAllPosts);
 *             schema:
 *               $ref: '#/components/schemas/Post'
 */
-router.post("/", PostController.createPost);
+router.post("/", authMiddleware, PostController.createPost);
 /**
 * @swagger
 * /posts/{id}/likes:
@@ -115,7 +116,7 @@ router.post("/", PostController.createPost);
 *             schema:
 *               $ref: '#/components/schemas/Post'
 */
-router.post("/:id/like", PostController.addLike);
+router.post("/:id/like", authMiddleware, PostController.addLike);
 /**
 * @swagger
 * /posts/{id}/dislikes:
@@ -136,7 +137,7 @@ router.post("/:id/like", PostController.addLike);
 *             schema:
 *               $ref: '#/components/schemas/Post'
 */
-router.post("/:id/dislike", PostController.addDislike);
+router.post("/:id/dislike", authMiddleware, PostController.addDislike);
 /**
 * @swagger
 * /posts/{id}:
@@ -174,5 +175,5 @@ router.patch("/:id", PostController.updatePostByID);
 *       204:
 *         description: success message
 */
-router.delete("/:id", PostController.deletePostById);
+router.delete("/:id", authMiddleware, PostController.deletePostById);
 export default router;

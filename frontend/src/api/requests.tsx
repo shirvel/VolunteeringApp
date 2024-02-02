@@ -21,16 +21,6 @@ export const get = async (endpoint: string, headers?: any) => {
 		console.log(error);
 	}
 };
-export const fetch = async (endpoint: string, headers?: any) => {
-	try {
-		console.log('config=' + JSON.stringify(getRequestConfig(headers)))
-		const response = await axios.fetch(endpoint, getRequestConfig(headers));
-		console.log('done')
-		return response.json;
-	} catch (error) {
-		console.log(error);
-	}
-};
 export const patch = async (endpoint: string, data: any) => {
 	try {
 		console.log(getRequestConfig());
@@ -48,11 +38,32 @@ export const post = async (endpoint: string, data: any, headers?: any) => {
 			data,
 			getRequestConfig(headers)
 		);
-		return response.data;
-	} catch (error) {
-		console.log(error);
+
+		// Include the HTTP status code in the response object
+		return {
+			data: response.data,
+			status: response.status,
+		};
+	} catch (error: any) {
+		// Handle Axios errors and include the HTTP status code in the response object
+		if (error.response) {
+			const responseData = error.response.data;
+			const responseStatus = error.response.status;
+			return {
+				data: responseData,
+				status: responseStatus,
+			};
+		} else {
+			console.log(error);
+			return {
+				data: null,
+				status: 500, // You can choose an appropriate status code for network errors
+			};
+		}
 	}
 };
+
+
 
 export const deleteRequest = async (endpoint: string) => {
 	try {
