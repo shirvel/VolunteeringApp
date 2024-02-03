@@ -1,4 +1,3 @@
-// SignUp.tsx
 import React, { useState, ChangeEvent } from "react";
 import { Container, Typography, Box, TextField, Button, Grid, Link } from "@mui/material";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
@@ -52,17 +51,6 @@ export const Signup: React.FC = () => {
       setImageFile(event.target.files[0]);
     }
   } 
-/*
-  const tempRegister = async () => {
-    
-    const response = await get(
-      'http://127.1:3000/user'
-    );
-    const data = await response.data;
-    console.log(JSON.stringify(response));
-    console.log(JSON.stringify(data));
-  
-*/
 
   const handleSnackbarClose = () => {
     setErrorSnackbarOpen(false);
@@ -280,7 +268,6 @@ export const Signup: React.FC = () => {
 							<Link
 							component="button"
 							variant="body2"
-							//onClick={() => clickedSignup} 
 							 onClick={() => {
 							 	navigate("/signin", {replace: true});
 							 }}
