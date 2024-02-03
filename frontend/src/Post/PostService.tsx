@@ -53,6 +53,7 @@ export const fetchWeatherForPost = async (location: string): Promise<any> => {
 export const deletePost = async (postId: string) => {
 	console.log(endpoints.POST.DELETE_POST(postId));
 	const response = await deleteRequest(endpoints.POST.EDIT_POST(postId));
+    console.log(response);
 	const data = await response.data;
 	console.log(JSON.stringify(data));
 };

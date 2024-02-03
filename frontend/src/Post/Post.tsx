@@ -10,7 +10,11 @@ import { getAllComments, likePost, disLikePost } from "./PostService";
 import { fetchWeatherForPost, getConnectedUser } from "./PostService";
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import { DeletePostModal } from "./DeletePostModal";
 import { post } from "api/requests";
+import DeleteIcon from '@mui/icons-material/Delete';
+import { EditPostModal } from "./EditPostModal";
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
 
 
 
@@ -28,13 +32,20 @@ export interface IPost {
 	dislikedBy: string[];
 	location: string;
 }
+interface PostProps {
+	post: IPost;
+}
 
-export const Post = ({ post }: { post: IPost }) => {
+  export const Post = ({ post, onDelete }: { post: IPost; onDelete: (postId: string) => void }) => {
 	const [numberOfComments, setNumberOfComments] = useState(0);
 	const [openAddComment, setOpenAddComment] = useState(false);
 	const [weatherData, setWeatherData] = useState<any>(null);
 	const [likesCount, setLikesCount] = useState(post.likes); 
 	const [dislikeCount, setDislikeCount] = useState(post.dislikes);
+	const [openDeleteModal, setOpenDeleteModal] = useState(false);
+	const [posts, setPosts] = useState<IPost[]>([]);
+	const [openEditModal, setOpenEditModal] = useState(false);
+	const [editedContent, setEditedContent] = useState<string | null>(null);
 
 	
 
@@ -101,7 +112,22 @@ export const Post = ({ post }: { post: IPost }) => {
 			console.error('User details not found or user ID is missing');
 		}
 	};
-	
+	const handleOpenDeleteModal = () => {
+		setOpenDeleteModal(true);
+	  };
+
+	const handleDeletePost = (deletedPostId: string) => {
+		console.log("the deleted post" +deletedPostId);
+ 
+  setPosts((prevPosts) => prevPosts.filter((post) => post._id !== deletedPostId));
+};
+const handleOpenEditModal = (postToEdit: IPost) => {
+	setEditedContent(postToEdit.content);
+	setOpenEditModal(true);
+  };  
+  
+
+	  
 
 	return (
 		<Card
@@ -114,6 +140,36 @@ export const Post = ({ post }: { post: IPost }) => {
 				alt={post.title}
 			/>
 			<CardContent>
+			<Button
+            onClick={handleOpenDeleteModal}
+            style={{
+              backgroundColor: 'transparent',
+              color: 'red',
+              justifyContent: "flex-end",
+			  
+            }}
+          >
+            <DeleteIcon />
+          </Button>
+		  <DeletePostModal
+  			open={openDeleteModal}
+  			onClose={() => setOpenDeleteModal(false)}
+  			postId={post._id}
+  			onDelete={(deletedPostId: string) => handleDeletePost(deletedPostId)} 
+		/>
+		<Button onClick={() => handleOpenEditModal(post)}>
+  			<ModeEditIcon />
+		</Button>
+		<EditPostModal
+  			open={openEditModal}
+  			onClose={() => {
+    		setOpenEditModal(false);
+    		setEditedContent(null); // Clear edited content when modal is closed
+  		}}
+  		postId={post._id}
+  		content={editedContent || ""}
+  		onContentChange={setEditedContent} // Callback to update edited content
+		/>
 				<Typography variant="h6" gutterBottom>
 					{post.title}
 				</Typography>
@@ -135,6 +191,7 @@ export const Post = ({ post }: { post: IPost }) => {
 						setNumberOfComments((num) => num + 1);
 					}}
 				/>
+				
 				<div
 					style={{
 						display: "flex",
