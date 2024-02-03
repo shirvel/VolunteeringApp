@@ -50,6 +50,7 @@ export const updateUser = async (user: UserDetails) => {
 export const createUser = async (user: CreateUserInfo) => {
 	const response = await post(endpoints.USER.CREATE_USER(), user);
 	console.log(JSON.stringify(response));
+	return response;
 };
 
 export const googleSignin = async (credentialResponse: CredentialResponse) => {
