@@ -5,10 +5,7 @@ export interface AuthResquest extends Request {
     user?: { _id: string };
 }
 
-// TODO: Unserstand the errors here when additng the types???
-//req: AuthResquest
-
-const authMiddleware = (req, res, next) => {
+const authMiddleware = (req: AuthResquest, res: Response, next: NextFunction) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1]; // Bearer <token>
     if (token == null) return res.sendStatus(401);
