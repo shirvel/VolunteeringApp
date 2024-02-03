@@ -12,6 +12,7 @@ export const endpoints = {
 		CREATE_USER_GOOGLE: () =>  base + "auth/google/",
 		GET_BY_NAME: (name: string) => base + "user/get_by_name/" + name + "/",
 		CREATE_NEW_TOKENS: () => base + "auth/refresh/",
+		SIGNIN_USER: () => base + "auth/login/",
 	},
 	POST: {
 		CREATE_POST: () => base + "posts/",

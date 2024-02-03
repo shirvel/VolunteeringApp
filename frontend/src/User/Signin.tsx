@@ -3,7 +3,9 @@ import React, { useState } from "react";
 import { Container, Typography, Box, TextField, Button, Link } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
-import { parseLocalStorageData } from "./userService";
+import { parseLocalStorageData, signinUser } from "./userService";
+import Snackbar from '@mui/material/Snackbar';
+import SnackbarContent from '@mui/material/SnackbarContent';
 
 const theme = createTheme();
 
@@ -13,7 +15,20 @@ export const Signin: React.FC = () => {
 	const [emailError, setEmailError] = useState<string | null>(null);
 	const [passwordError, setPasswordError] = useState<string | null>(null);
 
+	const [errorSnackbarOpen, setErrorSnackbarOpen] = useState(false);
+  	const [errorMessage, setErrorMessage] = useState('');
+
 	const navigate = useNavigate();
+
+	const handleSnackbarClose = () => {
+		setErrorSnackbarOpen(false);
+		setErrorMessage('');
+	  };
+	
+	  const displayErrorSnackbar = (error: string) => {
+		setErrorMessage(error);
+		setErrorSnackbarOpen(true);
+	  };
 
 	const clickedLogin = async () => {
 		// Check for empty fields
@@ -38,19 +53,20 @@ export const Signin: React.FC = () => {
 		};
 
 		try {
-			const response = await fetch("http://localhost:3000/auth/login", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(user),
-			});
+			const response = await signinUser(user);
 
-			const data = await response.json();
-			parseLocalStorageData(data);
-			navigate("/chat", { replace: true });
+			if (response.status < 200 || response.status >= 400) {
+				console.error('Error during login:', response.data);
+				displayErrorSnackbar(`Error during login: ${response.data}. Please try again. `);
+			  }
+		
+			  else {
+				parseLocalStorageData(response.data);
+				navigate('/chat', { replace: true });
+		
+			  }
 		} catch (error) {
-			console.error("Error during login:", error);
+			console.error("Error during login:", error);	
 		}
 	};
 
@@ -160,6 +176,20 @@ export const Signin: React.FC = () => {
 							Sign up
 							</Link>
 							</Typography>
+
+							<Snackbar
+								anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+								open={errorSnackbarOpen}
+								autoHideDuration={6000}
+								onClose={handleSnackbarClose}
+								>
+								<SnackbarContent
+									sx={{
+									backgroundColor: theme => theme.palette.error.main,
+									}}
+									message={<span>{errorMessage}</span>}
+								/>
+								</Snackbar>
 
 						</form>
 					</Box>

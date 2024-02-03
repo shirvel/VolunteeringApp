@@ -54,6 +54,7 @@ export const CreatePostModal = (props: DialogProps) => {
 		const getCategories = async () => {
 			const categories = await getAllCategories();
 			setAllCategories(categories)
+			setCategory(categories.length > 0 ? categories[0].name : "");
 			return categories
 		}
 		getCategories().then((categories) => console.log(categories));
@@ -84,7 +85,7 @@ export const CreatePostModal = (props: DialogProps) => {
 			return;
 		}
 		if (!location) {
-			setTitleError("location is required");
+			setlocationError("Location is required");
 			return;
 		}
 
@@ -92,7 +93,7 @@ export const CreatePostModal = (props: DialogProps) => {
 		setTitleError(null);
 		setContentError(null);
 		setPhoneNumberError(null);
-		setTitleError(null);
+		setlocationError(null);
 
 		const image = await uploadFile(imageFile);
 		sendPostCreateToServer({ title, content, phoneNumber, image, category, location });

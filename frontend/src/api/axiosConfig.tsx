@@ -45,9 +45,11 @@ export const getNewTokens = async () => {
 	const oldRefreshToken = localStorage.getItem("refreshToken");
 	const refreshTokenHeader = { Authorization: "JWT " + oldRefreshToken }
     const response = await duplicateAxiosInstance.get(endpoints.USER.CREATE_NEW_TOKENS(), {headers: refreshTokenHeader});
+    if(response.status === 208) // Duplicate
+      return; 
     const data = response.data;
     localStorage.setItem("accessToken", data.accessToken);
-	localStorage.setItem("refreshToken", data.refreshToken); 
+    localStorage.setItem("refreshToken", data.refreshToken);
 
 	console.log(JSON.stringify(data));
 };

@@ -8,7 +8,8 @@ import avatar from '../assets/avatar.jpeg';
 import { CreateUserInfo, createUser, googleSignin, parseLocalStorageData } from "./userService";
 import {uploadFile} from './../File/FileService';
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
-import { get } from "../api/requests";
+import Snackbar from '@mui/material/Snackbar';
+import SnackbarContent from '@mui/material/SnackbarContent';
 
 const theme = createTheme();
 
@@ -41,6 +42,9 @@ export const Signup: React.FC = () => {
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
 
+  const [errorSnackbarOpen, setErrorSnackbarOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
   const navigate = useNavigate();
 
   const pickedImage = (event: ChangeEvent<HTMLInputElement>) => {
@@ -59,6 +63,17 @@ export const Signup: React.FC = () => {
     console.log(JSON.stringify(data));
   
 */
+
+  const handleSnackbarClose = () => {
+    setErrorSnackbarOpen(false);
+    setErrorMessage('');
+  };
+
+  const displayErrorSnackbar = (error: string) => {
+    setErrorMessage(error);
+    setErrorSnackbarOpen(true);
+  };
+
   const clickedRegister = async () => {
     // Check for empty fields
     if (!name) {
@@ -89,9 +104,17 @@ export const Signup: React.FC = () => {
         imageUrl: url
       };
 
-      createUser(newUser)
+      const res = await createUser(newUser);
 
-      navigate('/signin', { replace: true });
+      if (res.status < 200 || res.status >= 400) {
+        console.error('Error during registration:', res.data);
+        displayErrorSnackbar(`Error during registration: ${res.data}. Please try again. `);
+      }
+
+      else {
+        navigate('/signin', { replace: true });
+
+      }
     } catch (error) {
       console.error('Error during registration:', error);
     }
@@ -269,6 +292,21 @@ export const Signup: React.FC = () => {
 
             </form>
           </Box>
+
+          <Snackbar
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          open={errorSnackbarOpen}
+          autoHideDuration={6000}
+          onClose={handleSnackbarClose}
+        >
+          <SnackbarContent
+            sx={{
+              backgroundColor: theme => theme.palette.error.main,
+            }}
+            message={<span>{errorMessage}</span>}
+          />
+        </Snackbar>
+
         </Container>
       </ThemeProvider>
     </div>

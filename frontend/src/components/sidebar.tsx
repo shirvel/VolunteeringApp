@@ -23,9 +23,9 @@ function Sidebar() {
 
   // Check if the user is connected (logged in) and redirect if not
   const checkUserConnected = async () => {
-    const userDetails = await getConnectedUser();
+	const userDetails = await getConnectedUser();
     if (!userDetails) {
-      navigate("/signin"); // Redirect to the signin page
+      	navigate("/signin"); // Redirect to the signin page
     }
   };
 
