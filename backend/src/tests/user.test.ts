@@ -4,8 +4,6 @@ import mongoose from "mongoose";
 import { Express } from "express";
 import User, { IUser } from "../models/user_model";
 
-// TODO: check the covarage by writing '--coverage' on package.json
-
 let app: Express;
 let accessToken: string;
 let userId: string;
