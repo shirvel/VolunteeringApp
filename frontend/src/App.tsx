@@ -8,6 +8,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ChatPage } from "./chat/ChatPage";
 import { Posts } from "./Post/Posts-deprecated";
 import { AllPostComments } from "./Comments/allPostComments";
+import { AllUserPosts } from "./Post/allUserPosts";
 
 export const App = () => {
 	const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -44,6 +45,7 @@ export const App = () => {
 								/>
 								<Route path="/user-details" element={<UserDetailsComp />} />
 								<Route path="/comments" element={<AllPostComments />}></Route>
+								<Route path="/my-posts" element={< AllUserPosts/>}></Route>
 								<Route path="/posts" element={<Posts />} />
 							</Routes>
 						</div>

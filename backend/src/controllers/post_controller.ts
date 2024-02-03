@@ -153,4 +153,14 @@ const deletePostById = async (req, res) => {
       res.status(500).json({ message: err.message });
     }
   };
-  export default {createPost, getAllPosts,  updatePostByID, deletePostById, addLike, findPostsByCategory, addDislike}
+  const getByUser = async(req: Request, res: Response) => {
+    try{
+        console.log("back userid"+req.params.user_id);
+        console.log("back userid"+req.params.userId);
+        res.status(200).json(await Post.find({user_id: req.params.userId}));
+    }catch (err) {
+        res.status(500).json( {message: err.message} );
+    }
+};
+
+  export default {createPost, getAllPosts,  updatePostByID, deletePostById, addLike, findPostsByCategory, addDislike, getByUser}

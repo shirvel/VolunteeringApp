@@ -23,6 +23,9 @@ export const endpoints = {
 		ADD_DISLIKE: (postId: string) => base + "posts/" + postId + "/dislike/",
 		GET_COMMENTS: (postId: string) =>
 			base + "comments/get_by_post/" + postId + "/",
+		GET_USER_POSTS:  (usrId: string) =>
+			base + "posts/get_by_user/" + usrId + "/",
+
 	},
 	CHAT: {
 		GET_MESSAGES: (category_name: string) =>

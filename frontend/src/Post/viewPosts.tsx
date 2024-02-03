@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Box, Button } from "@mui/material";
-import { getallposts, fetchWeatherForPost } from "./PostService";
+import { getallposts, fetchWeatherForPost, gettAllPostsByUser, getConnectedUser } from "./PostService";
 import { IPost, Post } from "./Post";
 import { Category, getAllCategories } from "../chat/chatService";
 import { endpoints } from "../api/endpoints";
 import { renderWeatherIcon } from './weather';
 import { CreatePostModal } from "./CreatePostModal"; // Import the CreatePostModal component
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import { useNavigate } from "react-router";
+import { createSearchParams } from "react-router-dom";
+import { post } from "api/requests";
 
 
 interface IViewPostsProps {
@@ -22,10 +25,24 @@ const ViewPosts: React.FC<IViewPostsProps> = () => {
 	const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 	const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
 
-	
+	const navigate = useNavigate();
+	const userDetails = getConnectedUser();
 
+	const moveToUserPostPage = () => {
+		if  (userDetails.id !== null) {
+			console.log(userDetails.id);
+			const queryParams = createSearchParams({ userId: userDetails.id });
+			navigate({
+				pathname: "/my-posts",
+				search: `?userId=${userDetails.id}`,
+			});
+		}
+		else{
+			console.error("User ID is null. Unable to navigate.");
+		}
+	  };
 	
-
+	
 	useEffect(() => {
 		async function fetchPosts() {
 			try {
@@ -41,6 +58,7 @@ const ViewPosts: React.FC<IViewPostsProps> = () => {
 			const response = await getAllCategories();
 			setCategories(response);
 		};
+
 		getCategories();
 		fetchPosts();
 	}, []);
@@ -58,8 +76,8 @@ const ViewPosts: React.FC<IViewPostsProps> = () => {
 			<div
         style={{
           position: "absolute",
-          top: 10, // Adjust the top position as needed
-          right: 32, // Adjust the right position as needed
+          top: 10, 
+          right: 32, 
         }}
       >
         <Button
@@ -78,6 +96,21 @@ const ViewPosts: React.FC<IViewPostsProps> = () => {
   				open={isCreatePostModalOpen}
   				onClose={() => setIsCreatePostModalOpen(false)}
 			/>
+		<Button onClick={() => moveToUserPostPage()}
+		sx={{
+			fontSize: '1.25rem', // Increase the font size
+			fontWeight: 'bold',  // Make the text bold
+			backgroundColor: 'white', // Change the background color
+			color: 'blue',       // Change the text color
+			padding: '12px 24px', // Increase the padding
+			borderRadius: '8px',  // Add rounded corners
+			'&:hover': {
+			  backgroundColor: 'darkblue', // Change the background color on hover
+			},
+		  }}
+		>
+		  My Posts
+		</Button>
         <Box p={2} bgcolor="none">
             <Box display="flex" justifyContent="space-between" alignItems="center">
                 {categories.map((category, index) => (
@@ -92,7 +125,7 @@ const ViewPosts: React.FC<IViewPostsProps> = () => {
 			  {filteredPosts.map((post, index) => (
 				  <div key={index}>
 					  <Post weatherData={weatherData[index]} post={post} />
-				  </div>
+				  </div> 
 			  ))}
 		  </Box>
 	  </div>

@@ -10,11 +10,11 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import HomeIcon from "@mui/icons-material/Home";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom"; 
 import { getConnectedUser } from "../User/userService";
 
 function Sidebar() {
-  const [isCreatePostDialogOpen, setCreatePostDialogOpen] = useState(false); // State for dialog visibility
+  const [isCreatePostDialogOpen, setCreatePostDialogOpen] = useState(false); 
   const [isEditUserDialogOpen, setEditUserDialogOpen] = useState(false);
   const [isMainButtonVisible, setMainButtonVisible] = useState(true);
   const [areOtherButtonsVisible, setOtherButtonsVisible] = useState(false);
@@ -74,14 +74,6 @@ function Sidebar() {
 									{/* Show the View Posts button */}
 									<Link to="/view-posts" className="button-link">
 										<ViewListIcon /> View Posts
-									</Link>
-								</li>
-								<li>
-									<Link
-										to="/posts"
-										className="button-link"
-										onClick={() => openCreatePostDialog()}>
-										<AddCircleOutlineIcon /> Create Post
 									</Link>
 								</li>
 								<li>
