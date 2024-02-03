@@ -13,6 +13,11 @@ export type CreateUserInfo = {
 	refreshToken?: string;
 };
 
+export type SigninUserInfo = {
+	email: string;
+	password: string;
+};
+
 export const getUserById = async (id: string) => {
 	const response = await get(endpoints.USER.UPDATE_USER(id));
 	return response as UserDetails;
@@ -68,4 +73,10 @@ export const parseLocalStorageData = (data: tokenDetails) => {
 	const parsedToken = jwtDecode(data.accessToken);
 	localStorage.setItem("userId", parsedToken._id);
 	localStorage.setItem("userName", parsedToken.name);
+};
+
+export const signinUser = async (user: SigninUserInfo) => {
+	const response = await post(endpoints.USER.SIGNIN_USER(), user);
+	console.log(JSON.stringify(response));
+	return response;
 };

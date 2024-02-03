@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Container, Typography, Box, TextField, Button, Link } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
-import { parseLocalStorageData } from "./userService";
+import { parseLocalStorageData, signinUser } from "./userService";
 
 const theme = createTheme();
 
@@ -38,16 +38,8 @@ export const Signin: React.FC = () => {
 		};
 
 		try {
-			const response = await fetch("http://localhost:3000/auth/login", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(user),
-			});
-
-			const data = await response.json();
-			parseLocalStorageData(data);
+			const response = await signinUser(user);
+			parseLocalStorageData(response.data);
 			navigate("/chat", { replace: true });
 		} catch (error) {
 			console.error("Error during login:", error);
