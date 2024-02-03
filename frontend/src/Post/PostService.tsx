@@ -132,3 +132,11 @@ export const getAllComments = async (postId: string) => {
 	const response = await get(endpoints.POST.GET_COMMENTS(postId));
 	return response as CommentI[];
 };
+
+export const gettAllPostsByUser = async (usrId: string) => {
+    console.log("UserId in the postservices"+usrId);
+    const response = await get(endpoints.POST.GET_USER_POSTS(usrId));
+    console.log(response);
+	return response as IPost[];
+};
+

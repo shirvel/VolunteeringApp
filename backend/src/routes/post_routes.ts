@@ -176,4 +176,32 @@ router.patch("/:id", PostController.updatePostByID);
 *         description: success message
 */
 router.delete("/:id", authMiddleware, PostController.deletePostById);
+
+/**
+* @swagger
+* /get_by_user/{userId}:
+*   get:
+*     parameters:
+*       - in: path
+*         name: userId
+*         required: true
+*         type: string
+*         description: The id of the user to get its posts
+*     summary: get all userId posts
+*     tags: [Comment]
+*     requestBody:
+*       required: true
+*       content:
+*         application/json:
+*           schema:
+*             $ref: '#/components/schemas/Post'
+*     responses:
+*       200:
+*         description: the Posts
+*         content:
+*           application/json:
+*             schema:
+*               $ref: '#/components/schemas/Post'
+*/
+router.get("/get_by_user/:userId", authMiddleware, PostController.getByUser);
 export default router;

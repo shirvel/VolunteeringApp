@@ -11,7 +11,7 @@ export const endpoints = {
 		CREATE_USER: () => base + "auth/register/",
 		CREATE_USER_GOOGLE: () =>  base + "auth/google/",
 		GET_BY_NAME: (name: string) => base + "user/get_by_name/" + name + "/",
-		CREATE_NEW_TOKENS: () => base + "auth/refresh/"	
+		CREATE_NEW_TOKENS: () => base + "auth/refresh/",
 	},
 	POST: {
 		CREATE_POST: () => base + "posts/",
@@ -22,6 +22,9 @@ export const endpoints = {
 		ADD_DISLIKE: (postId: string) => base + "posts/" + postId + "/dislike/",
 		GET_COMMENTS: (postId: string) =>
 			base + "comments/get_by_post/" + postId + "/",
+		GET_USER_POSTS:  (usrId: string) =>
+			base + "posts/get_by_user/" + usrId + "/",
+
 	},
 	CHAT: {
 		GET_MESSAGES: (category_name: string) =>

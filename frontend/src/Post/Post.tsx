@@ -1,5 +1,5 @@
 import { Button } from "@mui/base";
-import { Card, CardMedia, CardContent, Typography, IconButton } from '@mui/material';
+import { Card, CardMedia, CardContent, Typography } from '@mui/material';
 import { AddCommentModal } from "../Comments/AddCommentModal";
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
@@ -31,6 +31,7 @@ export interface IPost {
 	dislikes: number;
 	dislikedBy: string[];
 	location: string;
+	user_id: string;
 }
 interface PostProps {
 	post: IPost;
@@ -125,6 +126,10 @@ const handleOpenEditModal = (postToEdit: IPost) => {
 	setEditedContent(postToEdit.content);
 	setOpenEditModal(true);
   };  
+  const canEditOrDelete = (post: IPost) => {
+	const userDetails = getConnectedUser();
+	return userDetails && post.user_id === userDetails.id;
+  };
   
 
 	  
@@ -140,36 +145,56 @@ const handleOpenEditModal = (postToEdit: IPost) => {
 				alt={post.title}
 			/>
 			<CardContent>
-			<Button
-            onClick={handleOpenDeleteModal}
-            style={{
-              backgroundColor: 'transparent',
-              color: 'red',
-              justifyContent: "flex-end",
-			  
-            }}
-          >
-            <DeleteIcon />
-          </Button>
-		  <DeletePostModal
-  			open={openDeleteModal}
-  			onClose={() => setOpenDeleteModal(false)}
-  			postId={post._id}
-  			onDelete={(deletedPostId: string) => handleDeletePost(deletedPostId)} 
-		/>
-		<Button onClick={() => handleOpenEditModal(post)}>
-  			<ModeEditIcon />
-		</Button>
-		<EditPostModal
-  			open={openEditModal}
-  			onClose={() => {
-    		setOpenEditModal(false);
-    		setEditedContent(null); // Clear edited content when modal is closed
+        {canEditOrDelete(post)  && (
+          // Render the edit and delete buttons only if the connected user is the post creator
+          <div>
+            <Button
+  variant="outlined"
+  color="primary"
+  onClick={() => handleOpenEditModal(post)}
+  style={{
+    marginBottom: "8px",
+    backgroundColor: "transparent",
+    color: "blue",
+    justifyContent: "flex-end",
+    display: "flex",
+    alignItems: "center",
+  }}
+>
+  <ModeEditIcon style={{ marginRight: "4px" }} />
+</Button>
+	<Button
+  		variant="outlined"
+  		color="secondary"
+  		onClick={handleOpenDeleteModal}
+  		style={{
+    		backgroundColor: "transparent",
+    		color: "red",
+    		justifyContent: "flex-end",
+    		display: "flex",
+    		alignItems: "center",
   		}}
-  		postId={post._id}
-  		content={editedContent || ""}
-  		onContentChange={setEditedContent} // Callback to update edited content
-		/>
+	>
+  <DeleteIcon style={{ marginRight: "4px" }} />
+	</Button>
+	</div>
+        )}
+        <DeletePostModal
+          open={openDeleteModal}
+          onClose={() => setOpenDeleteModal(false)}
+          postId={post._id}
+          onDelete={(deletedPostId: string) => handleDeletePost(deletedPostId)}
+        />
+        <EditPostModal
+          open={openEditModal}
+          onClose={() => {
+            setOpenEditModal(false);
+            setEditedContent(null); // Clear edited content when modal is closed
+          }}
+          postId={post._id}
+          content={editedContent || ""}
+          onContentChange={setEditedContent} // Callback to update edited content
+        />
 				<Typography variant="h6" gutterBottom>
 					{post.title}
 				</Typography>
