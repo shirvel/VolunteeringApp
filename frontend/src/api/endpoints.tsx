@@ -17,6 +17,9 @@ export const endpoints = {
 		CREATE_POST: () => base + "posts/",
 		EDIT_POST: (postId: string) => base + "posts/" + postId + "/",
 		DELETE_POST: (postId: string) => base + "posts/" + postId + "/",
+		GET_ALL_POSTS: () => base + "posts/",
+		ADD_LIKE: (postId: string) => base + "posts/" + postId + "/like/",
+		ADD_DISLIKE: (postId: string) => base + "posts/" + postId + "/dislike/",
 		GET_COMMENTS: (postId: string) =>
 			base + "comments/get_by_post/" + postId + "/",
 	},

@@ -1,35 +1,29 @@
 import { Dialog, Button, DialogContent, DialogActions } from "@mui/material";
-
 import React from "react";
 import { deletePost } from "./PostService";
 
-export interface DialogProps {
-	open: boolean;
-    onClose: () => void;
-    postId: string
+interface DeletePostModalProps {
+  open: boolean;
+  onClose: () => void;
+  postId: string;
+  onDelete: (deletedPostId: string) => void;
 }
 
 const sendPostDeleteToServer = (postId: string) => {
-	console.log(postId);
-	deletePost(postId);
+  console.log("the post we are going to delete"+postId);
+  deletePost(postId);
 };
 
-export const DeletePostModal = (props: DialogProps) => {
-	const { onClose, open, postId } = props;
+export const DeletePostModal = ({
+  open, onClose, postId, onDelete,}: DeletePostModalProps) => {
+  const handleDelete = () => {
+    sendPostDeleteToServer(postId);
+    onDelete(postId); 
+    onClose();
+  };
 
-	const handleClose = () => {
-		onClose();
-    };
-    
-	const handleDelete = () => {
-
-		sendPostDeleteToServer(postId);
-		onClose();
-	};
-
-
-	return (
-	<Dialog open={open} onClose={onClose}>
+  return (
+    <Dialog open={open} onClose={onClose}>
       <DialogContent>
         <div>
           <p>Are you sure you want to delete this post?</p>
@@ -44,13 +38,13 @@ export const DeletePostModal = (props: DialogProps) => {
           Yes
         </Button>
         <Button
-          onClick={handleClose}
+          onClick={onClose} 
           variant="outlined"
           style={{ backgroundColor: '#fff', color: '#000' }}
         >
           No
         </Button>
-        </DialogActions>
+      </DialogActions>
     </Dialog>
   );
 };

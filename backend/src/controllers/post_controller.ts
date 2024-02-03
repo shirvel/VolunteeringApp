@@ -3,6 +3,7 @@ import User from '../models/user_model';
 import Post from '../models/post_model';
 import mongoose from "mongoose";
 import { Request, Response } from 'express';
+import { Console } from 'console';
 
 export interface IPost {
   user_id: string; 
@@ -15,6 +16,7 @@ export interface IPost {
   likedBy: string[];
   dislikes: number;
   dislikedBy: string[];
+  location: string;
   _id?: string;
 };
 
@@ -42,28 +44,26 @@ const getAllPosts = async (req, res) => {
 };
 const addLike = async (req, res) => {
   try {
-    const userId = req.body.user_id;
+    const userId = req.body.usrId;
     const postId = req.params.id;
-
+    console.log(userId);
     // Check if the user has already liked the post
     const post = await Post.findOne({ _id: req.params.id, likedBy: { $in: [userId] } });
+    console.log(post+"backend test");
 
     if (post) {
       return res.status(400).json({ error: 'User has already liked this post' });
     }
-
-    // If the user hasn't liked the post, add the like
-    const updatedPost = await Post.findOneAndUpdate(
-      { _id: req.params.id },
-      { $inc: { likes: 1 }, $push: { likedBy: userId } },
-      { new: true }
-    );
-
-    if (!updatedPost) {
-      return res.status(404).json({ error: 'Post not found' });
-    }
-
+    else{
+      // If the user hasn't liked the post, add the like
+      const updatedPost = await Post.findOneAndUpdate(
+        { _id: req.params.id },
+        { $inc: { likes: 1 },  $push: { likedBy: userId } },
+        { new: true }
+      );
     res.status(200).json(updatedPost);
+    }
+    
   } catch (error) {
     res.status(500).json({ error: 'Failed to add like' });
   }
@@ -72,11 +72,13 @@ const addLike = async (req, res) => {
 // Add dislike to a post by its ID
 const addDislike = async (req, res) => {
   try {
-    const userId = req.body.user_id;
+    const userId = req.body.usrId;
     const postId = req.params.id;
-
+    console.log(userId);
+    console.log(postId);
     // Check if the user has already disliked the post
     const post = await Post.findOne({ _id: postId, dislikes: { $in: [userId] } });
+    console.log(post+"getid");
 
     if (post) {
       return res.status(400).json({ error: 'User has already disliked this post' });

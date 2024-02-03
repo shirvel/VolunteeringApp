@@ -12,6 +12,7 @@ export type CreatePostDetails = {
 	phoneNumber: string;
 	image: string | null;
 	category: string;
+	location: string;
 };
 
 // TODO: use the real post id and remove this func
@@ -22,7 +23,8 @@ export const getPostDetailsMock = () => {
                 content: 'This is a content',
                 phoneNumber: '54354',
                 image: 'lk',
-                category: 'Community'
+                category: 'Community',
+				location: 'Ashdod'
             } as CreatePostDetails
         };
 }

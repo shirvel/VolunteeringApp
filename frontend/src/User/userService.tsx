@@ -28,7 +28,7 @@ export const getConnectedUser = async () => {
 	if (connectedUserId) {
 		return await getUserById(connectedUserId);
 	}
-	return null;
+	//return null;
 };
 export const updateUser = async (user: UserDetails) => {
 	const connectedUserId = localStorage.getItem("userId");
