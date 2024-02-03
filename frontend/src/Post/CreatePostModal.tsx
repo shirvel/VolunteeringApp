@@ -14,8 +14,8 @@ import { styled } from "@mui/material/styles";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useState, ChangeEvent } from "react";
 import { CreatePostDetails } from "./Posts-deprecated";
-import React from "react";
-import { createPost } from "./PostService";
+import React, {useEffect} from "react";
+import { createPost, getAllCategories, Category } from "./PostService";
 import { uploadFile } from "./../File/FileService";
 
 export interface DialogProps {
@@ -46,6 +46,18 @@ export const CreatePostModal = (props: DialogProps) => {
 	const handleClose = () => {
 		onClose();
 	};
+
+	const [allCategories, setAllCategories] = useState<Category[]>([])
+
+	useEffect(() => 
+	{	
+		const getCategories = async () => {
+			const categories = await getAllCategories();
+			setAllCategories(categories)
+			return categories
+		}
+		getCategories().then((categories) => console.log(categories));
+	}, [])
 
 	const pickedImage = (event: ChangeEvent<HTMLInputElement>) => {
 		if (event.target.files && event.target.files.length > 0) {
@@ -84,7 +96,7 @@ export const CreatePostModal = (props: DialogProps) => {
 		setContent("");
 		setPhoneNumber("");
 		setImageFile(null);
-		setCategory("Community");
+		setCategory(allCategories.length > 0 ? allCategories[0].name : '');
 
 		onClose();
 	};
@@ -92,7 +104,7 @@ export const CreatePostModal = (props: DialogProps) => {
 	const [title, setTitle] = useState("");
 	const [content, setContent] = useState("");
 	const [phoneNumber, setPhoneNumber] = useState("");
-	const [category, setCategory] = useState("Community");
+	const [category, setCategory] = useState(allCategories.length > 0 ? allCategories[0].name : '');
 	const [imageFile, setImageFile] = useState<File | null>(null);
 
 	const [titleError, setTitleError] = useState<string | null>(null);
@@ -126,18 +138,16 @@ export const CreatePostModal = (props: DialogProps) => {
 							Category
 						</InputLabel>
 						<NativeSelect
-							defaultValue={"Community"}
+							defaultValue={allCategories.length > 0 ? allCategories[0].name : ''}
 							inputProps={{
 								name: "category",
 								id: "uncontrolled-native",
 							}}
-							onChange={(event) => setCategory(event.target.value)}>
-							<option value={"Community"}>Community</option>
-							<option value={"Animals"}>Animals</option>
-							<option value={"Elderly"}>Elderly</option>
-							<option value={"Cooking"}>Cooking</option>
-							<option value={"Transportation"}>Transportation</option>
-							<option value={"Other"}>Other</option>
+							onChange={(event) => setCategory(event.target.value)}> 
+							{
+								allCategories.map((cat: Category) => { return (<option key={cat.name} value={cat.name}>{cat.name}</option>)})
+
+							}
 						</NativeSelect>
 					</FormControl>
 				</Grid>
