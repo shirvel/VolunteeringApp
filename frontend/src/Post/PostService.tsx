@@ -132,3 +132,13 @@ export const getAllComments = async (postId: string) => {
 	const response = await get(endpoints.POST.GET_COMMENTS(postId));
 	return response as CommentI[];
 };
+
+export type Category = {
+	name: string;
+	_id: string;
+};
+
+export const getAllCategories = async () => {
+	const response = await get(endpoints.CATEGORIES.BASE);
+	return response;
+};
