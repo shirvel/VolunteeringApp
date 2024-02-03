@@ -140,3 +140,12 @@ export const gettAllPostsByUser = async (usrId: string) => {
 	return response as IPost[];
 };
 
+export type Category = {
+	name: string;
+	_id: string;
+};
+
+export const getAllCategories = async () => {
+	const response = await get(endpoints.CATEGORIES.BASE);
+	return response;
+};
