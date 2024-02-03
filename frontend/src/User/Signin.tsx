@@ -1,4 +1,3 @@
-// Signin.tsx
 import React, { useState } from "react";
 import { Container, Typography, Box, TextField, Button, Link } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -46,7 +45,6 @@ export const Signin: React.FC = () => {
 		setEmailError(null);
 		setPasswordError(null);
 
-		// Rest of your login logic
 		const user = {
 			email,
 			password,
@@ -62,17 +60,13 @@ export const Signin: React.FC = () => {
 		
 			  else {
 				parseLocalStorageData(response.data);
-				navigate('/chat', { replace: true });
+				navigate('/view-posts', { replace: true });
 		
 			  }
 		} catch (error) {
 			console.error("Error during login:", error);	
 		}
 	};
-
-	// const clickedSignup = async () => {
-	// 	navigate("/signin", { replace: true });
-	// }
 
 	return (
 		<div style={{ background: "linear-gradient(to bottom, #ffffff, #2196f3)" }}>
@@ -167,7 +161,6 @@ export const Signin: React.FC = () => {
 							<Link
 							component="button"
 							variant="body2"
-							//onClick={() => clickedSignup} 
 							 onClick={() => {
 							 	navigate("/signup", {replace: true});
 							 }}
