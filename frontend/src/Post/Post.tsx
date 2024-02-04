@@ -239,26 +239,39 @@ const handleOpenEditModal = (postToEdit: IPost) => {
 							Weather data not available
 						</Typography>
 					)}
-					<ThumbUpIcon onClick={fetchAddLike} aria-label="like">
-            		</ThumbUpIcon>
-            		<Typography component="span">{likesCount}</Typography>
-					<ThumbDownIcon onClick={fetchDisLike} aria-label="dislike">
-            		</ThumbDownIcon>
-            		<Typography component="span">{dislikeCount}</Typography>
 				</div>
 				{post.image && (
           <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            marginTop="auto" // Pushes the image to the end of the card
-          >
+		  sx={{
+			display: "flex",
+			flexDirection: "column",
+			alignItems: "center",
+			position: "relative",
+			marginTop: "auto", // Pushes the image to the end of the card
+			maxHeight: "200px",
+		  }}
+		>
             <img
               src={post.image}
               alt={post.title}
               style={{ maxWidth: "100%", maxHeight: "200px" }} // Adjust the dimensions as needed
             />
-          </Box>
+			{/* Like and Dislike buttons in the bottom-right corner */}
+			<Box
+        		sx={{
+          			display: "flex",
+          			alignItems: "center",
+					  marginTop: "auto",
+					  marginLeft: "auto",
+          			
+        		}}
+      		>
+        	<ThumbUpIcon onClick={fetchAddLike} aria-label="like" />
+        	<Typography component="span">{likesCount}</Typography>
+        	<ThumbDownIcon onClick={fetchDisLike} aria-label="dislike" />
+        	<Typography component="span">{dislikeCount}</Typography>
+      	</Box>
+    </Box>
         )}
 			</CardContent>
 		</Card>
