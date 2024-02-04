@@ -179,8 +179,8 @@ export const Signup: React.FC = () => {
                 src={imageFile === null ? avatar : URL.createObjectURL(imageFile)}
                 alt="Avatar"
                 style={{
-                  width: '250px',
-                  height: '250px',
+                  width: '150px',
+                  height: '150px',
                   borderRadius: '50%', 
                   objectFit: 'cover', 
                   marginBottom: '20px'
