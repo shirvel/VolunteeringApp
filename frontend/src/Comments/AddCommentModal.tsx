@@ -29,7 +29,7 @@ export const AddCommentModal = (
 	return (
 		<Dialog onClose={handleClose} open={open}>
 			<DialogTitle className="flex items-center justify-center">
-				Edit Comment
+				Add Comment
 			</DialogTitle>
 			<Grid container spacing={3} className="p-4">
 				<Grid item xs={12}>

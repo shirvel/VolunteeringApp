@@ -11,7 +11,7 @@ export const uploadFile = async (file: File | null): Promise<string | null> => {
           'Content-Type': 'image/jpeg'
         }).then(res => {
         console.log(res);
-        resolve(res.url)
+        resolve(res.data.url)
         }).catch(err => {
         console.log(err);
         reject(err)
