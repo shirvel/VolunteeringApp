@@ -7,6 +7,7 @@
     "test": "tsc && jest --detectOpenHandles --forceExit --runInBand --coverage",
     "testComment": "tsc && jest --detectOpenHandles --forceExit ./src/tests/comment.test.ts",
     "testCategory": "tsc && jest --detectOpenHandles --forceExit ./src/tests/category.test.ts",
+    "testChat": "tsc && jest --detectOpenHandles --forceExit ./src/tests/chat.test.ts",
     "testPost": "tsc && jest --detectOpenHandles --forceExit ./src/tests/post.test.ts",
     "testAuth": "tsc && jest --detectOpenHandles --forceExit --runInBand ./src/tests/auth.test.ts",
     "testUser": "tsc && jest --detectOpenHandles --forceExit --runInBand ./src/tests/user.test.ts",

@@ -81,6 +81,14 @@ describe("Comment tests", () => {
     expect(comment.user_name).toBe("comment_test");
   });
 
+  test("Test Get All Comments By Post", async () => {
+    const response = await request(app).get(`/comments/get_by_post/${test_post._id}`).set("Authorization", "JWT " + accessToken);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.length).toBe(1);
+    const comment = response.body[0];
+    expect(comment.user_name).toBe("comment_test");
+  });
+
   test("Test edit comment", async () => {
     const response = await request(app).patch(`/comments/${test_comment._id}`).set("Authorization", "JWT " + accessToken).send({content: "hello2"});
     expect(response.statusCode).toBe(204);
