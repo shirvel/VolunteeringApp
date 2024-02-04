@@ -30,7 +30,10 @@ export const AllUserPosts = () => {
 
     loadAllPosts();
   }, [searchParams]);
-
+  
+  const handleOpenDeleteModal = () => {
+		setOpenDeleteModal(true);
+	  };
   const handleDeletePost = async (postId: string) => {
     try {
       await deletePost(postId);
@@ -80,7 +83,7 @@ export const AllUserPosts = () => {
             <Button
   				variant="outlined"
   				color="primary"
-  				onClick={() => handleOpenEditModal(post)}
+  				onClick={() => handleEditPost(post)}
   				style={{
     				marginBottom: "8px",
     				backgroundColor: "transparent",

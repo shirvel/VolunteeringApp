@@ -77,16 +77,16 @@ const addDislike = async (req, res) => {
     console.log(userId);
     console.log(postId);
     // Check if the user has already disliked the post
-    const post = await Post.findOne({ _id: postId, dislikes: { $in: [userId] } });
+    const post = await Post.findOne({ _id: req.params.id, dislikedBy: { $in: [userId] } });
     console.log(post+"getid");
 
     if (post) {
       return res.status(400).json({ error: 'User has already disliked this post' });
     }
-
-    // Check if the user has liked the post previously
-    const likedPost = await Post.findOne({ _id: postId, likedBy: { $in: [userId] } });
-
+    else{
+      // Check if the user has liked the post previously
+    const likedPost = await Post.findOne({ _id: req.params.id, likedBy: { $in: [userId] } });
+    console.log(likedPost+"getidlikes");
     if (likedPost) {
       // Remove the user's like before adding a dislike
       await Post.findOneAndUpdate(
@@ -94,19 +94,19 @@ const addDislike = async (req, res) => {
         { $inc: { likes: -1 }, $pull: { likedBy: userId } }
       );
     }
-
-    // If the user hasn't disliked the post, add the dislike
-    const updatedPost = await Post.findOneAndUpdate(
-      { _id: postId },
-      { $inc: { dislikes: 1 }, $push: { dislikedBy: userId } },
-      { new: true }
-    );
-
-    if (!updatedPost) {
-      return res.status(404).json({ error: 'Post not found' });
+    else{// If the user hasn't disliked the post, add the dislike
+      const updatedPost = await Post.findOneAndUpdate(
+        { _id: postId },
+        { $inc: { dislikes: 1 }, $push: { dislikedBy: userId } },
+        { new: true }
+      );
+        console.log("update"+updatedPost)
+      if (!updatedPost) {
+        return res.status(404).json({ error: 'Post not found' });
+      }
+  
+      res.status(200).json(updatedPost);}
     }
-
-    res.status(200).json(updatedPost);
   } catch (error) {
     res.status(500).json({ error: 'Failed to add dislike' });
   }
