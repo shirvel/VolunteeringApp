@@ -1,5 +1,5 @@
 import { Button } from "@mui/base";
-import { Card, CardMedia, CardContent, Typography } from '@mui/material';
+import { Card, CardMedia, CardContent, Typography, Box } from '@mui/material';
 import { AddCommentModal } from "../Comments/AddCommentModal";
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
@@ -130,6 +130,8 @@ const handleOpenEditModal = (postToEdit: IPost) => {
 	const userDetails = getConnectedUser();
 	return userDetails && post.user_id === userDetails.id;
   };
+
+  
   
 
 	  
@@ -138,47 +140,48 @@ const handleOpenEditModal = (postToEdit: IPost) => {
 		<Card
 			key={post._id}
 			sx={{ display: "flex", flexDirection: "column", marginBottom: 2 }}>
-			<CardMedia
-				component="img"
-				sx={{ width: 200, objectFit: "cover" }}
-				image={post.image}
-				alt={post.title}
-			/>
 			<CardContent>
-        {canEditOrDelete(post)  && (
-          // Render the edit and delete buttons only if the connected user is the post creator
-          <div>
-            <Button
-  variant="outlined"
-  color="primary"
-  onClick={() => handleOpenEditModal(post)}
-  style={{
-    marginBottom: "8px",
-    backgroundColor: "transparent",
-    color: "blue",
-    justifyContent: "flex-end",
-    display: "flex",
-    alignItems: "center",
-  }}
->
-  <ModeEditIcon style={{ marginRight: "4px" }} />
-</Button>
-	<Button
-  		variant="outlined"
-  		color="secondary"
-  		onClick={handleOpenDeleteModal}
-  		style={{
-    		backgroundColor: "transparent",
-    		color: "red",
-    		justifyContent: "flex-end",
-    		display: "flex",
-    		alignItems: "center",
-  		}}
-	>
-  <DeleteIcon style={{ marginRight: "4px" }} />
-	</Button>
-	</div>
-        )}
+			<Box
+          		display="flex"
+          		justifyContent="space-between"
+          		alignItems="center"
+          		marginBottom="8px" 
+        	>
+			<Typography variant="h5" fontWeight="bold" gutterBottom>
+          		{post.title}
+        	</Typography>
+		  	{canEditOrDelete(post)  && (
+				<Box>
+            		<Button
+  						variant="outlined"
+  						color="primary"
+  						onClick={() => handleOpenEditModal(post)}
+  						style={{
+    						marginBottom: "8px",
+    						backgroundColor: "transparent",
+    						color: "blue",
+    						justifyContent: "flex-end",
+    						alignItems: "center",
+  						}}
+					>
+  						<ModeEditIcon style={{ marginRight: "4px" }} />
+					</Button>
+					<Button
+  						variant="outlined"
+  						color="secondary"
+  						onClick={handleOpenDeleteModal}
+  						style={{
+    						backgroundColor: "transparent",
+    						color: "red",
+    						justifyContent: "flex-end",
+    						alignItems: "center",
+  						}}
+					>
+  						<DeleteIcon style={{ marginRight: "4px" }} />
+					</Button>
+				</Box>
+        	)}
+		</Box> 
         <DeletePostModal
           open={openDeleteModal}
           onClose={() => setOpenDeleteModal(false)}
@@ -195,9 +198,6 @@ const handleOpenEditModal = (postToEdit: IPost) => {
           content={editedContent || ""}
           onContentChange={setEditedContent} // Callback to update edited content
         />
-				<Typography variant="h6" gutterBottom>
-					{post.title}
-				</Typography>
 				<Typography variant="body1">{post.content}</Typography>
 				<Typography variant="body2">
 					Location:{post.location}
@@ -225,19 +225,13 @@ const handleOpenEditModal = (postToEdit: IPost) => {
 					}}>
 					{weatherData ? (
 						<>
+							<div>
+								{renderWeatherIcon(weatherData.weather[0].main)}
+							</div>
 							<div style={{ flex: 1 }}>
 								<Typography variant="body2" color="textSecondary">
-									Temp: {Math.round(weatherData.main.temp)}°C
+									 {Math.round(weatherData.main.temp)}°C
 								</Typography>
-							</div>
-							<div
-								style={{
-									flex: 1,
-									display: "flex",
-									alignItems: "center",
-									justifyContent: "center",
-								}}>
-								{renderWeatherIcon(weatherData.weather[0].main)}
 							</div>
 						</>
 					) : (
@@ -252,6 +246,20 @@ const handleOpenEditModal = (postToEdit: IPost) => {
             		</ThumbDownIcon>
             		<Typography component="span">{dislikeCount}</Typography>
 				</div>
+				{post.image && (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            marginTop="auto" // Pushes the image to the end of the card
+          >
+            <img
+              src={post.image}
+              alt={post.title}
+              style={{ maxWidth: "100%", maxHeight: "200px" }} // Adjust the dimensions as needed
+            />
+          </Box>
+        )}
 			</CardContent>
 		</Card>
 	);
