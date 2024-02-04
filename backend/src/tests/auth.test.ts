@@ -27,14 +27,10 @@ beforeAll(async () => {
     app = await initApp();
     console.log("BeforeAll");
     await User.deleteMany();
-    //TODO: Add it when we will have post implemented
- //   await Post.deleteMany();
 })
 
 afterAll(async () => {
-     await User.deleteMany();
-     //TODO: Add it when we will have post implemented
-  //   await Post.deleteMany();
+  await User.deleteMany();
   mongoose.connection.close();
  });
 

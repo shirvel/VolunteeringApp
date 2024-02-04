@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./sidebar.css";
 import ChatIcon from "@mui/icons-material/Chat";
@@ -10,12 +10,29 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import HomeIcon from "@mui/icons-material/Home";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import { useNavigate } from "react-router-dom"; 
+import { getConnectedUser } from "../User/userService";
 
 function Sidebar() {
-	const [isCreatePostDialogOpen, setCreatePostDialogOpen] = useState(false); // State for dialog visibility
-	const [isEditUserDialogOpen, setEditUserDialogOpen] = useState(false);
-	const [isMainButtonVisible, setMainButtonVisible] = useState(true);
-	const [areOtherButtonsVisible, setOtherButtonsVisible] = useState(false);
+  const [isCreatePostDialogOpen, setCreatePostDialogOpen] = useState(false); 
+  const [isEditUserDialogOpen, setEditUserDialogOpen] = useState(false);
+  const [isMainButtonVisible, setMainButtonVisible] = useState(true);
+  const [areOtherButtonsVisible, setOtherButtonsVisible] = useState(false);
+
+  const navigate = useNavigate(); 
+
+  // Check if the user is connected (logged in) and redirect if not
+  const checkUserConnected = async () => {
+	const userDetails = await getConnectedUser();
+    if (!userDetails) {
+      	navigate("/signin"); // Redirect to the signin page
+    }
+  };
+
+  
+  useEffect(() => {
+    checkUserConnected();
+  }, []);
 
 	// Function to open the Create Post dialog
 	const openCreatePostDialog = () => {
@@ -35,7 +52,6 @@ function Sidebar() {
 					<ul>
 						{isMainButtonVisible && (
 							<li className="button-list-item">
-								{/* Show the Main button */}
 								<button
 									className="button-link main-button"
 									onClick={() => {
@@ -58,14 +74,6 @@ function Sidebar() {
 									{/* Show the View Posts button */}
 									<Link to="/view-posts" className="button-link">
 										<ViewListIcon /> View Posts
-									</Link>
-								</li>
-								<li>
-									<Link
-										to="/posts"
-										className="button-link"
-										onClick={() => openCreatePostDialog()}>
-										<AddCircleOutlineIcon /> Create Post
 									</Link>
 								</li>
 								<li>
@@ -96,8 +104,6 @@ function Sidebar() {
 					<ArrowBackIcon /> Back
 				</button>
 			)}
-
-			{/* Pass the dialog state to CreatePostModal */}
 			<CreatePostModal
 				open={isCreatePostDialogOpen}
 				onClose={closeCreatePostDialog}

@@ -85,6 +85,9 @@ const refresh = async (req: Request, res: Response) => {
         }
         try {
             const userDb = await User.findOne({ '_id': user._id });
+            if (userDb.expiredTokens.includes(refreshToken)) {
+                return res.sendStatus(208)
+            }
             if (!userDb.refreshTokens || !userDb.refreshTokens.includes(refreshToken)) {
                 userDb.refreshTokens = [];
                 await userDb.save();
@@ -93,6 +96,7 @@ const refresh = async (req: Request, res: Response) => {
             const newAccessToken = jwt.sign({ _id: user._id }, process.env.JWT_ACCESS_TOKEN_SECRET, { expiresIn: process.env.JWT_TOKEN_EXPIRATION });
             const newRefreshToken = jwt.sign({ _id: user._id }, process.env.JWT_REFRESH_SECRET);
             userDb.refreshTokens = userDb.refreshTokens.filter(t => t !== refreshToken);
+            userDb.expiredTokens.push(refreshToken);
             userDb.refreshTokens.push(newRefreshToken);
             await userDb.save();
             return res.status(200).send({

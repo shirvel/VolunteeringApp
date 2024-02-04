@@ -42,6 +42,10 @@ const postSchema = new mongoose.Schema({
             type: String,
         },
     ],
+    location: {
+        type: String,
+        required: true
+    },
 });
 
 export default mongoose.model('Post', postSchema);

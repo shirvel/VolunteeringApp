@@ -1,4 +1,3 @@
-// SignUp.tsx
 import React, { useState, ChangeEvent } from "react";
 import { Container, Typography, Box, TextField, Button, Grid, Link } from "@mui/material";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
@@ -8,7 +7,8 @@ import avatar from '../assets/avatar.jpeg';
 import { CreateUserInfo, createUser, googleSignin, parseLocalStorageData } from "./userService";
 import {uploadFile} from './../File/FileService';
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
-import { get } from "../api/requests";
+import Snackbar from '@mui/material/Snackbar';
+import SnackbarContent from '@mui/material/SnackbarContent';
 
 const theme = createTheme();
 
@@ -41,6 +41,9 @@ export const Signup: React.FC = () => {
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
 
+  const [errorSnackbarOpen, setErrorSnackbarOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
   const navigate = useNavigate();
 
   const pickedImage = (event: ChangeEvent<HTMLInputElement>) => {
@@ -48,17 +51,17 @@ export const Signup: React.FC = () => {
       setImageFile(event.target.files[0]);
     }
   } 
-/*
-  const tempRegister = async () => {
-    
-    const response = await get(
-      'http://127.1:3000/user'
-    );
-    const data = await response.data;
-    console.log(JSON.stringify(response));
-    console.log(JSON.stringify(data));
-  
-*/
+
+  const handleSnackbarClose = () => {
+    setErrorSnackbarOpen(false);
+    setErrorMessage('');
+  };
+
+  const displayErrorSnackbar = (error: string) => {
+    setErrorMessage(error);
+    setErrorSnackbarOpen(true);
+  };
+
   const clickedRegister = async () => {
     // Check for empty fields
     if (!name) {
@@ -89,26 +92,34 @@ export const Signup: React.FC = () => {
         imageUrl: url
       };
 
-      createUser(newUser)
+      const res = await createUser(newUser);
 
-      navigate('/signin', { replace: true });
+      if (res.status < 200 || res.status >= 400) {
+        console.error('Error during registration:', res.data);
+        displayErrorSnackbar(`Error during registration: ${res.data}. Please try again. `);
+      }
+
+      else {
+        navigate('/signin', { replace: true });
+
+      }
     } catch (error) {
       console.error('Error during registration:', error);
     }
   };
 
   const onGoogleLoginSuccess = async (credentialResponse: CredentialResponse) => {
-    console.log(credentialResponse);
     try {
       const response = await googleSignin(credentialResponse);
-      parseLocalStorageData(response);
+      parseLocalStorageData(response.data);
+
       console.log(response);
+      navigate('/',  { replace: true }); 
     }
     catch(error) {
       console.log(error);
+      console.error(error);
     }
-    navigate('/',  { replace: true });
-    
   }
 
   const onGoogleLoginFaliure = () => {
@@ -168,8 +179,8 @@ export const Signup: React.FC = () => {
                 src={imageFile === null ? avatar : URL.createObjectURL(imageFile)}
                 alt="Avatar"
                 style={{
-                  width: '250px',
-                  height: '250px',
+                  width: '150px',
+                  height: '150px',
                   borderRadius: '50%', 
                   objectFit: 'cover', 
                   marginBottom: '20px'
@@ -257,7 +268,6 @@ export const Signup: React.FC = () => {
 							<Link
 							component="button"
 							variant="body2"
-							//onClick={() => clickedSignup} 
 							 onClick={() => {
 							 	navigate("/signin", {replace: true});
 							 }}
@@ -269,6 +279,21 @@ export const Signup: React.FC = () => {
 
             </form>
           </Box>
+
+          <Snackbar
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          open={errorSnackbarOpen}
+          autoHideDuration={6000}
+          onClose={handleSnackbarClose}
+        >
+          <SnackbarContent
+            sx={{
+              backgroundColor: theme => theme.palette.error.main,
+            }}
+            message={<span>{errorMessage}</span>}
+          />
+        </Snackbar>
+
         </Container>
       </ThemeProvider>
     </div>

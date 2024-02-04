@@ -6,6 +6,7 @@ export interface IUser {
     name: string;
     _id?: string;
     refreshTokens?: string[];
+    expiredTokens?: string[];
     imageUrl?: string;
   }
 
@@ -26,6 +27,10 @@ const userSchema = new mongoose.Schema<IUser>({
         type: [String],
         required: false,
       },
+    expiredTokens: {
+      type: [String],
+      required: false
+    },
       imageUrl: {
         type: String,
       },

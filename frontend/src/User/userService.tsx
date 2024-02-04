@@ -1,4 +1,4 @@
-import { get, patch, post } from "../api/requests";
+import { get, patch, post, postGoogle } from "../api/requests";
 import { UserDetails } from "./UserDetailsComp";
 import { endpoints } from "../api/endpoints";
 import { CredentialResponse } from "@react-oauth/google";
@@ -11,6 +11,11 @@ export type CreateUserInfo = {
 	imageUrl?: string | null;
 	accessToken?: string;
 	refreshToken?: string;
+};
+
+export type SigninUserInfo = {
+	email: string;
+	password: string;
 };
 
 export const getUserById = async (id: string) => {
@@ -28,7 +33,7 @@ export const getConnectedUser = async () => {
 	if (connectedUserId) {
 		return await getUserById(connectedUserId);
 	}
-	return null;
+	//return null;
 };
 export const updateUser = async (user: UserDetails) => {
 	const connectedUserId = localStorage.getItem("userId");
@@ -45,11 +50,12 @@ export const updateUser = async (user: UserDetails) => {
 export const createUser = async (user: CreateUserInfo) => {
 	const response = await post(endpoints.USER.CREATE_USER(), user);
 	console.log(JSON.stringify(response));
+	return response;
 };
 
 export const googleSignin = async (credentialResponse: CredentialResponse) => {
 	console.log("Google Signin");
-	const response = await post(
+	const response = await postGoogle(
 		endpoints.USER.CREATE_USER_GOOGLE(),
 		credentialResponse
 	);
@@ -68,4 +74,10 @@ export const parseLocalStorageData = (data: tokenDetails) => {
 	const parsedToken = jwtDecode(data.accessToken);
 	localStorage.setItem("userId", parsedToken._id);
 	localStorage.setItem("userName", parsedToken.name);
+};
+
+export const signinUser = async (user: SigninUserInfo) => {
+	const response = await post(endpoints.USER.SIGNIN_USER(), user);
+	console.log(JSON.stringify(response));
+	return response;
 };
