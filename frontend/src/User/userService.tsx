@@ -1,4 +1,4 @@
-import { get, patch, post } from "../api/requests";
+import { get, patch, post, postGoogle } from "../api/requests";
 import { UserDetails } from "./UserDetailsComp";
 import { endpoints } from "../api/endpoints";
 import { CredentialResponse } from "@react-oauth/google";
@@ -55,7 +55,7 @@ export const createUser = async (user: CreateUserInfo) => {
 
 export const googleSignin = async (credentialResponse: CredentialResponse) => {
 	console.log("Google Signin");
-	const response = await post(
+	const response = await postGoogle(
 		endpoints.USER.CREATE_USER_GOOGLE(),
 		credentialResponse
 	);

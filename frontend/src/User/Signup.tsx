@@ -109,17 +109,17 @@ export const Signup: React.FC = () => {
   };
 
   const onGoogleLoginSuccess = async (credentialResponse: CredentialResponse) => {
-    console.log(credentialResponse);
     try {
       const response = await googleSignin(credentialResponse);
-      parseLocalStorageData(response);
+      parseLocalStorageData(response.data);
+
       console.log(response);
+      navigate('/',  { replace: true }); 
     }
     catch(error) {
       console.log(error);
+      console.error(error);
     }
-    navigate('/',  { replace: true });
-    
   }
 
   const onGoogleLoginFaliure = () => {

@@ -74,3 +74,19 @@ export const deleteRequest = async (endpoint: string) => {
 	}
 };
 
+export const postGoogle = async (endpoint: string, data: any, headers?: any) => {
+	try {
+		const response = await axios.post(
+			endpoint,
+			data,
+			getRequestConfig(headers)
+		);
+
+		return response;
+	} 
+	catch (error) {
+		console.log(error);
+		console.error(error);
+	}
+}
+
