@@ -114,7 +114,7 @@ export const Signup: React.FC = () => {
       parseLocalStorageData(response.data);
 
       console.log(response);
-      navigate('/',  { replace: true }); 
+      navigate('/view-posts',  { replace: true }); 
     }
     catch(error) {
       console.log(error);
