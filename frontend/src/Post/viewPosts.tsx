@@ -68,8 +68,11 @@ const ViewPosts: React.FC<IViewPostsProps> = () => {
 	  };
 	  const addNewPost = (newPost: IPost) => {
 		setPosts((prevPosts) => [...prevPosts, newPost]);
-	  };	  
-	
+	  };
+
+	  const filterPostsByCategory = (categoryName: string) => {
+		setSelectedCategory(categoryName);
+	  };
 	const filteredPosts = selectedCategory
 		? posts.filter((post) => post.category === selectedCategory)
 		: posts;

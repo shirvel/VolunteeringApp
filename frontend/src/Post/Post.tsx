@@ -212,6 +212,7 @@ const handleOpenEditModal = (postToEdit: IPost) => {
           content={editedContent || ""}
           onContentChange={setEditedContent} // Callback to update edited content
         />
+				<Typography variant="body1">{post.category}</Typography>
 				<Typography variant="body1">{post.content}</Typography>
 				<Typography variant="body2">
 					Location:{post.location}
