@@ -123,7 +123,7 @@ const ViewPosts: React.FC<IViewPostsProps> = () => {
                         variant="outlined"
                         onClick={() => filterPostsByCategory(category.name)}
                         sx={{
-                			fontSize: '1.25rem',
+                			fontSize: '1rem',
                 			fontWeight: 'bold',
                 			backgroundColor: 'white',
                 			color: 'blue',
