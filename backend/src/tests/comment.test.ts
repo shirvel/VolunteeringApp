@@ -21,6 +21,7 @@ const test_post: IPost = {
   dislikes: 0,
   dislikedBy: [],
   user_id: "1234",
+  location: 'Tel Aviv'
 };
 
 const test_comment: IComment = {

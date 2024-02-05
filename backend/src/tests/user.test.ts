@@ -48,6 +48,19 @@ describe("User tests", () => {
       .get(`/user?email=${user.email}`)
       .set("Authorization", "JWT " + accessToken);
     expect(response.statusCode).toBe(200);
+    expect(response.body.length).toBe(1);
+    const userResponse = response.body[0];
+    expect(userResponse.email).toBe(user.email);
+    expect(userResponse.name).toBe(user.name);
+  });
+
+  test("Test get User by Id", async () => {
+    const response = await request(app)
+      .get(`/user?id=${userId}`)
+      .set("Authorization", "JWT " + accessToken);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.length).toBe(1);
+    expect(response.body[0]._id).toBe(userId);
     expect(response.body[0].email).toBe(user.email);
     expect(response.body[0].name).toBe(user.name);
   });
@@ -57,6 +70,7 @@ describe("User tests", () => {
       .get(`/user?name=${user.name}`)
       .set("Authorization", "JWT " + accessToken);
     expect(response.statusCode).toBe(200);
+    expect(response.body.length).toBe(1);
     expect(response.body[0].name).toBe(user.name);
     expect(response.body[0].email).toBe(user.email);
   });
