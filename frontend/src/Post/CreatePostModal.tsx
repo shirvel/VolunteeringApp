@@ -13,7 +13,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useState, ChangeEvent } from "react";
-import { CreatePostDetails } from "./Posts-deprecated";
+import { IPost } from "./Post";
 import React, {useEffect} from "react";
 import { createPost, getAllCategories, Category } from "./PostService";
 import { uploadFile } from "./../File/FileService";
@@ -21,12 +21,19 @@ import { uploadFile } from "./../File/FileService";
 export interface DialogProps {
 	open: boolean;
 	onClose: () => void;
+	addNewPost: (newPost: IPost) => void;
 }
 
-const sendPostCreateToServer = (postDetails: CreatePostDetails) => {
-	console.log(postDetails);
-	createPost(postDetails);
-};
+const sendPostCreateToServer = async (postDetails: IPost, props: DialogProps) => {
+	try {
+		const newPost = await createPost(postDetails);
+		props.addNewPost(newPost);
+		props.onClose();
+	  } catch (error) {
+		// Handle any errors that may occur during post creation
+		console.error(error);
+	  }
+	};
 
 const VisuallyHiddenInput = styled("input")({
 	clip: "rect(0 0 0 0)",
@@ -41,7 +48,7 @@ const VisuallyHiddenInput = styled("input")({
 });
 
 export const CreatePostModal = (props: DialogProps) => {
-	const { onClose, open } = props;
+	const { onClose, open , addNewPost } = props;
 
 	const handleClose = () => {
 		onClose();
@@ -96,7 +103,7 @@ export const CreatePostModal = (props: DialogProps) => {
 		setlocationError(null);
 
 		const image = await uploadFile(imageFile);
-		sendPostCreateToServer({ title, content, phoneNumber, image, category, location });
+		sendPostCreateToServer({ title, content, phoneNumber, image, category, location }, props);
 
 		setTitle("");
 		setContent("");

@@ -116,7 +116,7 @@ router.post("/", authMiddleware, PostController.createPost);
 *             schema:
 *               $ref: '#/components/schemas/Post'
 */
-router.post("/:id/like", authMiddleware, PostController.addLike);
+router.post("/:id/like", authMiddleware, PostController.like);
 /**
 * @swagger
 * /posts/{id}/dislikes:
@@ -137,7 +137,7 @@ router.post("/:id/like", authMiddleware, PostController.addLike);
 *             schema:
 *               $ref: '#/components/schemas/Post'
 */
-router.post("/:id/dislike", authMiddleware, PostController.addDislike);
+//router.post("/:id/dislike", authMiddleware, PostController.addDislike);
 /**
 * @swagger
 * /posts/{id}:

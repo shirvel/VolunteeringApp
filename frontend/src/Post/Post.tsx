@@ -15,6 +15,8 @@ import { post } from "api/requests";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { EditPostModal } from "./EditPostModal";
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 
 
 
@@ -42,6 +44,7 @@ interface PostProps {
 	const [openAddComment, setOpenAddComment] = useState(false);
 	const [weatherData, setWeatherData] = useState<any>(null);
 	const [likesCount, setLikesCount] = useState(post.likes); 
+	const [liked, setLiked] = useState(post.likedBy.includes(post.user_id));
 	const [dislikeCount, setDislikeCount] = useState(post.dislikes);
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
 	const [posts, setPosts] = useState<IPost[]>([]);
@@ -80,14 +83,12 @@ interface PostProps {
 				const data = await likePost(post._id, userDetails.id);
 				if (data !== null) {
 					setLikesCount((likesCount) => likesCount + 1);
-				} else {
-					// Dont change the likecount
-					setLikesCount((likesCount) => likesCount);
+				}
+				else{
+					setLikesCount((likesCount) => likesCount + 1);
 				}
 			} catch (error) {
 				console.error('Error liking the post:', error);
-				// Dont increase the like count 
-				setLikesCount((likesCount) => likesCount);
 			}
 		} else {
 			console.error('User details not found or user ID is missing');
@@ -99,20 +100,34 @@ interface PostProps {
 			try {
 				const data = await disLikePost(post._id, userDetails.id);
 				if (data !== null) {
-					setDislikeCount((dislikeCount) => dislikeCount + 1);
-				} else {
-					// Dont change the likecount
-					setLikesCount((dislikeCount) => dislikeCount);
+					setLikesCount((likesCount) => likesCount - 1);
+				}
+				else{
+					setLikesCount((likesCount) => likesCount -1 );
 				}
 			} catch (error) {
 				console.error('Error liking the post:', error);
-				// Dont increase the like count 
-				setLikesCount((dislikeCount) => dislikeCount);
 			}
 		} else {
 			console.error('User details not found or user ID is missing');
 		}
 	};
+
+	const toggleLike = async () => {
+		try {
+		  if (liked) {
+			// User has already liked the post, remove the like
+			await fetchDisLike();
+		  } else {
+			// User hasn't liked the post, add the like
+			await fetchAddLike();
+		  }
+		  setLiked(!liked); // Toggle the liked state
+		} catch (error) {
+		  console.error('Error toggling like:', error);
+		}
+	  };
+	  
 	const handleOpenDeleteModal = () => {
 		setOpenDeleteModal(true);
 	  };
@@ -120,8 +135,10 @@ interface PostProps {
 	const handleDeletePost = (deletedPostId: string) => {
 		console.log("the deleted post" +deletedPostId);
  
-  setPosts((prevPosts) => prevPosts.filter((post) => post._id !== deletedPostId));
+ 		setPosts((prevPosts) => prevPosts.filter((post) => post._id !== deletedPostId));
+		setOpenDeleteModal(false);
 };
+
 const handleOpenEditModal = (postToEdit: IPost) => {
 	setEditedContent(postToEdit.content);
 	setOpenEditModal(true);
@@ -131,10 +148,6 @@ const handleOpenEditModal = (postToEdit: IPost) => {
 	return userDetails && post.user_id === userDetails.id;
   };
 
-  
-  
-
-	  
 
 	return (
 		<Card
@@ -186,7 +199,8 @@ const handleOpenEditModal = (postToEdit: IPost) => {
           open={openDeleteModal}
           onClose={() => setOpenDeleteModal(false)}
           postId={post._id}
-          onDelete={(deletedPostId: string) => handleDeletePost(deletedPostId)}
+          onDelete={(deletedPostId: string) => handleDeletePost(post._id)
+		}
         />
         <EditPostModal
           open={openEditModal}
@@ -256,23 +270,24 @@ const handleOpenEditModal = (postToEdit: IPost) => {
               alt={post.title}
               style={{ maxWidth: "100%", maxHeight: "200px" }} // Adjust the dimensions as needed
             />
+			</Box>
+				)}
 			{/* Like and Dislike buttons in the bottom-right corner */}
 			<Box
         		sx={{
           			display: "flex",
           			alignItems: "center",
+					  justifyContent: "flex-end",
 					  marginTop: "auto",
 					  marginLeft: "auto",
           			
         		}}
       		>
-        	<ThumbUpIcon onClick={fetchAddLike} aria-label="like" />
-        	<Typography component="span">{likesCount}</Typography>
-        	<ThumbDownIcon onClick={fetchDisLike} aria-label="dislike" />
-        	<Typography component="span">{dislikeCount}</Typography>
+        	<Button onClick={toggleLike}>
+  				{liked ? <FavoriteIcon color="secondary" /> : <FavoriteBorderOutlinedIcon />}
+  				{likesCount}
+			</Button>
       	</Box>
-    </Box>
-        )}
 			</CardContent>
 		</Card>
 	);

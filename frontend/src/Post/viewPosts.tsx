@@ -65,6 +65,9 @@ const ViewPosts: React.FC<IViewPostsProps> = () => {
 
 	const handleOpenCreatePostModal = () => {
 		setIsCreatePostModalOpen(true);
+	  };
+	  const addNewPost = (newPost: IPost) => {
+		setPosts((prevPosts) => [...prevPosts, newPost]);
 	  };	  
 	
 	const filteredPosts = selectedCategory
@@ -95,6 +98,7 @@ const ViewPosts: React.FC<IViewPostsProps> = () => {
 			<CreatePostModal
   				open={isCreatePostModalOpen}
   				onClose={() => setIsCreatePostModalOpen(false)}
+				addNewPost={addNewPost}
 			/>
 		<Button onClick={() => moveToUserPostPage()}
 		sx={{
@@ -117,11 +121,23 @@ const ViewPosts: React.FC<IViewPostsProps> = () => {
                     <Button
                         key={index}
                         variant="outlined"
-                        onClick={() => filterPostsByCategory(category.name)}>
-                        {category.name}
-                    </Button>
-              ))}
-			  </Box>
+                        onClick={() => filterPostsByCategory(category.name)}
+                        sx={{
+                			fontSize: '1.25rem',
+                			fontWeight: 'bold',
+                			backgroundColor: 'white',
+                			color: 'blue',
+                			padding: '12px 24px',
+                			borderRadius: '8px',
+                			'&:hover': {
+                  				backgroundColor: 'darkblue',
+                			},
+             			 }}
+           			 >
+              		{category.name}
+            	</Button>
+          		))}
+        	</Box>
 			  {filteredPosts.map((post, index) => (
 				  <div key={index}>
 					  <Post weatherData={weatherData[index]} post={post} />
