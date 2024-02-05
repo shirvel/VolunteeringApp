@@ -5,7 +5,6 @@ import { initApp } from '../app';
 import { Express } from "express";
 import { IComment } from "../controllers/comment_controller";
 
-
 let app: Express;
 let accessToken: string;
 let refreshToken: string;
@@ -47,20 +46,64 @@ afterAll(async () => {
 
     test("Register test - Missing email", async ()=> {
         const response = await request(app).post('/auth/register').send({
-            password: user.password
+            password: user.password,
+            name: user.name
           })
         expect(response.statusCode).toEqual(400);
     });
 
     test("Register test - Missing password", async ()=> {
         const response = await request(app).post('/auth/register').send({
-            email: user.email
+            email: user.email,
+            name: user.name
           })
         expect(response.statusCode).toEqual(400);
     });
+
+    test("Register test - Missing name", async ()=> {
+      const response = await request(app).post('/auth/register').send({
+          email: user.email,
+          password: user.password
+        })
+      expect(response.statusCode).toEqual(400);
+  });
  })
 
  describe("Auth: Login Tests", ()=> {
+  test("Login missing email", async ()=> {
+      const response = await request(app).post('/auth/login').send({
+        password: user.password
+      })
+      expect(response.statusCode).not.toEqual(200);
+      expect(response.statusCode).toEqual(400);
+    });
+
+    test("Login missing password", async ()=> {
+      const response = await request(app).post('/auth/login').send({
+        email: user.email
+      })
+      expect(response.statusCode).not.toEqual(200);
+      expect(response.statusCode).toEqual(400);
+    });
+
+    test("Login incorrect email", async ()=> {
+      const response = await request(app).post('/auth/login').send({
+        email: "incorrectEmail",
+        password: user.password
+      })
+      expect(response.statusCode).not.toEqual(200);
+      expect(response.statusCode).toEqual(401);
+    });
+
+    test("Login incorrect password", async ()=> {
+      const response = await request(app).post('/auth/login').send({
+        email: user.email,
+        password: "IncorrectPassword"
+      })
+      expect(response.statusCode).not.toEqual(200);
+      expect(response.statusCode).toEqual(401);
+    });
+
     test("Login basic test", async ()=> {
         const response = await request(app).post('/auth/login').send(user)
         expect(response.statusCode).toEqual(200);
@@ -105,6 +148,12 @@ afterAll(async () => {
           expect(response.statusCode).not.toBe(200);
         });
 
+        test("Test incorrect Refresh token", async () => {
+          const response = await request(app).get("/auth/refresh").set("Authorization", "JWT " + `incorrect${refreshToken}`).send();
+          expect(response.statusCode).not.toBe(200);
+          expect(response.statusCode).toBe(401);
+        });
+
         test("Test Refresh token", async () => {
           const response = await request(app).get("/auth/refresh").set("Authorization", "JWT " + refreshToken).send();
           expect(response.statusCode).toBe(200);
@@ -139,5 +188,19 @@ afterAll(async () => {
           const response = await request(app).post('/auth/logout').send(user).set("Authorization", "JWT " + refreshToken);
           expect(response.statusCode).not.toEqual(200);
         });
-     }
+
+        test("Test logout ok", async () => {
+
+          // Login 
+          const response = await request(app).post('/auth/login').send(user)
+          expect(response.statusCode).toEqual(200);
+          accessToken = response.body.accessToken;
+          refreshToken = response.body.refreshToken;
+          expect(accessToken).toBeDefined();
+
+          // Logout
+          const responseLogout = await request(app).post('/auth/logout').send(user).set("Authorization", "JWT " + refreshToken);
+          expect(responseLogout.statusCode).toEqual(200);
+        });
+     },     
 )});

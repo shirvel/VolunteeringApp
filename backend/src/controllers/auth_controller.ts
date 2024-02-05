@@ -29,7 +29,7 @@ const register = async (req: Request, res: Response) => {
         return res.status(201).send(newUser);
 
    } catch(err) {
-    return res.status(400).send("Error: Missing email or password");
+    return res.status(400).send("Error: Missing email, password or name");
    }
 }
 
@@ -47,7 +47,6 @@ const login = async (req: Request, res: Response) => {
         if (user == null) {
             return res.status(401).send("Error: Email or password incorrect");
         }
-        // TODO: Check it's ok!!!!
         const match = await bcrypt.compare(password, (user.password) as unknown as string);
         if (!match) {
             return res.status(401).send("Error: Email or password incorrect");

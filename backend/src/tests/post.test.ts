@@ -24,6 +24,7 @@ const test_post: IPost = {
   likedBy: [],
   dislikes: 0,
   dislikedBy: [],
+  location: 'Tel Aviv'
 };
 
 const test_user: IUser = {
