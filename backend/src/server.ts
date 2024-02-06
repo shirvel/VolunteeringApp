@@ -5,7 +5,8 @@ import { chatHandler } from "./common/chat_handler";
 import { Server } from "socket.io";
 import https from "https";
 import http from "http";
-import fs from 'fs';
+import fs from "fs";
+import path from "path";
 
 initApp().then((app) => {
     /* For Swagger */
@@ -41,8 +42,8 @@ initApp().then((app) => {
     }else{
       console.log('PRODUCTION');
       const options2 = {
-      key: fs.readFileSync('../client-key.pem'),
-      cert: fs.readFileSync('../client-cert.pem')
+      key: fs.readFileSync(path.resolve('/home/st111/VolunteeringApp/backend/client-key.pem')),
+      cert: fs.readFileSync(path.resolve('/home/st111/VolunteeringApp/backend/client-cert.pem'))
       };
       const server = https.createServer(options2, app);
       const io = new Server(server, {cors: {
