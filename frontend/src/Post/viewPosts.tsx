@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button } from "@mui/material";
-import { getallposts, getConnectedUser } from "./PostService";
+import { Box, Button, IconButton } from "@mui/material";
+import { getallposts } from "./PostService";
 import { IPost, Post } from "./Post";
 import { Category, getAllCategories } from "../chat/chatService";
 import { CreatePostModal } from "./CreatePostModal"; // Import the CreatePostModal component
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import { useNavigate } from "react-router";
+import {
+	notSelectedButtonStyle,
+	selectedButtonStyle,
+} from "../MuiCommonStyles";
 
 interface IViewPostsProps {
 	isSidebarOpen: boolean;
@@ -18,40 +21,34 @@ const ViewPosts: React.FC<IViewPostsProps> = () => {
 	const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 	const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
 
-	const navigate = useNavigate();
-	const userDetails = getConnectedUser();
-
-	const moveToUserPostPage = () => {
-		if (userDetails.id !== null) {
-			console.log(userDetails.id);
-			navigate({
-				pathname: "/my-posts",
-				search: `?userId=${userDetails.id}`,
-			});
-		} else {
-			console.error("User ID is null. Unable to navigate.");
-		}
-	};
-
 	useEffect(() => {
-		async function fetchPosts() {
-			try {
-				const fetchedPosts = await getallposts();
-				if (fetchedPosts) {
-					setPosts(fetchedPosts);
-				}
-			} catch (error) {
-				console.error(error);
-			}
-		}
 		const getCategories = async () => {
 			const response = await getAllCategories();
 			setCategories(response);
 		};
 
 		getCategories();
-		fetchPosts();
 	}, []);
+
+	useEffect(() => {
+		const fetchPosts = async () => {
+			try {
+				const fetchedPosts = await getallposts();
+				if (fetchedPosts) {
+					if (selectedCategory) {
+						setPosts(
+							fetchedPosts.filter((post) => post.category === selectedCategory)
+						);
+					} else {
+						setPosts(fetchedPosts);
+					}
+				}
+			} catch (error) {
+				console.error(error);
+			}
+		};
+		fetchPosts();
+	}, [selectedCategory]);
 
 	const handleOpenCreatePostModal = () => {
 		setIsCreatePostModalOpen(true);
@@ -59,13 +56,6 @@ const ViewPosts: React.FC<IViewPostsProps> = () => {
 	const addNewPost = (newPost: IPost) => {
 		setPosts((prevPosts) => [...prevPosts, newPost]);
 	};
-
-	const filterPostsByCategory = (categoryName: string) => {
-		setSelectedCategory(categoryName);
-	};
-	const filteredPosts = selectedCategory
-		? posts.filter((post) => post.category === selectedCategory)
-		: posts;
 
 	return (
 		<div className="overflow-y-scroll h-screen w-full">
@@ -75,78 +65,55 @@ const ViewPosts: React.FC<IViewPostsProps> = () => {
 					top: 10,
 					right: 32,
 				}}>
-				<Button
-					variant="contained"
-					color="primary"
-					onClick={handleOpenCreatePostModal}
-					sx={{
-						backgroundColor: "white",
-						color: "blue",
-					}}>
-					<AddCircleOutlineIcon />
-				</Button>
+				<IconButton onClick={handleOpenCreatePostModal}>
+					<AddCircleOutlineIcon sx={{ color: "white" }} />
+				</IconButton>
 			</div>
-			<CreatePostModal
-				open={isCreatePostModalOpen}
-				onClose={() => setIsCreatePostModalOpen(false)}
-				addNewPost={addNewPost}
-			/>
-			<Button
-				onClick={() => moveToUserPostPage()}
-				sx={{
-					fontSize: "1.25rem", // Increase the font size
-					fontWeight: "bold", // Make the text bold
-					backgroundColor: "white", // Change the background color
-					color: "blue", // Change the text color
-					padding: "12px 24px", // Increase the padding
-					borderRadius: "8px", // Add rounded corners
-					"&:hover": {
-						backgroundColor: "darkblue", // Change the background color on hover
-					},
-				}}>
-				My Posts
-			</Button>
-			<Box p={2} bgcolor="none">
-				<Box display="flex" justifyContent="space-between" alignItems="center">
-					{categories.map((category, index) => (
-						<Button
-							key={index}
-							variant="outlined"
-							onClick={() => filterPostsByCategory(category.name)}
-							sx={{
-								fontSize: "1rem",
-								fontWeight: "bold",
-								backgroundColor: "white",
-								color: "blue",
-								padding: "12px 24px",
-								borderRadius: "8px",
-								"&:hover": {
-									backgroundColor: "darkblue",
-								},
-							}}>
-							{category.name}
-						</Button>
+			<div className="w-full pt-10">
+				<CreatePostModal
+					open={isCreatePostModalOpen}
+					onClose={() => setIsCreatePostModalOpen(false)}
+					addNewPost={addNewPost}
+				/>
+				<Box p={2} bgcolor="none">
+					<Box
+						display="flex"
+						justifyContent="space-between"
+						alignItems="center">
+						{categories.map((category, index) => (
+							<Button
+								key={index}
+								variant="outlined"
+								onClick={() => setSelectedCategory(category.name)}
+								sx={
+									category.name === selectedCategory
+										? selectedButtonStyle
+										: notSelectedButtonStyle
+								}>
+								{category.name}
+							</Button>
+						))}
+					</Box>
+					{posts.map((post, index) => (
+						<div key={index}>
+							<Post
+								post={post}
+								onDelete={(postId: string) => {
+									setPosts((prevPosts) =>
+										prevPosts.filter((post) => post._id !== postId)
+									);
+								}}
+								onEdit={(editedPost: IPost) => {
+									setPosts((prevPosts) => [
+										...prevPosts.filter((post) => post._id !== editedPost._id),
+										editedPost,
+									]);
+								}}
+							/>
+						</div>
 					))}
 				</Box>
-				{filteredPosts.map((post, index) => (
-					<div key={index}>
-						<Post
-							post={post}
-							onDelete={(postId: string) => {
-								setPosts((prevPosts) =>
-									prevPosts.filter((post) => post._id !== postId)
-								);
-							}}
-							onEdit={(editedPost: IPost) => {
-								setPosts((prevPosts) => [
-									...prevPosts.filter((post) => post._id !== editedPost._id),
-									editedPost,
-								]);
-							}}
-						/>
-					</div>
-				))}
-			</Box>
+			</div>
 		</div>
 	);
 };

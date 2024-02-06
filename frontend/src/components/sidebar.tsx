@@ -61,6 +61,14 @@ function Sidebar() {
 									</Link>
 								</li>
 								<li>
+									{/* Show the View Posts button */}
+									<Link
+										to={`/my-posts/?userId=${localStorage.getItem("userId")}`}
+										className="button-link">
+										<ViewListIcon /> View My Posts
+									</Link>
+								</li>
+								<li>
 									<Link to="/user-details" className="button-link">
 										<ManageAccountsIcon /> Your details
 									</Link>

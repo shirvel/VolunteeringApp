@@ -14,18 +14,15 @@ export const createPost = async (
 	postDetails: CreatePostDetails
 ): Promise<IPost> => {
 	const connectedUser = getConnectedUser();
-	console.log(connectedUser);
 	const user_id = connectedUser.id;
 
 	const updatedPostDetails = { ...postDetails, user_id };
-	console.log(endpoints.POST.CREATE_POST());
 	try {
 		const response = await post(
 			endpoints.POST.CREATE_POST(),
 			updatedPostDetails
 		);
 		const data = await response.data;
-		console.log(JSON.stringify(data));
 		const newPost: IPost = data; // Adjust this part based on your API response structure
 		return newPost;
 	} catch (error) {
@@ -34,18 +31,17 @@ export const createPost = async (
 };
 
 export const editPost = async (content: string, postId: string) => {
-	console.log(endpoints.POST.EDIT_POST(postId));
 	const response = await patch(endpoints.POST.EDIT_POST(postId), {
 		content: content,
 	});
 	const data = await response.data;
-	console.log(JSON.stringify(data));
+	return data;
 };
+
 export const getallposts = async (): Promise<IPost[]> => {
 	console.log(endpoints.POST.GET_ALL_POSTS());
 	const response = await fetch(endpoints.POST.GET_ALL_POSTS());
 	const data = await response.json(); // Corrected line
-	console.log(JSON.stringify(data));
 	return data;
 };
 export const fetchWeatherForPost = async (location: string): Promise<any> => {

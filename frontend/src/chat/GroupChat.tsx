@@ -65,7 +65,7 @@ export const GroupChat = () => {
 							});
 							setMessageToSend("");
 						}}>
-						<SendIcon />
+						<SendIcon sx={{ color: "#4B0082" }} />
 					</Button>
 				</Grid>
 			</Grid>

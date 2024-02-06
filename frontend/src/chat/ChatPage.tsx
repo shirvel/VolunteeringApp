@@ -3,6 +3,10 @@ import { Category, getAllCategories } from "./chatService";
 import { Button } from "@mui/material";
 import { createSearchParams, useSearchParams } from "react-router-dom";
 import { GroupChat } from "./GroupChat";
+import {
+	notSelectedButtonStyle,
+	selectedButtonStyle,
+} from "../MuiCommonStyles";
 
 export const ChatPage = () => {
 	const [categories, setCategories] = useState<Category[]>([]);
@@ -28,11 +32,10 @@ export const ChatPage = () => {
 				{categories.map((category, index) => (
 					<div className="p-4" key={index}>
 						<Button
-							color="secondary"
-							variant={
+							sx={
 								category.name === searchParams.get("category")
-									? "contained"
-									: "outlined"
+									? selectedButtonStyle
+									: notSelectedButtonStyle
 							}
 							onClick={() => onClickCategory(category.name)}>
 							{category.name}
