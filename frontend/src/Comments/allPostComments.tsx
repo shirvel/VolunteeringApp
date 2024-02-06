@@ -1,8 +1,10 @@
 import { getAllComments } from "../Post/PostService";
 import React, { useCallback, useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { CommentComp } from "./comment";
 import { CommentI, deleteComment } from "./CommentService";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { IconButton } from "@mui/material";
 
 export const AllPostComments = () => {
 	const [searchParams] = useSearchParams();
@@ -31,10 +33,18 @@ export const AllPostComments = () => {
 
 	return (
 		<>
+			<div className="flex-end">
+				<IconButton>
+					<Link to="/view-posts">
+						<ArrowBackIcon />
+					</Link>
+				</IconButton>
+			</div>
+
 			{comments.length !== 0 ? (
 				<div>
 					{comments.map((comment, index) => (
-						<div key={index}>
+						<div key={index} className="p-4">
 							<CommentComp
 								comment={comment}
 								deleteComment={deleteCommentFromPostComments(comment._id)}

@@ -3,46 +3,30 @@ import { Link } from "react-router-dom";
 import "./sidebar.css";
 import ChatIcon from "@mui/icons-material/Chat";
 import ViewListIcon from "@mui/icons-material/ViewList";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import { CreatePostModal } from "../Post/CreatePostModal";
-import { EditUserDetailsModal } from "../User/EditUserDetailsModal";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import HomeIcon from "@mui/icons-material/Home";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import { getConnectedUser } from "../User/userService";
 
 function Sidebar() {
-  const [isCreatePostDialogOpen, setCreatePostDialogOpen] = useState(false); 
-  const [isEditUserDialogOpen, setEditUserDialogOpen] = useState(false);
-  const [isMainButtonVisible, setMainButtonVisible] = useState(true);
-  const [areOtherButtonsVisible, setOtherButtonsVisible] = useState(false);
+	const [isMainButtonVisible, setMainButtonVisible] = useState(true);
+	const [areOtherButtonsVisible, setOtherButtonsVisible] = useState(false);
 
-  const navigate = useNavigate(); 
+	const navigate = useNavigate();
 
-  // Check if the user is connected (logged in) and redirect if not
-  const checkUserConnected = async () => {
-	const userDetails = await getConnectedUser();
-    if (!userDetails) {
-      	navigate("/signin"); // Redirect to the signin page
-    }
-  };
-
-  
-  useEffect(() => {
-    checkUserConnected();
-  }, []);
-
-	// Function to open the Create Post dialog
-	const openCreatePostDialog = () => {
-		setCreatePostDialogOpen(true);
+	// Check if the user is connected (logged in) and redirect if not
+	const checkUserConnected = async () => {
+		const userDetails = await getConnectedUser();
+		if (!userDetails) {
+			navigate("/signin"); // Redirect to the signin page
+		}
 	};
 
-	// Function to close the Create Post dialog
-	const closeCreatePostDialog = () => {
-		setCreatePostDialogOpen(false);
-	};
+	useEffect(() => {
+		checkUserConnected();
+	}, []);
 
 	return (
 		<div className="sidebar-container">
@@ -104,10 +88,6 @@ function Sidebar() {
 					<ArrowBackIcon /> Back
 				</button>
 			)}
-			<CreatePostModal
-				open={isCreatePostDialogOpen}
-				onClose={closeCreatePostDialog}
-			/>
 		</div>
 	);
 }

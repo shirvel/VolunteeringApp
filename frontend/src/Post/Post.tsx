@@ -1,5 +1,11 @@
-import { Button } from "@mui/base";
-import { Card, CardMedia, CardContent, Typography, Box } from '@mui/material';
+import {
+	Card,
+	CardContent,
+	Typography,
+	Box,
+	Button,
+	IconButton,
+} from "@mui/material";
 import { AddCommentModal } from "../Comments/AddCommentModal";
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
@@ -8,18 +14,12 @@ import MessageIcon from "@mui/icons-material/Message";
 import { renderWeatherIcon } from "./weather";
 import { getAllComments, likePost, disLikePost } from "./PostService";
 import { fetchWeatherForPost, getConnectedUser } from "./PostService";
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import { DeletePostModal } from "./DeletePostModal";
-import { post } from "api/requests";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
 import { EditPostModal } from "./EditPostModal";
-import ModeEditIcon from '@mui/icons-material/ModeEdit';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
-
-
-
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 
 export interface IPost {
 	_id: string;
@@ -35,23 +35,23 @@ export interface IPost {
 	location: string;
 	user_id: string;
 }
-interface PostProps {
-	post: IPost;
-}
 
-  export const Post = ({ post, onDelete }: { post: IPost; onDelete: (postId: string) => void }) => {
+export const Post = ({
+	post,
+	onDelete,
+}: {
+	post: IPost;
+	onDelete: (postId: string) => void;
+}) => {
 	const [numberOfComments, setNumberOfComments] = useState(0);
 	const [openAddComment, setOpenAddComment] = useState(false);
 	const [weatherData, setWeatherData] = useState<any>(null);
-	const [likesCount, setLikesCount] = useState(post.likes); 
+	const [likesCount, setLikesCount] = useState(post.likes);
 	const [liked, setLiked] = useState(post.likedBy.includes(post.user_id));
-	const [dislikeCount, setDislikeCount] = useState(post.dislikes);
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
 	const [posts, setPosts] = useState<IPost[]>([]);
 	const [openEditModal, setOpenEditModal] = useState(false);
 	const [editedContent, setEditedContent] = useState<string | null>(null);
-
-	
 
 	const navigate = useNavigate();
 	const moveToCommentPage = useCallback((post: IPost) => {
@@ -68,155 +68,143 @@ interface PostProps {
 		};
 
 		const fetchAndSetWeatherData = async () => {
-            const data = await fetchWeatherForPost(post.location);
-            setWeatherData(data);
-        };
-        loadAllComments();
-        fetchAndSetWeatherData();
-    }, [post._id, post.location]);
+			const data = await fetchWeatherForPost(post.location);
+			setWeatherData(data);
+		};
+		loadAllComments();
+		fetchAndSetWeatherData();
+	}, [post._id, post.location]);
 
 	const fetchAddLike = async () => {
 		const userDetails = await getConnectedUser();
 		if (userDetails && userDetails.id) {
-
 			try {
 				const data = await likePost(post._id, userDetails.id);
 				if (data !== null) {
 					setLikesCount((likesCount) => likesCount + 1);
-				}
-				else{
+				} else {
 					setLikesCount((likesCount) => likesCount + 1);
 				}
 			} catch (error) {
-				console.error('Error liking the post:', error);
+				console.error("Error liking the post:", error);
 			}
 		} else {
-			console.error('User details not found or user ID is missing');
+			console.error("User details not found or user ID is missing");
 		}
 	};
 	const fetchDisLike = async () => {
-		const userDetails = await getConnectedUser(); 
+		const userDetails = await getConnectedUser();
 		if (userDetails && userDetails.id) {
 			try {
 				const data = await disLikePost(post._id, userDetails.id);
 				if (data !== null) {
 					setLikesCount((likesCount) => likesCount - 1);
-				}
-				else{
-					setLikesCount((likesCount) => likesCount -1 );
+				} else {
+					setLikesCount((likesCount) => likesCount - 1);
 				}
 			} catch (error) {
-				console.error('Error liking the post:', error);
+				console.error("Error liking the post:", error);
 			}
 		} else {
-			console.error('User details not found or user ID is missing');
+			console.error("User details not found or user ID is missing");
 		}
 	};
 
 	const toggleLike = async () => {
 		try {
-		  if (liked) {
-			// User has already liked the post, remove the like
-			await fetchDisLike();
-		  } else {
-			// User hasn't liked the post, add the like
-			await fetchAddLike();
-		  }
-		  setLiked(!liked); // Toggle the liked state
+			if (liked) {
+				// User has already liked the post, remove the like
+				await fetchDisLike();
+			} else {
+				// User hasn't liked the post, add the like
+				await fetchAddLike();
+			}
+			setLiked(!liked); // Toggle the liked state
 		} catch (error) {
-		  console.error('Error toggling like:', error);
+			console.error("Error toggling like:", error);
 		}
-	  };
-	  
+	};
+
 	const handleOpenDeleteModal = () => {
 		setOpenDeleteModal(true);
-	  };
+	};
 
 	const handleDeletePost = (deletedPostId: string) => {
-		console.log("the deleted post" +deletedPostId);
- 
- 		setPosts((prevPosts) => prevPosts.filter((post) => post._id !== deletedPostId));
+		console.log("the deleted post" + deletedPostId);
+
+		setPosts((prevPosts) =>
+			prevPosts.filter((post) => post._id !== deletedPostId)
+		);
 		setOpenDeleteModal(false);
-};
+	};
 
-const handleOpenEditModal = (postToEdit: IPost) => {
-	setEditedContent(postToEdit.content);
-	setOpenEditModal(true);
-  };  
-  const canEditOrDelete = (post: IPost) => {
-	const userDetails = getConnectedUser();
-	return userDetails && post.user_id === userDetails.id;
-  };
-
+	const handleOpenEditModal = (postToEdit: IPost) => {
+		setEditedContent(postToEdit.content);
+		setOpenEditModal(true);
+	};
+	const canEditOrDelete = (post: IPost) => {
+		const userDetails = getConnectedUser();
+		return userDetails && post.user_id === userDetails.id;
+	};
 
 	return (
 		<Card
 			key={post._id}
 			sx={{ display: "flex", flexDirection: "column", marginBottom: 2 }}>
 			<CardContent>
-			<Box
-          		display="flex"
-          		justifyContent="space-between"
-          		alignItems="center"
-          		marginBottom="8px" 
-        	>
-			<Typography variant="h5" fontWeight="bold" gutterBottom>
-          		{post.title}
-        	</Typography>
-		  	{canEditOrDelete(post)  && (
-				<Box>
-            		<Button
-  						variant="outlined"
-  						color="primary"
-  						onClick={() => handleOpenEditModal(post)}
-  						style={{
-    						marginBottom: "8px",
-    						backgroundColor: "transparent",
-    						color: "blue",
-    						justifyContent: "flex-end",
-    						alignItems: "center",
-  						}}
-					>
-  						<ModeEditIcon style={{ marginRight: "4px" }} />
-					</Button>
-					<Button
-  						variant="outlined"
-  						color="secondary"
-  						onClick={handleOpenDeleteModal}
-  						style={{
-    						backgroundColor: "transparent",
-    						color: "red",
-    						justifyContent: "flex-end",
-    						alignItems: "center",
-  						}}
-					>
-  						<DeleteIcon style={{ marginRight: "4px" }} />
-					</Button>
+				<Box
+					display="flex"
+					justifyContent="space-between"
+					alignItems="center"
+					marginBottom="8px">
+					<Typography variant="h5" fontWeight="bold" gutterBottom>
+						{post.title}
+					</Typography>
+					{canEditOrDelete(post) && (
+						<div className="flex items-center">
+							<IconButton
+								onClick={() => handleOpenEditModal(post)}
+								style={{
+									backgroundColor: "transparent",
+									color: "blue",
+									justifyContent: "flex-end",
+									alignItems: "center",
+								}}>
+								<ModeEditIcon style={{ marginRight: "4px" }} />
+							</IconButton>
+							<IconButton
+								color="secondary"
+								onClick={handleOpenDeleteModal}
+								style={{
+									backgroundColor: "transparent",
+									color: "red",
+									justifyContent: "flex-end",
+									alignItems: "center",
+								}}>
+								<DeleteIcon style={{ marginRight: "4px" }} />
+							</IconButton>
+						</div>
+					)}
 				</Box>
-        	)}
-		</Box> 
-        <DeletePostModal
-          open={openDeleteModal}
-          onClose={() => setOpenDeleteModal(false)}
-          postId={post._id}
-          onDelete={(deletedPostId: string) => handleDeletePost(post._id)
-		}
-        />
-        <EditPostModal
-          open={openEditModal}
-          onClose={() => {
-            setOpenEditModal(false);
-            setEditedContent(null); // Clear edited content when modal is closed
-          }}
-          postId={post._id}
-          content={editedContent || ""}
-          onContentChange={setEditedContent} // Callback to update edited content
-        />
+				<DeletePostModal
+					open={openDeleteModal}
+					onClose={() => setOpenDeleteModal(false)}
+					postId={post._id}
+					onDelete={(deletedPostId: string) => handleDeletePost(post._id)}
+				/>
+				<EditPostModal
+					open={openEditModal}
+					onClose={() => {
+						setOpenEditModal(false);
+						setEditedContent(null); // Clear edited content when modal is closed
+					}}
+					postId={post._id}
+					content={editedContent || ""}
+					onContentChange={setEditedContent} // Callback to update edited content
+				/>
 				<Typography variant="body1">{post.category}</Typography>
 				<Typography variant="body1">{post.content}</Typography>
-				<Typography variant="body2">
-					Location:{post.location}
-					</Typography>
+				<Typography variant="body2">Location:{post.location}</Typography>
 				<Button onClick={() => moveToCommentPage(post)}>
 					{numberOfComments} comments
 				</Button>
@@ -231,7 +219,7 @@ const handleOpenEditModal = (postToEdit: IPost) => {
 						setNumberOfComments((num) => num + 1);
 					}}
 				/>
-				
+
 				<div
 					style={{
 						display: "flex",
@@ -240,12 +228,10 @@ const handleOpenEditModal = (postToEdit: IPost) => {
 					}}>
 					{weatherData ? (
 						<>
-							<div>
-								{renderWeatherIcon(weatherData.weather[0].main)}
-							</div>
+							<div>{renderWeatherIcon(weatherData.weather[0].main)}</div>
 							<div style={{ flex: 1 }}>
 								<Typography variant="body2" color="textSecondary">
-									 {Math.round(weatherData.main.temp)}°C
+									{Math.round(weatherData.main.temp)}°C
 								</Typography>
 							</div>
 						</>
@@ -256,39 +242,40 @@ const handleOpenEditModal = (postToEdit: IPost) => {
 					)}
 				</div>
 				{post.image && (
-          <Box
-		  sx={{
-			display: "flex",
-			flexDirection: "column",
-			alignItems: "center",
-			position: "relative",
-			marginTop: "auto", // Pushes the image to the end of the card
-			maxHeight: "200px",
-		  }}
-		>
-            <img
-              src={post.image}
-              alt={post.title}
-              style={{ maxWidth: "100%", maxHeight: "200px" }} // Adjust the dimensions as needed
-            />
-			</Box>
+					<Box
+						sx={{
+							display: "flex",
+							flexDirection: "column",
+							alignItems: "center",
+							position: "relative",
+							marginTop: "auto", // Pushes the image to the end of the card
+							maxHeight: "200px",
+						}}>
+						<img
+							src={post.image}
+							alt={post.title}
+							style={{ maxWidth: "100%", maxHeight: "200px" }} // Adjust the dimensions as needed
+						/>
+					</Box>
 				)}
-			{/* Like and Dislike buttons in the bottom-right corner */}
-			<Box
-        		sx={{
-          			display: "flex",
-          			alignItems: "center",
-					  justifyContent: "flex-end",
-					  marginTop: "auto",
-					  marginLeft: "auto",
-          			
-        		}}
-      		>
-        	<Button onClick={toggleLike}>
-  				{liked ? <FavoriteIcon color="secondary" /> : <FavoriteBorderOutlinedIcon />}
-  				{likesCount}
-			</Button>
-      	</Box>
+				{/* Like and Dislike buttons in the bottom-right corner */}
+				<Box
+					sx={{
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "flex-end",
+						marginTop: "auto",
+						marginLeft: "auto",
+					}}>
+					<Button onClick={toggleLike}>
+						{liked ? (
+							<FavoriteIcon color="secondary" />
+						) : (
+							<FavoriteBorderOutlinedIcon />
+						)}
+						{likesCount}
+					</Button>
+				</Box>
 			</CardContent>
 		</Card>
 	);
