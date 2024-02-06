@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-
+import { Link, useSearchParams } from "react-router-dom";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { gettAllPostsByUser } from "../Post/PostService";
 import { IPost, Post } from "./Post";
+import { IconButton } from "@mui/material";
 
 export const AllUserPosts = () => {
 	const [searchParams] = useSearchParams();
@@ -22,11 +23,18 @@ export const AllUserPosts = () => {
 	}, [searchParams]);
 
 	return (
-		<>
+		<div className="overflow-y-scroll h-screen w-full">
+			<div className="flex-end">
+				<IconButton>
+					<Link to="/view-posts">
+						<ArrowBackIcon />
+					</Link>
+				</IconButton>
+			</div>
 			{posts.length !== 0 ? (
 				posts.map((post, index) => {
 					return (
-						<div key={index} className="w-full">
+						<div key={index} className="w-full p-4">
 							<Post
 								post={post}
 								onDelete={(postId: string) => {
@@ -47,6 +55,6 @@ export const AllUserPosts = () => {
 			) : (
 				<div>The User has no posts yet</div>
 			)}
-		</>
+		</div>
 	);
 };
