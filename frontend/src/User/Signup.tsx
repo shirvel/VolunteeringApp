@@ -12,14 +12,8 @@ import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import avatar from "../assets/avatar.jpeg";
-import {
-	CreateUserInfo,
-	createUser,
-	googleSignin,
-	parseLocalStorageData,
-} from "./userService";
+import { CreateUserInfo, createUser } from "./userService";
 import { uploadFile } from "./../File/FileService";
-import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 import Snackbar from "@mui/material/Snackbar";
 import SnackbarContent from "@mui/material/SnackbarContent";
 
@@ -35,14 +29,6 @@ const VisuallyHiddenInput = styled("input")({
 	left: 0,
 	whiteSpace: "nowrap",
 	width: 1,
-});
-
-const GoogleLoginContainer = styled("div")({
-	display: "flex",
-	flexDirection: "column",
-	alignItems: "center",
-	marginTop: 15,
-	width: "100%",
 });
 
 export const Signup: React.FC = () => {
@@ -118,25 +104,6 @@ export const Signup: React.FC = () => {
 		} catch (error) {
 			console.error("Error during registration:", error);
 		}
-	};
-
-	const onGoogleLoginSuccess = async (
-		credentialResponse: CredentialResponse
-	) => {
-		try {
-			const response = await googleSignin(credentialResponse);
-			parseLocalStorageData(response?.data);
-
-			console.log(response);
-			navigate("/view-posts", { replace: true });
-		} catch (error) {
-			console.log(error);
-			console.error(error);
-		}
-	};
-
-	const onGoogleLoginFaliure = () => {
-		console.log("Google login failed!");
 	};
 
 	return (
@@ -274,14 +241,14 @@ export const Signup: React.FC = () => {
 								onClick={clickedRegister}>
 								Register
 							</Button>
-							<GoogleLoginContainer>
+							{/* <GoogleLoginContainer>
 								<GoogleLogin
 									onSuccess={onGoogleLoginSuccess}
 									onError={onGoogleLoginFaliure}
 									width="350"
 									locale="en_US"
 								/>
-							</GoogleLoginContainer>
+							</GoogleLoginContainer> */}
 
 							<Typography
 								variant="body2"

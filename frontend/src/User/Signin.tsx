@@ -1,33 +1,67 @@
 import React, { useState } from "react";
-import { Container, Typography, Box, TextField, Button, Link } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import {
+	Container,
+	Typography,
+	Box,
+	TextField,
+	Button,
+	Link,
+} from "@mui/material";
+import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
+import { createTheme, styled, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
-import { parseLocalStorageData, signinUser } from "./userService";
-import Snackbar from '@mui/material/Snackbar';
-import SnackbarContent from '@mui/material/SnackbarContent';
+import { googleSignin, parseLocalStorageData, signinUser } from "./userService";
+import Snackbar from "@mui/material/Snackbar";
+import SnackbarContent from "@mui/material/SnackbarContent";
 
 const theme = createTheme();
+const GoogleLoginContainer = styled("div")({
+	display: "flex",
+	flexDirection: "column",
+	alignItems: "center",
+	marginTop: 15,
+	width: "100%",
+});
 
-export const Signin: React.FC = () => {
+export const Signin = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [emailError, setEmailError] = useState<string | null>(null);
 	const [passwordError, setPasswordError] = useState<string | null>(null);
 
 	const [errorSnackbarOpen, setErrorSnackbarOpen] = useState(false);
-  	const [errorMessage, setErrorMessage] = useState('');
+	const [errorMessage, setErrorMessage] = useState("");
 
 	const navigate = useNavigate();
 
 	const handleSnackbarClose = () => {
 		setErrorSnackbarOpen(false);
-		setErrorMessage('');
-	  };
-	
-	  const displayErrorSnackbar = (error: string) => {
+		setErrorMessage("");
+	};
+
+	const displayErrorSnackbar = (error: string) => {
 		setErrorMessage(error);
 		setErrorSnackbarOpen(true);
-	  };
+	};
+
+	const onGoogleLoginFaliure = () => {
+		console.log("Google login failed!");
+	};
+
+	const onGoogleLoginSuccess = async (
+		credentialResponse: CredentialResponse
+	) => {
+		try {
+			const response = await googleSignin(credentialResponse);
+			parseLocalStorageData(response?.data);
+
+			console.log(response);
+			navigate("/view-posts", { replace: true });
+		} catch (error) {
+			console.log(error);
+			console.error(error);
+		}
+	};
 
 	const clickedLogin = async () => {
 		// Check for empty fields
@@ -54,17 +88,16 @@ export const Signin: React.FC = () => {
 			const response = await signinUser(user);
 
 			if (response.status < 200 || response.status >= 400) {
-				console.error('Error during login:', response.data);
-				displayErrorSnackbar(`Error during login: ${response.data}. Please try again. `);
-			  }
-		
-			  else {
+				console.error("Error during login:", response.data);
+				displayErrorSnackbar(
+					`Error during login: ${response.data}. Please try again. `
+				);
+			} else {
 				parseLocalStorageData(response.data);
-				navigate('/view-posts', { replace: true });
-		
-			  }
+				navigate("/view-posts", { replace: true });
+			}
 		} catch (error) {
-			console.error("Error during login:", error);	
+			console.error("Error during login:", error);
 		}
 	};
 
@@ -86,19 +119,18 @@ export const Signin: React.FC = () => {
 						component="h1"
 						variant="h5"
 						sx={{
-						marginBottom: 6,
-						fontSize: "4rem",
-						color: "#ffffff",
-						fontWeight: "bold",
-						position: "relative",
-						textAlign: "center",
-						// Add a black border around the text
-						WebkitTextStroke: "1px black", // for WebKit browsers
-						textStroke: "2px black", // for other browsers
-						}}
-						>
-							Sign In
-						</Typography>
+							marginBottom: 6,
+							fontSize: "4rem",
+							color: "#ffffff",
+							fontWeight: "bold",
+							position: "relative",
+							textAlign: "center",
+							// Add a black border around the text
+							WebkitTextStroke: "1px black", // for WebKit browsers
+							textStroke: "2px black", // for other browsers
+						}}>
+						Sign In
+					</Typography>
 
 					{/* Signin Form */}
 					<Box
@@ -151,39 +183,43 @@ export const Signin: React.FC = () => {
 								Log In
 							</Button>
 
-							<Typography
-							variant="body2"
-							color="textSecondary"
-							sx={{ marginTop: 3, textAlign: "center" }}
-						>
-							Don't have an account yet?{" "}
+							<GoogleLoginContainer>
+								<GoogleLogin
+									onSuccess={onGoogleLoginSuccess}
+									onError={onGoogleLoginFaliure}
+									width="350"
+									locale="en_US"
+								/>
+							</GoogleLoginContainer>
 
-							<Link
-							component="button"
-							variant="body2"
-							 onClick={() => {
-							 	navigate("/signup", {replace: true});
-							 }}
-							sx={{ fontWeight: "bold", cursor: "pointer" }}
-							>
-							Sign up
-							</Link>
+							<Typography
+								variant="body2"
+								color="textSecondary"
+								sx={{ marginTop: 3, textAlign: "center" }}>
+								Don't have an account yet?{" "}
+								<Link
+									component="button"
+									variant="body2"
+									onClick={() => {
+										navigate("/signup", { replace: true });
+									}}
+									sx={{ fontWeight: "bold", cursor: "pointer" }}>
+									Sign up
+								</Link>
 							</Typography>
 
 							<Snackbar
-								anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+								anchorOrigin={{ vertical: "top", horizontal: "center" }}
 								open={errorSnackbarOpen}
 								autoHideDuration={6000}
-								onClose={handleSnackbarClose}
-								>
+								onClose={handleSnackbarClose}>
 								<SnackbarContent
 									sx={{
-									backgroundColor: theme => theme.palette.error.main,
+										backgroundColor: (theme) => theme.palette.error.main,
 									}}
 									message={<span>{errorMessage}</span>}
 								/>
-								</Snackbar>
-
+							</Snackbar>
 						</form>
 					</Box>
 				</Container>
