@@ -51,6 +51,7 @@ initApp().then((app) => {
       }});
       chatHandler(io);
       server.listen(process.env.HTTPS_PORT);
+      console.log(`Listening on port ${process.env.HTTPS_PORT}`);
     }
 
  
