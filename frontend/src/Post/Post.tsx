@@ -39,9 +39,11 @@ export interface IPost {
 export const Post = ({
 	post,
 	onDelete,
+	onEdit,
 }: {
 	post: IPost;
 	onDelete: (postId: string) => void;
+	onEdit: (post: IPost) => void;
 }) => {
 	const [numberOfComments, setNumberOfComments] = useState(0);
 	const [openAddComment, setOpenAddComment] = useState(false);
@@ -49,9 +51,7 @@ export const Post = ({
 	const [likesCount, setLikesCount] = useState(post.likes);
 	const [liked, setLiked] = useState(post.likedBy.includes(post.user_id));
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
-	const [posts, setPosts] = useState<IPost[]>([]);
 	const [openEditModal, setOpenEditModal] = useState(false);
-	const [editedContent, setEditedContent] = useState<string | null>(null);
 
 	const navigate = useNavigate();
 	const moveToCommentPage = useCallback((post: IPost) => {
@@ -125,23 +125,12 @@ export const Post = ({
 		}
 	};
 
-	const handleOpenDeleteModal = () => {
-		setOpenDeleteModal(true);
-	};
-
 	const handleDeletePost = (deletedPostId: string) => {
 		console.log("the deleted post" + deletedPostId);
-
-		setPosts((prevPosts) =>
-			prevPosts.filter((post) => post._id !== deletedPostId)
-		);
+		onDelete(deletedPostId);
 		setOpenDeleteModal(false);
 	};
 
-	const handleOpenEditModal = (postToEdit: IPost) => {
-		setEditedContent(postToEdit.content);
-		setOpenEditModal(true);
-	};
 	const canEditOrDelete = (post: IPost) => {
 		const userDetails = getConnectedUser();
 		return userDetails && post.user_id === userDetails.id;
@@ -163,7 +152,7 @@ export const Post = ({
 					{canEditOrDelete(post) && (
 						<div className="flex items-center">
 							<IconButton
-								onClick={() => handleOpenEditModal(post)}
+								onClick={() => setOpenEditModal(true)}
 								style={{
 									backgroundColor: "transparent",
 									color: "blue",
@@ -174,7 +163,7 @@ export const Post = ({
 							</IconButton>
 							<IconButton
 								color="secondary"
-								onClick={handleOpenDeleteModal}
+								onClick={() => setOpenDeleteModal(true)}
 								style={{
 									backgroundColor: "transparent",
 									color: "red",
@@ -190,17 +179,15 @@ export const Post = ({
 					open={openDeleteModal}
 					onClose={() => setOpenDeleteModal(false)}
 					postId={post._id}
-					onDelete={(deletedPostId: string) => handleDeletePost(post._id)}
+					onDelete={() => handleDeletePost(post._id)}
 				/>
 				<EditPostModal
 					open={openEditModal}
 					onClose={() => {
 						setOpenEditModal(false);
-						setEditedContent(null); // Clear edited content when modal is closed
 					}}
-					postId={post._id}
-					content={editedContent || ""}
-					onContentChange={setEditedContent} // Callback to update edited content
+					onEdit={onEdit}
+					post={post}
 				/>
 				<Typography variant="body1">{post.category}</Typography>
 				<Typography variant="body1">{post.content}</Typography>
