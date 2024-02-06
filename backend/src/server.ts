@@ -3,8 +3,9 @@ import swaggerUI from "swagger-ui-express"
 import swaggerJsDoc from "swagger-jsdoc"
 import { chatHandler } from "./common/chat_handler";
 import { Server } from "socket.io";
+import https from "https";
 import http from "http";
-
+import fs from 'fs';
 
 initApp().then((app) => {
     /* For Swagger */
@@ -23,18 +24,37 @@ initApp().then((app) => {
     const specs = swaggerJsDoc(options);
     app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 
-    /* For the chat - socket */
-    const server = http.createServer(app);
-    const io = new Server(server, {cors: {
-             origin: '*',
-         }});
-    chatHandler(io);
+  
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('development');
+      const server = http.createServer(app);
+       /* For the chat - socket */
+      const io = new Server(server, {cors: {
+        origin: '*',
+      }});
+      chatHandler(io);
+      /* Start listening for both app requests and docket requests */
+      const port = process.env.PORT
+      server.listen(port, () => {
+      console.log(`Listening on port ${port}`);
+      })
+    }else{
+      console.log('PRODUCTION');
+      const options2 = {
+      key: fs.readFileSync('../client-key.pem'),
+      cert: fs.readFileSync('../client-cert.pem')
+      };
+      const server = https.createServer(options2, app);
+      const io = new Server(server, {cors: {
+        origin: '*',
+      }});
+      chatHandler(io);
+      server.listen(process.env.HTTPS_PORT);
+    }
 
-    /* Start listening for both app requests and docket requests */
-    const port = process.env.PORT
-    server.listen(port, () => {
-    console.log(`Listening on port ${port}`);
-    })
+ 
+
+    
 });
 
 
