@@ -119,24 +119,6 @@ export const Signup: React.FC = () => {
 						justifyContent: "center",
 						height: "100vh",
 					}}>
-					{/* Sign Up Banner */}
-					<Typography
-						component="h1"
-						variant="h5"
-						sx={{
-							marginBottom: 4,
-							fontSize: "4rem",
-							color: "#ffffff",
-							fontWeight: "bold",
-							position: "relative",
-							textAlign: "center",
-							// Add a black border around the text
-							WebkitTextStroke: "1px black", // for WebKit browsers
-							textStroke: "2px black", // for other browsers
-						}}>
-						Sign Up
-					</Typography>
-
 					{/* Signup Form */}
 					<Box
 						sx={{
