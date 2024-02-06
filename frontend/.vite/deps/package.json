@@ -1,3 +1,7 @@
 {
-  "type": "module"
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "preview": "vite preview --port 8080"
+  }
 }
