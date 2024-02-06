@@ -2,7 +2,7 @@ import { get, patch, post, postGoogle } from "../api/requests";
 import { UserDetails } from "./UserDetailsComp";
 import { endpoints } from "../api/endpoints";
 import { CredentialResponse } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode";
+import { JwtPayload, jwtDecode } from "jwt-decode";
 
 export type CreateUserInfo = {
 	email: string;
@@ -71,7 +71,9 @@ interface tokenDetails {
 export const parseLocalStorageData = (data: tokenDetails) => {
 	localStorage.setItem("accessToken", data.accessToken);
 	localStorage.setItem("refreshToken", data.refreshToken);
-	const parsedToken = jwtDecode(data.accessToken);
+	const parsedToken = jwtDecode<JwtPayload & { _id: string; name: string }>(
+		data.accessToken
+	);
 	localStorage.setItem("userId", parsedToken._id);
 	localStorage.setItem("userName", parsedToken.name);
 };

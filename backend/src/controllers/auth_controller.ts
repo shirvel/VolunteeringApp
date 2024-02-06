@@ -103,7 +103,7 @@ const refresh = async (req: Request, res: Response) => {
                 'refreshToken': newRefreshToken
             });
         } catch (err) {
-            res.sendStatus(401).send(err.message);
+            res.status(401).send(err.message);
         }
     });
 }
@@ -127,7 +127,7 @@ const logout = async (req: Request, res: Response) => {
                 return res.sendStatus(200);
             }
         } catch (err) {
-            res.sendStatus(401).send(err.message);
+            res.status(401).send(err.message);
         }
     });
 }
