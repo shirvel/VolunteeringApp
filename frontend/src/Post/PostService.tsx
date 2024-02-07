@@ -1,7 +1,7 @@
 import { endpoints } from "../api/endpoints";
 import { CreatePostDetails } from "./Posts-deprecated";
 import { deleteRequest, post, patch, get } from "../api/requests";
-import { CommentI } from "Comments/CommentService";
+import { CommentI } from "../Comments/CommentService";
 import { IPost } from "./Post";
 
 export const getConnectedUser = () => {
