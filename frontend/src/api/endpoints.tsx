@@ -1,8 +1,8 @@
-const base = "http://10.10.248.204:80/";
+const base = "https://10.10.248.204:443/";
 
-export const socketUrl = "http://10.10.248.204:80";
+export const socketUrl = "https://10.10.248.204:443";
 export const endpoints = {
-	BASE: "http://10.10.248.204:80/",
+	BASE: "https://10.10.248.204:443/",
 	FILE: {
 		UPLOAD_FILE: () => base + "file/",
 	},
