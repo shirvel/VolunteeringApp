@@ -2,7 +2,8 @@ import express from "express";
 const router = express.Router();
 import multer from "multer";
 
-const base = "https://" + "10.10.248.204" + ":" + process.env.HTTPS_PORT + "/";
+const base = "http://" + process.env.IP + ":" + process.env.HTTPS_PORT + "/";
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'public/')
