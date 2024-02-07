@@ -3,7 +3,7 @@ import User from '../models/user_model';
 import Post from '../models/post_model';
 import mongoose from "mongoose";
 import { Request, Response } from 'express';
-import { Console } from 'console';
+import axios from 'axios';
 
 export interface IPost {
   user_id: string; 
@@ -178,4 +178,23 @@ const deletePostById = async (req, res) => {
     }
 };
 
-  export default {createPost, getAllPosts,  updatePostByID, deletePostById, like, findPostsByCategory, getByUser}
+export const getWeather = async (req: Request, res: Response) => {
+	try {
+    const post = await Post.findOne({_id: req.params.id});
+		const weatherResponse = await axios.get(
+			process.env.WEATHER_URL +
+        post.location +
+				`&appid=${process.env.WEATHER_API_KEY}`
+		);
+
+		res.status(200).json({data: {
+      temp: weatherResponse.data.main.temp,
+      icon: weatherResponse.data.weather[0].main,
+    }});
+	} catch (err) {
+    // If the city not found
+		res.status(500).json({ data: null });
+	}
+};
+
+  export default {createPost, getAllPosts,  updatePostByID, deletePostById, like, findPostsByCategory, getByUser, getWeather}

@@ -47,7 +47,10 @@ export const Post = ({
 }) => {
 	const [numberOfComments, setNumberOfComments] = useState(0);
 	const [openAddComment, setOpenAddComment] = useState(false);
-	const [weatherData, setWeatherData] = useState<any>(null);
+	const [weatherData, setWeatherData] = useState<{
+		temp: number;
+		icon: string;
+	} | null>(null);
 	const [likesCount, setLikesCount] = useState(post.likes);
 	const [liked, setLiked] = useState(post.likedBy.includes(post.user_id));
 	const [openDeleteModal, setOpenDeleteModal] = useState(false);
@@ -68,8 +71,11 @@ export const Post = ({
 		};
 
 		const fetchAndSetWeatherData = async () => {
-			const data = await fetchWeatherForPost(post.location);
-			setWeatherData(data);
+			const response = await fetchWeatherForPost(post._id);
+			console.log("the location data");
+			if (response.data) {
+				setWeatherData(response.data);
+			}
 		};
 		loadAllComments();
 		fetchAndSetWeatherData();
@@ -215,10 +221,10 @@ export const Post = ({
 					}}>
 					{weatherData ? (
 						<>
-							<div>{renderWeatherIcon(weatherData.weather[0].main)}</div>
+							<div>{renderWeatherIcon(weatherData.icon)}</div>
 							<div style={{ flex: 1 }}>
 								<Typography variant="body2" color="textSecondary">
-									{Math.round(weatherData.main.temp)}°C
+									{Math.round(weatherData.temp)}°C
 								</Typography>
 							</div>
 						</>

@@ -1,8 +1,13 @@
-const base = "https://10.10.248.204:443/";
+// For dev
+// const URL = "http://127.0.0.1:3000/";
 
-export const socketUrl = "https://10.10.248.204:443";
+//For Prod
+const URL = "https://10.10.248.204:443/";
+
+const base = URL;
+export const socketUrl = URL;
 export const endpoints = {
-	BASE: "https://10.10.248.204:443/",
+	BASE: URL,
 	FILE: {
 		UPLOAD_FILE: () => base + "file/",
 	},
@@ -25,6 +30,7 @@ export const endpoints = {
 			base + "comments/get_by_post/" + postId + "/",
 		GET_USER_POSTS: (usrId: string) =>
 			base + "posts/get_by_user/" + usrId + "/",
+		GET_WEATHER: (postId: string) => base + "posts/getWeather/" + postId + "/",
 	},
 	CHAT: {
 		GET_MESSAGES: (category_name: string) =>
