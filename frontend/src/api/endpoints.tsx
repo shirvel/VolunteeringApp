@@ -1,15 +1,15 @@
-const base = "http://127.0.0.1:3000/";
+const base = "http://10.10.248.204:80/";
 
-export const socketUrl = "http://127.0.0.1:3000";
+export const socketUrl = "http://10.10.248.204:80";
 export const endpoints = {
-	BASE: "http://127.0.0.1:3000/",
+	BASE: "http://10.10.248.204:80/",
 	FILE: {
 		UPLOAD_FILE: () => base + "file/",
 	},
 	USER: {
 		UPDATE_USER: (id: string) => base + "user/" + id + "/",
 		CREATE_USER: () => base + "auth/register/",
-		CREATE_USER_GOOGLE: () =>  base + "auth/google/",
+		CREATE_USER_GOOGLE: () => base + "auth/google/",
 		GET_BY_NAME: (name: string) => base + "user/get_by_name/" + name + "/",
 		CREATE_NEW_TOKENS: () => base + "auth/refresh/",
 		SIGNIN_USER: () => base + "auth/login/",
@@ -23,9 +23,8 @@ export const endpoints = {
 		ADD_DISLIKE: (postId: string) => base + "posts/" + postId + "/dislike/",
 		GET_COMMENTS: (postId: string) =>
 			base + "comments/get_by_post/" + postId + "/",
-		GET_USER_POSTS:  (usrId: string) =>
+		GET_USER_POSTS: (usrId: string) =>
 			base + "posts/get_by_user/" + usrId + "/",
-
 	},
 	CHAT: {
 		GET_MESSAGES: (category_name: string) =>
