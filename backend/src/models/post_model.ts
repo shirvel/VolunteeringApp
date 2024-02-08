@@ -33,10 +33,6 @@ const postSchema = new mongoose.Schema({
           type: String,
         },
       ],
-    dislikes: {
-        type: Number,
-        default: 0
-    },
     dislikedBy: [
         {
             type: String,
