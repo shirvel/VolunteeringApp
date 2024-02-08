@@ -21,10 +21,9 @@ const test_post: IPost = {
   image: "test.jpg",
   category: "test",
   likes: 0,
-  likedBy: [],
-  dislikes: 0,
-  dislikedBy: [],
-  location: 'Tel Aviv'
+  likedBy: ["1234"],
+  dislikedBy: ["5"],
+  location: "Ashdod"
 };
 
 const test_user: IUser = {
@@ -63,9 +62,7 @@ describe("Post tests", () => {
   };
 
   test("Test Get All Posts - empty response", async () => {
-    const response = await request(app)
-      .get("/posts")
-      .set("Authorization", "JWT " + accessToken);
+    const response = await request(app).get("/posts").set("Authorization", "JWT " + accessToken);
     expect(response.statusCode).toBe(200);
     expect(response.body).toStrictEqual([]);
   });
@@ -78,21 +75,29 @@ describe("Post tests", () => {
     const post = response.body[0];
     expect(post.title).toBe("Test Post");
   });
-/*
+
   test("Test add like to post", async () => {
-    const response = await request(app).post(`/posts/${test_post._id}/like`).set("Authorization", "JWT " + accessToken).send({user_id: "1234"});
+    const response = await request(app).post(`/posts/${test_post._id}/like`).set("Authorization", "JWT " + accessToken).send({user_id: "12345"});
     expect(response.statusCode).toBe(200);
     const post = response.body;
     expect(post.likes).toBe(1);
+    //expect(post.likedBy).toContain("1234");
   });
-
-  test("Test add dislike to post", async () => {
-    const response = await request(app).post(`/posts/${test_post._id}/dislike`).set("Authorization", "JWT " + accessToken).send({user_id: "1234"});
-    expect(response.statusCode).toBe(200);
+  test("Prevent liking a post that's already been liked by the user", async () => {
+    const response = await request(app).post(`/posts/${test_post._id}/like`).set("Authorization", "JWT " + accessToken).send({user_id: "1234" });
+    expect(response.statusCode).toBe(400);
     const post = response.body;
-    expect(post.dislikes).toBe(1);
   });
 
+test("Change like to dislike on a post", async () => {
+  const response = await request(app).post(`/posts/${test_post._id}/like`).set("Authorization", `JWT ${accessToken}`).send({ user_id: "1234" });
+  expect(response.statusCode).toBe(200);
+});
+test("Prevent disliking a post that's already been disliked by the user", async () => {
+  const response = await request(app).post(`/posts/${test_post._id}/like`).set("Authorization", "JWT " + accessToken).send({user_id: "5" });
+  expect(response.statusCode).toBe(400);
+  const post = response.body;
+});
   test("Test edit post", async () => {
     const response = await request(app).patch(`/posts/${test_post._id}`).set("Authorization", "JWT " + accessToken).send({content: "updated"});
     expect(response.statusCode).toBe(204);
@@ -101,16 +106,21 @@ describe("Post tests", () => {
     const post = getResponse.body[0];
     expect(post.content).toBe("updated");
   });
+
+  test("Test get post by user", async () => {
+    console.log("testget"+test_post.user_id);
+    const response = await request(app).get(`/posts/get_by_user/${test_post.user_id}`).set('Authorization', `Bearer ${accessToken}`);
+    expect(response.statusCode).toBe(200);
+    expect(response.body.length).toBeGreaterThan(0);
+    response.body.forEach(post => {
+      expect(post.user_id).toBe('1234');
+    });
+  });
     test("Test delete post", async () => {
-      const delResponse = await request(app)
-        .delete(`/posts/${test_post._id}`)
-        .set("Authorization", "JWT " + accessToken);
+      const delResponse = await request(app).delete(`/posts/${test_post._id}`).set("Authorization", "JWT " + accessToken);
       expect(delResponse.statusCode).toBe(204);
-      const getResponse = await request(app)
-        .get("/posts")
-        .set("Authorization", "JWT " + accessToken);
+      const getResponse = await request(app).get("/posts").set("Authorization", "JWT " + accessToken);
       expect(getResponse.statusCode).toBe(200);
       expect(getResponse.body.length).toBe(0);
     });
-  */   
   });
