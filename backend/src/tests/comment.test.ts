@@ -18,9 +18,9 @@ const test_post: IPost = {
   category: "test",
   likes: 0,
   likedBy: [],
-  dislikes: 0,
   dislikedBy: [],
   user_id: "1234",
+  location: "Ashdod"
 };
 
 const test_comment: IComment = {
