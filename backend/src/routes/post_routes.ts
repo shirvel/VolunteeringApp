@@ -205,6 +205,4 @@ router.delete("/:id", authMiddleware, PostController.deletePostById);
 */
 router.get("/get_by_user/:userId", authMiddleware, PostController.getByUser);
 
-
-router.get("/getWeather/:id", authMiddleware, PostController.getWeather);
 export default router;
