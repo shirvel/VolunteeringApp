@@ -3,7 +3,7 @@ import User from '../models/user_model';
 import Post from '../models/post_model';
 import mongoose from "mongoose";
 import { Request, Response } from 'express';
-import axios from 'axios';
+import { Console } from 'console';
 
 export interface IPost {
   user_id: string; 
@@ -14,7 +14,6 @@ export interface IPost {
   category: string;
   likes: number;
   likedBy: string[];
-  dislikes: number;
   dislikedBy: string[];
   location: string;
   _id?: string;
@@ -44,29 +43,29 @@ const getAllPosts = async (req, res) => {
 };
 const like = async (req, res) => {
   try {
-    const userId = req.body.usrId;
+    const userId = req.body.user_id;
     const postId = req.params.id;
-    console.log(userId);
+    console.log("user"+userId);
     // Check if the user has already liked the post
     const likedPostpost = await Post.findOne({ _id: req.params.id, likedBy: { $in: [userId] } });
-    console.log(likedPostpost+"backend test");
-
     if (likedPostpost) {
       await Post.findOneAndUpdate(
                 { _id: postId },
                 { $inc: { likes: -1 }, $pull: { likedBy: userId } }
              );
+      console.log('User has already liked this post');
       return res.status(400).json({ error: 'User has already liked this post' });
+      
     }
     else{
       // Check if the user has already disliked the post
       const dislikepost = await Post.findOne({ _id: req.params.id, dislikedBy: { $in: [userId] } });
-      console.log(dislikepost+"getid");
       if (dislikepost){
         await Post.findOneAndUpdate(
           { _id: postId },
           { $inc: { likes: 0 }, $pull: { likedBy: userId } }
        );
+       console.log('User has already disliked this post');
        return res.status(400).json({ error: 'User has already disliked this post' });
       }
       else {
@@ -84,48 +83,6 @@ const like = async (req, res) => {
   }
 };
 
-// Add dislike to a post by its ID
-//const addDislike = async (req, res) => {
-//  try {
-//    const userId = req.body.usrId;
-//    const postId = req.params.id;
-//    console.log(userId);
-//    console.log(postId);
-//    // Check if the user has already disliked the post
-//    const post = await Post.findOne({ _id: req.params.id, dislikedBy: { $in: [userId] } });
-//    console.log(post+"getid");
-//
-//    if (post) {
-//      return res.status(400).json({ error: 'User has already disliked this post' });
-//    }
-//    else{
-//      // Check if the user has liked the post previously
-//    const likedPost = await Post.findOne({ _id: req.params.id, likedBy: { $in: [userId] } });
-//    console.log(likedPost+"getidlikes");
-//    if (likedPost) {
-//      // Remove the user's like before adding a dislike
-//      await Post.findOneAndUpdate(
-//        { _id: postId },
-//        { $inc: { likes: -1 }, $pull: { likedBy: userId } }
-//      );
-//    }
-//    else{// If the user hasn't disliked the post, add the dislike
-//      const updatedPost = await Post.findOneAndUpdate(
-//        { _id: postId },
-//        { $inc: { dislikes: 1 }, $push: { dislikedBy: userId } },
-//        { new: true }
-//      );
-//        console.log("update"+updatedPost)
-//      if (!updatedPost) {
-//        return res.status(404).json({ error: 'Post not found' });
-//      }
-//  
-//      res.status(200).json(updatedPost);}
-//    }
-//  } catch (error) {
-//    res.status(500).json({ error: 'Failed to add dislike' });
-//  }
-//};
 
 
 const updatePostByID = async (req, res) => {
@@ -154,23 +111,9 @@ const deletePostById = async (req, res) => {
       res.status(500).json({ error: 'An error occurred while deleting the post' });
     }
   };
-
-  const findPostsByCategory = async (req: Request, res: Response) => {
-    const category = req.params.category; 
-    const posts = await Post.find({ category: category }).exec();
-    try {
-      if (!posts || posts.length === 0) {
-        return res.status(404).json({ message: 'No posts found in the specified category' });
-      }
-  
-      res.status(200).json(posts);
-    } catch (err) {
-      res.status(500).json({ message: err.message });
-    }
-  };
   const getByUser = async(req: Request, res: Response) => {
     try{
-        console.log("back userid"+req.params.user_id);
+        console.log("back userid"+req.params.usrId);
         console.log("back userid"+req.params.userId);
         res.status(200).json(await Post.find({user_id: req.params.userId}));
     }catch (err) {
@@ -178,23 +121,4 @@ const deletePostById = async (req, res) => {
     }
 };
 
-export const getWeather = async (req: Request, res: Response) => {
-	try {
-    const post = await Post.findOne({_id: req.params.id});
-		const weatherResponse = await axios.get(
-			process.env.WEATHER_URL +
-        post.location +
-				`&appid=${process.env.WEATHER_API_KEY}`
-		);
-
-		res.status(200).json({data: {
-      temp: weatherResponse.data.main.temp,
-      icon: weatherResponse.data.weather[0].main,
-    }});
-	} catch (err) {
-    // If the city not found
-		res.status(500).json({ data: null });
-	}
-};
-
-  export default {createPost, getAllPosts,  updatePostByID, deletePostById, like, findPostsByCategory, getByUser, getWeather}
+  export default {createPost, getAllPosts,  updatePostByID, deletePostById, like, getByUser}
